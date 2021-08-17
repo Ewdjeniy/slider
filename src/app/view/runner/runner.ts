@@ -1,18 +1,23 @@
 import './runner.css';
+import ObservableSubject from '../../observers.ts';
 
 export class Runner {   
     
-    scale: HTMLElement;
-    el: HTMLElement = document.createElement('div');
+    subject: any = new ObservableSubject();
+    sliderState: any;
+    index: number;
+    runnerEl: HTMLElement = document.createElement('div');
+    mousePosOnRunner: number = 0;
     
-    constructor(scale: HTMLElement) {
-        this.scale = scale;
+    constructor(index: number, sliderState: any) {
+        this.sliderState = sliderState;
+        this.index = index;
         this.renderRunner();
     }
     
     renderRunner(): void {
-        this.el.className = 'toxinSlider';
-        this.scale.append(this.el);
+        this.runnerEl.className = 'toxinRunner';
+        this.sliderState.ranges[this.index].rangeEl.append(this.runnerEl);
     }
     
 };

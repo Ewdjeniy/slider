@@ -1,7 +1,7 @@
 import { ToxinSliderView } from '../view.ts';
 import { Scale } from '../scale/scale.ts';
 import { Runner } from '../runner/runner.ts';
-import { Progress } from '../progress/progress.ts';
+import { ProgressBar } from '../progressBar/progressBar.ts';
 import * as $ from 'jquery';
 
 describe('ToxinSliderView', function() {
@@ -11,32 +11,32 @@ describe('ToxinSliderView', function() {
         inpt = setFixtures('<input type="text" id="slider">');
     });
     
-    it('должен быть объявлен', function() {
-        expect(ToxinSliderView).toBeDefined();
-    });
+//    it('должен быть объявлен', function() {
+//        expect(ToxinSliderView).toBeDefined();
+//    });
+//    
+//    it('получает ссылку на элемент на котором был инициализирован слайдер', function() {
+//        const view = new ToxinSliderView(inpt);
+//        expect(view.input).toBe(inpt);     
+//    });
     
-    it('получает ссылку на элемент на котором был инициализирован слайдер', function() {
-        const view = new ToxinSliderView(inpt);
-        expect(view.input).toBe(inpt);     
-    });
-    
-    describe('Scale', function() {
-        
-        it('должен быть объявлен', function() {
-            expect(Scale).toBeDefined();
-        });
-        
-        it('получает ссылку на элемент на котором был инициализирован слайдер', function() {
-            const scale = new Scale(inpt, {});
-            expect(scale.input).toBe(inpt);       
-        });
-        
-        it('отрисовывает шкалу сразу за элементом на котором иницилизирован слайдер', function() {
-            const scale = new Scale(inpt, {});
-            expect($(inpt).next()).toHaveClass('toxinScale');
-        });
-        
-    });
+//    describe('Scale', function() {
+//        
+//        it('должен быть объявлен', function() {
+//            expect(Scale).toBeDefined();
+//        });
+//        
+//        it('получает ссылку на элемент на котором был инициализирован слайдер', function() {
+//            const scale = new Scale(inpt, {});
+//            expect(scale.input).toBe(inpt);       
+//        });
+//        
+//        it('отрисовывает шкалу сразу за элементом на котором иницилизирован слайдер', function() {
+//            const scale = new Scale(inpt, {});
+//            expect($(inpt).next()).toHaveClass('toxinScale');
+//        });
+//        
+//    });
     
 //    describe('Runner', function() {
 //        

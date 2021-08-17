@@ -1,19 +1,91 @@
-import {Scale} from './scale/scale.ts';
-import {Runner} from './runner/runner.ts';
-import {Progress} from './progress/progress.ts';
+import {XScale} from './scale/xScale/xScale.ts';
+import {YScale} from './scale/yScale/yScale.ts';
+import {Range} from './range/range.ts';
+import {SingleOutput} from './output/singleOutput/singleOutput.ts';
+import {RangeOutput} from './output/rangeOutput/rangeOutput.ts';
+import {XRunner} from './runner/xRunner/xRunner.ts';
+import {YRunner} from './runner/yRunner/yRunner.ts';
+import {XTip} from './tip/xTip/xTip.ts';
+import {YTip} from './tip/yTip/yTip.ts';
+import {XProgressBar} from './progressBar/xProgressBar/xProgressBar.ts';
+import {YProgressBar} from './progressBar/yProgressBar/yProgressBar.ts';
+
 
 export class ToxinSliderView {
     input: HTMLInputElement;
-    
-    sliderState: any = {
-        'start': 0,
-        'end': 100,
+    sliderSettings: any = {
+        start: 0,
+        end: 100,
+        step: 1,
+        current: 0,
+        scaleValues: 0,
+        direction: 'x',
+        range: false,
+        tip: true,
     };
     
-    constructor(el: HTMLInputElement) {
-        this.input = el;
-        const scale = new Scale(this.input, this.sliderState);
-        const runner = new Runner(scale.el);
-        const progress = new Progress(el, runner.el);
+    sliderState: any = {
+        sliderSettings: null,
+        output: null,
+        scale: null,
+        ranges: [],
+        runners: [],
+        tips: [],
+        progressBars: [],
+        stepsAmount: 0,
+        stepsCoefficient: 0,
+    };
+    
+    constructor(input: HTMLInputElement) {
+        this.input = input;
     }
+    
+    init(): void {
+        this.sliderState.stepsAmount = Math.round((this.sliderSettings.end - this.sliderSettings.start) / this.sliderSettings.step);
+        this.sliderState.stepsCoefficient = ((this.sliderSettings.step * this.sliderState.stepsAmount) / ((this.sliderSettings.end - this.sliderSettings.start) / 100)) / 100;
+        this.sliderState.sliderSettings = this.sliderSettings;
+        
+        this.sliderState.output = this.sliderSettings.range ? new RangeOutput(this.input, this.sliderState) : new SingleOutput(this.input, this.sliderState);
+        switch (this.sliderSettings.direction) {
+            case 'x':
+                this.sliderState.scale = new XScale(this.sliderState);
+                break;
+            case 'y':
+                this.sliderState.scale = new YScale(this.sliderState);
+                break;
+        }
+        if(this.sliderSettings.range) {
+            this.sliderState.ranges.push(new Range(this.sliderState));
+            this.sliderState.ranges.push(new Range(this.sliderState));
+        } else {
+            this.sliderState.ranges.push(new Range(this.sliderState));
+        }
+        this.sliderState.ranges.forEach((range, index) => {
+            switch (this.sliderSettings.direction) {
+                case 'x':
+                    this.sliderState.runners.push(new XRunner(index, this.sliderState));
+                    if(this.sliderSettings.tip) {
+                        this.sliderState.tips.push(new XTip(index, this.sliderState));
+                    }
+                    this.sliderState.progressBars.push(new XProgressBar(index, this.sliderState));
+                    break;
+                case 'y':
+                    this.sliderState.runners.push(new YRunner(index, this.sliderState));
+                    if(this.sliderSettings.tip) {
+                        this.sliderState.tips.push(new YTip(index, this.sliderState));
+                    }
+                    this.sliderState.progressBars.push(new YProgressBar(index, this.sliderState));
+                    break;
+            }
+        });
+    }
+    
+    updateSettings(settings: any): void {
+        for (let key in settings) {
+            if (this.sliderSettings.hasOwnProperty(key)) {
+                this.sliderSettings[key] = settings[key]; 
+            }
+        }
+    }
+    
 }

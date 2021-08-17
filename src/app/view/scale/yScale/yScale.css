@@ -1,0 +1,28 @@
+.yScale {
+    height: 100%;
+    display: flex;
+
+    .scale {
+        font-size: 0.625rem;
+
+        width: 4em;
+        height: 60em;
+        border: 1px solid rgba(31, 32, 65, 0.25);
+        border-radius: 3em;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+        position: relative;
+        background-color: white;
+    }
+
+    .scale-values {
+        height: 100%;
+        user-select: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    
+}

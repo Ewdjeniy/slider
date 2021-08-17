@@ -1,19 +1,15 @@
-import './scale.css';
+import ObservableSubject from '../../observers.ts';
 
 export class Scale {
-    input: HTMLInputElement;
+    subject:any = new ObservableSubject();
     sliderState: any;
-    el:  HTMLElement = document.createElement('div');
+    scaleHTML: string = '<div class="scale"></div>' +
+                        '<div class="scale-values"></div>';
+    scaleEl:  HTMLElement;
+    scaleValuesEl: HTMLElement;
 
-    constructor(input: HTMLInputElement, sliderState: any) {
-        this.input = input;
+    constructor(sliderState: any) {
         this.sliderState = sliderState;
-        this.renderScale();
-    }
-    
-    renderScale(): void {
-        this.el.className = 'toxinScale';
-        this.input.after(this.el);
     }
     
 };
