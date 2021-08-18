@@ -1,7 +1,7 @@
-import './xTip.css';
+import './xRangeTip.css';
 import {Tip} from '../tip.ts';
 
-export class XTip extends Tip {   
+export class XRangeTip extends Tip {   
     
     constructor(index: number, sliderState: any) {
         super(index, sliderState);
@@ -23,13 +23,13 @@ export class XTip extends Tip {
         return outputValue;
     }
     
-    setCurrent(value: number): void {
-        if (value > this.sliderState.sliderSettings.end) {
+    setCurrent(valuesArray: number[]): void {
+        if (valuesArray[this.index] > this.sliderState.sliderSettings.end) {
             this.tipEl.innerHTML = this.sliderState.sliderSettings.end;
-        } else if (value < this.sliderState.sliderSettings.start) {
+        } else if (valuesArray[this.index] < this.sliderState.sliderSettings.start) {
             this.tipEl.innerHTML = this.sliderState.start;      
         } else {
-            this.tipEl.innerHTML = value.toString();        
+            this.tipEl.innerHTML = valuesArray[this.index].toString();        
         }
     }
     

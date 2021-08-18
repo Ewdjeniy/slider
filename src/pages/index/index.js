@@ -5,6 +5,8 @@ $('.slider').toxinSlider(
 {
     start: 0,
     end: 100,
-    step: 2,
-    tip: true
+    step: 1,
+    tip: false,
+    range: true,
+    current: [0, 75]
 });

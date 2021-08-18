@@ -5,30 +5,29 @@ export class XRunner extends Runner {
     
     constructor(index: number, sliderState: any) {
         super(index, sliderState);
-        this.runnerEl.onmousedown = this.updateSlider.bind(this);
+        this.runnerEl.onpointerdown = this.updateSlider.bind(this);
     }
     
-    updateSlider(e: MouseEvent): boolean {
-        this.subject.notifyObservers();
+    updateSlider(e: PointerEvent): boolean {
         let changeProgressBar: any = this.sliderState.progressBars[this.index].setProgressBarSize.bind(this.sliderState.progressBars[this.index]);
         const changeOutput: any = this.sliderState.output.countOutputValue.bind(this.sliderState.output);
         let showTip: any;
         if (this.sliderState.sliderSettings.tip) {
-            showTip = this.sliderState.tips[this.index].showTip.bind(this.sliderState.tips[this.index]);
+            showTip = () => this.sliderState.tips.forEach((tip) => tip.showTip());
         }
         const removeListenersFromDocument = function() {
-            document.removeEventListener('mousemove', changeProgressBar);
-            document.removeEventListener('mousemove', changeOutput);
-            document.removeEventListener('mousemove', showTip);
-            document.removeEventListener('mouseup', removeListenersFromDocument);
+            document.removeEventListener('pointermove', changeProgressBar);
+            document.removeEventListener('pointermove', changeOutput);
+            document.removeEventListener('pointermove', showTip);
+            document.removeEventListener('pointerup', removeListenersFromDocument);
         }
         
         this.mousePosOnRunner = e.clientX - this.runnerEl.getBoundingClientRect().left;
         
-        document.addEventListener('mousemove', changeProgressBar);
-        document.addEventListener('mousemove', changeOutput);
-        document.addEventListener('mousemove', showTip);
-        document.addEventListener('mouseup', removeListenersFromDocument);
+        document.addEventListener('pointermove', changeProgressBar);
+        document.addEventListener('pointermove', changeOutput);
+        document.addEventListener('pointermove', showTip);
+        document.addEventListener('pointerup', removeListenersFromDocument);
         return false;
     }
     

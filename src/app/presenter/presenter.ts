@@ -10,7 +10,7 @@ export class ToxinSliderPresenter {
         this.view = view;
         
         this.view.updateSettings(this.model.state);
-        this.view.init();
+        this.view.setState();
         
     }
     

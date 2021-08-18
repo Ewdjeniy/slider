@@ -11,7 +11,8 @@ export class Range {
         this.sliderState = sliderState;
         this.renderRange();
         if (this.sliderState.sliderSettings.range && this.sliderState.ranges[0]) {
-            this.sliderState.ranges[0].rangeEl.style.zIndex = getComputedStyle(this.sliderState.ranges[0].rangeEl).zIndex + 1;
+            this.sliderState.ranges[0].rangeEl.style.zIndex = +getComputedStyle(this.sliderState.ranges[0].rangeEl).zIndex + 1;
+            this.sliderState.ranges[0].rangeEl.style.background = getComputedStyle(this.sliderState.scale.scaleEl).background;
         }
     }
     

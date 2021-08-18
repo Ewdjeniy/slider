@@ -13,7 +13,7 @@ export class XProgressBar extends ProgressBar{
         this.progressBarEl.style.width = Math.round((value - this.sliderState.sliderSettings.start) / this.sliderState.sliderSettings.step) + 'em';
     }
     
-    setProgressBarSize(event: MouseEvent): void {
+    setProgressBarSize(event: PointerEvent): void {
         const scaleStartX: number = this.sliderState.scale.scaleEl.getBoundingClientRect().left + parseInt(getComputedStyle(this.sliderState.scale.scaleEl).borderLeftWidth) + parseInt(getComputedStyle(this.sliderState.scale.scaleEl).paddingLeft);
 				const scaleValue: number = event.clientX - scaleStartX - this.sliderState.runners[this.index].mousePosOnRunner;
         let size: string;
@@ -24,13 +24,6 @@ export class XProgressBar extends ProgressBar{
 				} else {
 						this.progressBarEl.style.width = '0em';
 				}
-        
-        if (this.sliderState.sliderSettings.range) {
-            if (parseFloat(getComputedStyle(this.sliderState.progressBars[0].progressBarEl).width) > parseFloat(getComputedStyle(this.sliderState.progressBars[1].progressBarEl).width)) {
-                this.sliderState.progressBars[0].progressBarEl.style.width = size;
-                this.sliderState.progressBars[1].progressBarEl.style.width = size;
-            }
-        }
     }
     
     renderProgressBar(): void {

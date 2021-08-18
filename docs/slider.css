@@ -170,6 +170,25 @@
     color: white;
     border-radius: 0.2em;
 }
+.x-range-tip {
+    font-size: 2em;
+    margin-top: -2em;
+    height: 1.5em;
+    padding: 0 0.5em 0 0.5em;
+    background: -webkit-gradient(linear, left top, left bottom, from(#6FCF97), to(#66D2EA));
+    background: linear-gradient(180deg, #6FCF97 0%, #66D2EA 100%);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    color: white;
+    border-radius: 0.2em;
+}
 
 .xProgressBar {
     padding: 0;
@@ -192,6 +211,16 @@
         background-color: red;
         max-height: 100%;
     }
+.xProgressBar {
+    padding: 0;
+    border: 0;
+    margin: 0;
+    width: 0;
+    height: 100%;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+}
+
 
 .slider {
     margin-bottom: 100px;
