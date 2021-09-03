@@ -6,7 +6,7 @@ export class XRangeTip extends Tip {
     constructor(index: number, sliderState: any) {
         super(index, sliderState);
         this.renderTip();
-        this.setCurrent(this.sliderState.sliderSettings.current);
+        this.setCurrent();
     }
     
     
@@ -23,13 +23,13 @@ export class XRangeTip extends Tip {
         return outputValue;
     }
     
-    setCurrent(valuesArray: number[]): void {
-        if (valuesArray[this.index] > this.sliderState.sliderSettings.end) {
+    setCurrent(): void {
+        if (this.sliderState.sliderSettings.current[this.index] > this.sliderState.sliderSettings.end) {
             this.tipEl.innerHTML = this.sliderState.sliderSettings.end;
-        } else if (valuesArray[this.index] < this.sliderState.sliderSettings.start) {
+        } else if (this.sliderState.sliderSettings.current[this.index] < this.sliderState.sliderSettings.start) {
             this.tipEl.innerHTML = this.sliderState.start;      
         } else {
-            this.tipEl.innerHTML = valuesArray[this.index].toString();        
+            this.tipEl.innerHTML = this.sliderState.sliderSettings.current[this.index].toString();        
         }
     }
     

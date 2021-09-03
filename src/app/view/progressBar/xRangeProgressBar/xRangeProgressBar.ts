@@ -6,11 +6,11 @@ export class XRangeProgressBar extends ProgressBar{
     constructor(index: number, sliderState: any) {
         super(index, sliderState);
         this.renderProgressBar();
-        this.setCurrent(this.sliderState.sliderSettings.current[index]);
+        this.setCurrent();
     }
     
-    setCurrent(value: number): void {
-        this.progressBarEl.style.width = Math.round((value - this.sliderState.sliderSettings.start) / this.sliderState.sliderSettings.step) + 'em';
+    setCurrent(): void {
+        this.progressBarEl.style.width = Math.round((this.sliderState.sliderSettings.current[this.index] - this.sliderState.sliderSettings.start) / this.sliderState.sliderSettings.step) + 'em';
     }
     
     setProgressBarSize(event: PointerEvent): void {

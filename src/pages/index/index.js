@@ -6,7 +6,10 @@ $('.slider').toxinSlider(
     start: 0,
     end: 100,
     step: 1,
-    tip: false,
-    range: true,
-    current: [0, 75]
+    tip: true,
+    range: false,
+    current: 0,
+    scaleValues: 5,
 });
+
+$('.slider').toxinSlider('update', {start:0, end: 100, scaleValues: 2});

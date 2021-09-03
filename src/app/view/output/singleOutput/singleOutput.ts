@@ -5,16 +5,16 @@ export class SingleOutput extends Output {
 
     constructor(input: HTMLInputElement, sliderState: any) {
         super(input, sliderState);
-        this.setCurrent(this.sliderState.sliderSettings.current);
+        this.setCurrent();
     }
     
-    setCurrent(value: number): void {
-        if (value > this.sliderState.sliderSettings.end) {
+    setCurrent(): void {
+        if (this.sliderState.sliderSettings.current > this.sliderState.sliderSettings.end) {
             this.outputEl.value = this.sliderState.sliderSettings.end;
-        } else if (value < this.sliderState.sliderSettings.start) {
+        } else if (this.sliderState.sliderSettings.current < this.sliderState.sliderSettings.start) {
             this.outputEl.value = this.sliderState.start;      
         } else {
-            this.outputEl.value = value.toString();        
+            this.outputEl.value = this.sliderState.sliderSettings.current.toString();        
         }
     }
     

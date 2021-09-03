@@ -9,9 +9,14 @@ export class ToxinSliderPresenter {
         this.model = model;
         this.view = view;
         
-        this.view.updateSettings(this.model.state);
-        this.view.setState();
+        this.view.update(this.model.state);
+        this.model.subject.addObserver(function() {
+            view.update(model.state);
+        });
         
+        this.model.modelCurrent.addObserver(function() {
+            view.updateCurrent(model.state.current);
+        });
     }
     
 }

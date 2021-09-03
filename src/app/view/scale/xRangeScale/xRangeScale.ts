@@ -1,7 +1,7 @@
-import './xScale.css';
+import './xRangeScale.css';
 import {Scale} from '../scale.ts';
 
-export class XScale extends Scale{
+export class XRangeScale extends Scale{
     constructor(sliderState: any) {
         super(sliderState);
         this.renderScale();
@@ -10,12 +10,22 @@ export class XScale extends Scale{
     }
     
     setSliderValue(event: PointerEvent): any {
-        if (event.target == this.sliderState.runners[0].runnerEl) {
+        if (event.target == this.sliderState.runners[0].runnerEl || event.target == this.sliderState.runners[1].runnerEl) {
             return false;
         }
-        this.sliderState.progressBars[0].setProgressBarSize(event);
+        let nearestRunnerIndex: number;
+        if (event.clientX > this.sliderState.runners[1].runnerEl.getBoundingClientRect().left) {
+            nearestRunnerIndex = 1;
+        } else if (event.clientX < this.sliderState.runners[0].runnerEl.getBoundingClientRect().left) {
+            nearestRunnerIndex = 0;      
+        } else if (event.clientX - this.sliderState.runners[0].runnerEl.getBoundingClientRect().left < this.sliderState.runners[1].runnerEl.getBoundingClientRect().left - event.clientX) {
+            nearestRunnerIndex = 0;      
+        } else {
+            nearestRunnerIndex = 1;
+        }
+        this.sliderState.progressBars[nearestRunnerIndex].setProgressBarSize(event);
         if (this.sliderState.sliderSettings.tip) {
-            this.sliderState.tips[0].showTip(); 
+            this.sliderState.tips[nearestRunnerIndex].showTip(); 
         }
         this.sliderState.output.countOutputValue();
     }

@@ -1,16 +1,13 @@
 import {XScale} from './scale/xScale/xScale.ts';
-import {YScale} from './scale/yScale/yScale.ts';
+import {XRangeScale} from './scale/xRangeScale/xRangeScale.ts';
 import {Range} from './range/range.ts';
 import {SingleOutput} from './output/singleOutput/singleOutput.ts';
 import {RangeOutput} from './output/rangeOutput/rangeOutput.ts';
 import {XRunner} from './runner/xRunner/xRunner.ts';
-import {YRunner} from './runner/yRunner/yRunner.ts';
 import {XTip} from './tip/xTip/xTip.ts';
 import {XRangeTip} from './tip/xRangeTip/xRangeTip.ts';
-import {YTip} from './tip/yTip/yTip.ts';
 import {XProgressBar} from './progressBar/xProgressBar/xProgressBar.ts';
 import {XRangeProgressBar} from './progressBar/xRangeProgressBar/xRangeProgressBar.ts';
-import {YProgressBar} from './progressBar/yProgressBar/yProgressBar.ts';
 
 
 export class ToxinSliderView {
@@ -41,9 +38,14 @@ export class ToxinSliderView {
     
     constructor(input: HTMLInputElement) {
         this.input = input;
+        this.setState();
     }
     
     setState(): void {
+        this.sliderState.ranges = [];
+        this.sliderState.runners = [];
+        this.sliderState.tips = [];
+        this.sliderState.progressBars = [];
         this.sliderState.stepsAmount = Math.round((this.sliderSettings.end - this.sliderSettings.start) / this.sliderSettings.step);
         this.sliderState.stepsCoefficient = ((this.sliderSettings.step * this.sliderState.stepsAmount) / ((this.sliderSettings.end - this.sliderSettings.start) / 100)) / 100;
         this.sliderState.sliderSettings = this.sliderSettings;
@@ -51,10 +53,11 @@ export class ToxinSliderView {
         this.sliderState.output = this.sliderSettings.range ? new RangeOutput(this.input, this.sliderState) : new SingleOutput(this.input, this.sliderState);
         switch (this.sliderSettings.direction) {
             case 'x':
-                this.sliderState.scale = new XScale(this.sliderState);
-                break;
-            case 'y':
-                this.sliderState.scale = new YScale(this.sliderState);
+                if(this.sliderSettings.range) {
+                    this.sliderState.scale = new XRangeScale(this.sliderState);
+                } else {
+                    this.sliderState.scale = new XScale(this.sliderState);
+                }
                 break;
         }
         if(this.sliderSettings.range) {
@@ -80,23 +83,29 @@ export class ToxinSliderView {
                         this.sliderState.progressBars.push(new XProgressBar(index, this.sliderState));  
                     }
                     break;
-                case 'y':
-                    this.sliderState.runners.push(new YRunner(index, this.sliderState));
-                    if(this.sliderSettings.tip) {
-                        this.sliderState.tips.push(new YTip(index, this.sliderState));
-                    }
-                    this.sliderState.progressBars.push(new YProgressBar(index, this.sliderState));
-                    break;
             }
         });
     }
     
-    updateSettings(settings: any): void {
+    update(settings: any): void {
+        this.sliderState.scale.scaleEl.remove();
+        this.sliderState.scale.scaleValuesEl.remove();
         for (let key in settings) {
             if (this.sliderSettings.hasOwnProperty(key)) {
                 this.sliderSettings[key] = settings[key]; 
             }
         }
+        this.setState();
     }
     
+    updateCurrent(current: any): void {
+        this.sliderState.sliderSettings.current = current;
+        this.sliderState.progressBars.forEach((bar) => {
+            bar.setCurrent();
+        });
+        this.sliderState.tips.forEach((tip) => {
+            tip.setCurrent();
+        });
+        this.sliderState.output.setCurrent();
+    }
 }

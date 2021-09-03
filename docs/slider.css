@@ -40,41 +40,24 @@
         width: 2em;
         text-align: right;
     }
-.yScale {
-    height: 100%;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    
-}
-
-    .yScale .scale {
+.xScale .scale {
         font-size: 10px;
         font-size: 0.625rem;
-
-        width: 4em;
-        height: 60em;
+        width: 100%;
+        height: 4em;
         border: 1px solid rgba(31, 32, 65, .25);
         border-radius: 3em;
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
-            -ms-flex-direction: column;
-                flex-direction: column;
-        -webkit-box-pack: end;
-            -ms-flex-pack: end;
-                justify-content: flex-end;
         -webkit-box-align: center;
             -ms-flex-align: center;
                 align-items: center;
         position: relative;
         background-color: white;
     }
-
-    .yScale .scale-values {
-        height: 100%;
+    .xScale .scale-values {
+        font-size: 2em;
         -webkit-user-select: none;
            -moz-user-select: none;
             -ms-user-select: none;
@@ -82,13 +65,22 @@
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
-            -ms-flex-direction: column;
-                flex-direction: column;
         -webkit-box-pack: justify;
             -ms-flex-pack: justify;
                 justify-content: space-between;
+        margin-top: 0.3em;
+    }
+    .xScale .scale-value {
+        width: 2em;
+        text-align: center;
+    }
+    .xScale .scale-first-value {
+        width: 2em;
+        text-align: left;
+    }
+    .xScale .scale-last-value {
+        width: 2em;
+        text-align: right;
     }
 .xScale .toxinRange {
         display: -webkit-box;
@@ -150,7 +142,6 @@
             justify-content: center;
 }
 
-
 .x-tip {
     font-size: 2em;
     margin-top: -2em;
@@ -189,7 +180,6 @@
     color: white;
     border-radius: 0.2em;
 }
-
 .xProgressBar {
     padding: 0;
     border: 0;
@@ -220,7 +210,6 @@
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
 }
-
 
 .slider {
     margin-bottom: 100px;

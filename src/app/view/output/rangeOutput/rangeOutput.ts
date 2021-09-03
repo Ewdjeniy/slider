@@ -4,18 +4,18 @@ import {Output} from '../output.ts';
 export class RangeOutput extends Output {
     constructor(input: HTMLInputElement, sliderState: any) {
         super(input, sliderState);
-        this.setCurrent(this.sliderState.sliderSettings.current);
+        this.setCurrent();
     }
     
-    setCurrent(valuesArray: number[]): void {
-        valuesArray.forEach((value) => {
+    setCurrent(): void {
+        this.sliderState.sliderSettings.current.forEach((value) => {
             if (value > this.sliderState.sliderSettings.end) {
                 value = this.sliderState.sliderSettings.end;
             } else if (value < this.sliderState.sliderSettings.start) {
                 value = this.sliderState.start;      
             }
         })
-        this.outputEl.value = valuesArray[0] + this.sliderState.sliderSettings.separator + valuesArray[1];
+        this.outputEl.value = this.sliderState.sliderSettings.current[0] + this.sliderState.sliderSettings.separator + this.sliderState.sliderSettings.current[1];
     }
     
     countOutputValue(): [number, number] {
