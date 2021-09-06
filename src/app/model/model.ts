@@ -3,9 +3,9 @@ import ObservableSubject from '../observers.ts';
 
 export class ToxinSliderModel {
     
-    subject: any = new ObservableSubject();
-    modelCurrent: any = new ObservableSubject();
-    state: any = {
+    subject: ObservableSubject = new ObservableSubject();
+    modelCurrent: ObservableSubject = new ObservableSubject();
+    state: Object = {
         start: -50,
         end: 50,
         step: 1,
@@ -28,8 +28,12 @@ export class ToxinSliderModel {
         }
     }
     
-    update(args: any): void {
+    setState(args: any): void {
         this.state = $.extend( this.state, args );
+    }
+    
+    update(args: any): void {
+        this.setState(args);
         this.subject.notifyObservers();
     }
     

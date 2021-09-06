@@ -28,6 +28,7 @@ export class XRangeScale extends Scale{
             this.sliderState.tips[nearestRunnerIndex].showTip(); 
         }
         this.sliderState.output.countOutputValue();
+        this.sliderState.subject.notifyObservers();
     }
     
     setScaleValues(): void {

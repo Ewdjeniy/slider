@@ -24,6 +24,7 @@ export class XProgressBar extends ProgressBar{
 				} else {
 						this.progressBarEl.style.width = '0em';
 				}
+        this.sliderState.subject.notifyObservers();
     }
     
     renderProgressBar(): void {

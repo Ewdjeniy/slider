@@ -18,6 +18,7 @@ export class XScale extends Scale{
             this.sliderState.tips[0].showTip(); 
         }
         this.sliderState.output.countOutputValue();
+        this.sliderState.subject.notifyObservers();
     }
     
     setScaleValues(): void {

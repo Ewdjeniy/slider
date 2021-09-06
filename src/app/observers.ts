@@ -1,4 +1,4 @@
-class ObservableSubject {
+class ObservableSubject implements ObservableSubject {
     
     observers: any[] = [];
     
@@ -26,7 +26,7 @@ class ObservableSubject {
         throw new Error('could not find observer in list of observers');
     };
     
-    notifyObservers(data: any): void {
+    notifyObservers(data?: any): void {
         const observersSnapshot = this.observers.slice(0);
         for (var i = 0, ilen = observersSnapshot.length; i < ilen; i += 1) {
             observersSnapshot[i](data);

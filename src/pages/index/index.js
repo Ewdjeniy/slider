@@ -12,4 +12,4 @@ $('.slider').toxinSlider(
     scaleValues: 5,
 });
 
-$('.slider').toxinSlider('update', {start:0, end: 100, scaleValues: 2});
+$('.slider').toxinSlider('update', {start:0, end: 500, scaleValues: 2});

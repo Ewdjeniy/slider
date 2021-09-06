@@ -36,6 +36,7 @@ export class XRangeProgressBar extends ProgressBar{
         if (parseFloat(getComputedStyle(this.sliderState.progressBars[0].progressBarEl).width) > parseFloat(getComputedStyle(this.sliderState.progressBars[1].progressBarEl).width)) {
             this.sliderState.progressBars.forEach((progress) => progress.progressBarEl.style.width = size); 
         }
+        this.sliderState.subject.notifyObservers();
     }
     
     renderProgressBar(): void {

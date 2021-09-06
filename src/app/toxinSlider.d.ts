@@ -3,20 +3,32 @@ interface ToxinSliderOptions {
 }
 
 interface ToxinSliderGlobalOptions {
-  options?: ToxinSliderOptions;
+    options?: ToxinSliderOptions;
 }
 
 interface ToxinSliderFunction {
-  (options?: ToxinSliderOptions): JQuery;
+    (options?: ToxinSliderOptions): JQuery;
 }
 
 interface ToxinSlider extends ToxinSliderGlobalOptions, ToxinSliderFunction {}
 
 interface JQuery {
-  toxinSlider: ToxinSlider;
+    toxinSlider: ToxinSlider;
+}
+   
+interface Object {
+    [key: string]: any;
+}
+   
+interface ObservableSubject {
+    observers: void[];
+    addObserver(func: void): void;
+    removeObserver(func: void): void;
+    notifyObservers(data?: any): void;
 }
 
-   // Type definitions for Jasmine-JQuery 1.5.8
+
+// Type definitions for Jasmine-JQuery 1.5.8
 // Project: https://github.com/velesin/jasmine-jquery
 // Definitions by: Gregor Stamac <https://github.com/gstamac/>
 // Definitions: https://github.com/borisyankov/DefinitelyTyped

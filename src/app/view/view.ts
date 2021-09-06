@@ -1,3 +1,4 @@
+import ObservableSubject from '../observers.ts';
 import {XScale} from './scale/xScale/xScale.ts';
 import {XRangeScale} from './scale/xRangeScale/xRangeScale.ts';
 import {Range} from './range/range.ts';
@@ -11,6 +12,7 @@ import {XRangeProgressBar} from './progressBar/xRangeProgressBar/xRangeProgressB
 
 
 export class ToxinSliderView {
+    subject: any = new ObservableSubject();
     input: HTMLInputElement;
     sliderSettings: any = {
         start: 0,
@@ -25,6 +27,7 @@ export class ToxinSliderView {
     };
     
     sliderState: any = {
+        subject: null,
         sliderSettings: null,
         output: null,
         scale: null,
@@ -38,7 +41,12 @@ export class ToxinSliderView {
     
     constructor(input: HTMLInputElement) {
         this.input = input;
+        this.sliderState.subject = this.subject;
         this.setState();
+    }
+    
+    getCurrentValue(): any {
+        return this.sliderState.output.countOutputValue();
     }
     
     setState(): void {
