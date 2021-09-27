@@ -1,5 +1,13 @@
 interface ToxinSliderOptions {
-
+    start?: number;
+    end?: number;
+    step?: number;
+    current?: number | number[];
+    scaleValues?: number;
+    direction?: string;
+    range?: boolean;
+    tip?: boolean;
+    separator?: string;
 }
 
 interface ToxinSliderGlobalOptions {
@@ -19,12 +27,108 @@ interface JQuery {
 interface Object {
     [key: string]: any;
 }
-   
-interface ObservableSubject {
-    observers: void[];
-    addObserver(func: void): void;
-    removeObserver(func: void): void;
-    notifyObservers(data?: any): void;
+     
+type voidFunction = (data?: any) => void;
+  
+interface SliderTip {
+    sliderState: SliderState;
+    tipEl: HTMLElement;
+    index: number;
+    renderTip(): void;
+    showTip(): number;
+    setCurrent(): void;
+}
+
+interface SliderProgressBar {
+    sliderState: SliderState;
+    progressBarEl: HTMLElement;
+    index: number;
+    renderProgressBar(): void;
+    setFontSize(): void;
+    setCurrent(): void;
+    setProgressBarSize(event: PointerEvent): void;
+    
+}
+
+interface SliderRunner {
+    sliderState: SliderState;
+    runnerEl: HTMLElement;
+    index: number;
+    mousePosOnRunner: number;
+    renderRunner(): void;
+    updateSlider(e: PointerEvent): boolean;
+}
+
+interface SliderScale {
+    sliderState: SliderState;
+    scaleHTML: string;
+    scaleEl: HTMLElement;
+    scaleValuesEl: HTMLElement;
+    countScaleStep(runnerEl: HTMLElement): number;
+    setSliderValue(event: PointerEvent): boolean | void;
+    setScaleValues(): void;
+    renderScale(): void;
+}
+
+interface SliderOutput {
+    sliderState: Object;
+    outputEl: HTMLInputElement;
+    setCurrent(): void;
+    countOutputValue(): number | number[];
+}
+
+interface SliderSettings {
+    start: number;
+    end: number;
+    step: number;
+    current: any;
+    scaleValues: number;
+    direction: string;
+    range: boolean;
+    tip: boolean;
+    separator: string;
+}
+
+interface SliderState {
+    subject: ObservableSubject;
+    sliderSettings: SliderSettings;
+    output: SliderOutput;
+    scale: SliderScale;
+    ranges: any[];
+    runners: SliderRunner[];
+    tips: SliderTip[];
+    progressBars: SliderProgressBar[];
+    stepsAmount: number;
+    stepsCoefficient: number;
+}
+     
+interface SliderModel {
+    state: ToxinSliderOptions;
+    subject: ObservableSubject;
+    modelCurrent: ObservableSubject;
+    
+    executeMethod(method: string, args: any): void;
+}
+
+interface SliderView {
+    subject: ObservableSubject;
+    input: HTMLInputElement;
+    sliderSettings: Object;
+    
+    sliderState: Object;
+
+    getCurrentValue(): number | number[];
+    
+    setState(): void;
+    
+    update(settings: Object): void;
+    
+    updateCurrent(current: number | number[]): void;
+}
+
+interface SliderPresenter {
+    model: SliderModel;
+    view: SliderView;
 }
 
 

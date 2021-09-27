@@ -1,7 +1,7 @@
-import './xRunner.css';
+import './xRangeRunner.css';
 import Runner from '../runner.ts';
 
-class XRunner extends Runner implements SliderRunner {
+class XRangeRunner extends Runner implements SliderRunner {
     
     constructor(index: number, sliderState: SliderState) {
         super(index, sliderState);
@@ -33,10 +33,10 @@ class XRunner extends Runner implements SliderRunner {
     }
     
     renderRunner(): void {
-        this.runnerEl.className = 'x-runner';
+        this.runnerEl.className = 'x-range-runner';
         this.sliderState.ranges[this.index].rangeEl.append(this.runnerEl);
     }
     
 };
 
-export default XRunner;
+export default XRangeRunner;

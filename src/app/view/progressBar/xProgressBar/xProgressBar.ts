@@ -1,9 +1,9 @@
 import './xProgressBar.css';
-import {ProgressBar} from '../progressBar.ts';
+import ProgressBar from '../progressBar.ts';
 
-export class XProgressBar extends ProgressBar{
+class XProgressBar extends ProgressBar implements SliderProgressBar {
     
-    constructor(index: number, sliderState: any) {
+    constructor(index: number, sliderState: SliderState) {
         super(index, sliderState);
         this.renderProgressBar();
         this.setCurrent();
@@ -28,7 +28,10 @@ export class XProgressBar extends ProgressBar{
     }
     
     renderProgressBar(): void {
-        this.progressBarEl.className = 'xProgressBar';
+        this.progressBarEl.className = 'x-progress-bar';
+        this.progressBarEl.style.width = 3 + 'em';
         this.sliderState.runners[this.index].runnerEl.before(this.progressBarEl);
     }
 };
+
+export default XProgressBar;

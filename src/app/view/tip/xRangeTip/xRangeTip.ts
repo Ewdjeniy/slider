@@ -1,9 +1,9 @@
 import './xRangeTip.css';
-import {Tip} from '../tip.ts';
+import Tip from '../tip.ts';
 
-export class XRangeTip extends Tip {   
+class XRangeTip extends Tip implements SliderTip {   
     
-    constructor(index: number, sliderState: any) {
+    constructor(index: number, sliderState: SliderState) {
         super(index, sliderState);
         this.renderTip();
         this.setCurrent();
@@ -25,17 +25,19 @@ export class XRangeTip extends Tip {
     
     setCurrent(): void {
         if (this.sliderState.sliderSettings.current[this.index] > this.sliderState.sliderSettings.end) {
-            this.tipEl.innerHTML = this.sliderState.sliderSettings.end;
+            this.tipEl.innerHTML = this.sliderState.sliderSettings.end.toString();
         } else if (this.sliderState.sliderSettings.current[this.index] < this.sliderState.sliderSettings.start) {
-            this.tipEl.innerHTML = this.sliderState.start;      
+            this.tipEl.innerHTML = this.sliderState.sliderSettings.start.toString();      
         } else {
             this.tipEl.innerHTML = this.sliderState.sliderSettings.current[this.index].toString();        
         }
     }
     
     renderTip(): void {
-        this.tipEl.className = "x-tip";
+        this.tipEl.className = "x-range-tip";
         this.sliderState.runners[this.index].runnerEl.append(this.tipEl);
     }
     
 };
+
+export default XRangeTip;

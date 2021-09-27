@@ -1,8 +1,7 @@
-import './rangeOutput.css';
-import {Output} from '../output.ts';
+import Output from '../output.ts';
 
-export class RangeOutput extends Output {
-    constructor(input: HTMLInputElement, sliderState: any) {
+class XRangeOutput extends Output implements SliderOutput {
+    constructor(input: HTMLInputElement, sliderState: SliderState) {
         super(input, sliderState);
         this.setCurrent();
     }
@@ -12,7 +11,7 @@ export class RangeOutput extends Output {
             if (value > this.sliderState.sliderSettings.end) {
                 value = this.sliderState.sliderSettings.end;
             } else if (value < this.sliderState.sliderSettings.start) {
-                value = this.sliderState.start;      
+                value = this.sliderState.sliderSettings.start;      
             }
         })
         this.outputEl.value = this.sliderState.sliderSettings.current[0] + this.sliderState.sliderSettings.separator + this.sliderState.sliderSettings.current[1];
@@ -41,3 +40,5 @@ export class RangeOutput extends Output {
         return outputValue;
     }
 };
+
+export default XRangeOutput;

@@ -1,15 +1,14 @@
 import './index.css';
 import * as $ from 'jquery';
 
-$('.slider').toxinSlider(
-{
+$('.slider').toxinSlider({
     start: 0,
     end: 100,
     step: 1,
+    current: [0,0],
+    scaleValues: 0,
+    direction: 'x',
+    range: true,
     tip: true,
-    range: false,
-    current: 0,
-    scaleValues: 5,
+    separator: ' - '
 });
-
-$('.slider').toxinSlider('update', {start:0, end: 500, scaleValues: 2});

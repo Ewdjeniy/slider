@@ -1,9 +1,9 @@
 import './xRangeProgressBar.css';
-import {ProgressBar} from '../progressBar.ts';
+import ProgressBar from '../progressBar.ts';
 
-export class XRangeProgressBar extends ProgressBar{
+class XRangeProgressBar extends ProgressBar implements SliderProgressBar {
     
-    constructor(index: number, sliderState: any) {
+    constructor(index: number, sliderState: SliderState) {
         super(index, sliderState);
         this.renderProgressBar();
         this.setCurrent();
@@ -40,7 +40,10 @@ export class XRangeProgressBar extends ProgressBar{
     }
     
     renderProgressBar(): void {
-        this.progressBarEl.className = 'xRangeProgressBar';
+        this.progressBarEl.className = 'x-range-progress-bar';
+        this.progressBarEl.style.width = Math.round((this.sliderState.sliderSettings.current[this.index] - this.sliderState.sliderSettings.start) / this.sliderState.sliderSettings.step) + 'em';
         this.sliderState.runners[this.index].runnerEl.before(this.progressBarEl);
     }
 };
+
+export default XRangeProgressBar;

@@ -1,8 +1,8 @@
-class ObservableSubject implements ObservableSubject {
+class ObservableSubject {
     
-    observers: any[] = [];
+    observers: voidFunction[] = [];
     
-    addObserver(o: any): void {
+    addObserver(o: voidFunction): void {
         if (typeof o !== 'function') {
             throw new Error('observer must be a function');
         }
@@ -15,7 +15,7 @@ class ObservableSubject implements ObservableSubject {
         this.observers.push(o);
     }
     
-    removeObserver(o: any): void {
+    removeObserver(o: voidFunction): void {
         for (let i = 0, ilen = this.observers.length; i < ilen; i += 1) {
             const observer = this.observers[i];
             if (observer === o) {

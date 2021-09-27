@@ -1,18 +1,17 @@
-import './singleOutput.css';
-import {Output} from '../output.ts';
+import Output from '../output.ts';
 
-export class SingleOutput extends Output {
+class XOutput extends Output implements SliderOutput {
 
-    constructor(input: HTMLInputElement, sliderState: any) {
+    constructor(input: HTMLInputElement, sliderState: SliderState) {
         super(input, sliderState);
         this.setCurrent();
     }
     
     setCurrent(): void {
         if (this.sliderState.sliderSettings.current > this.sliderState.sliderSettings.end) {
-            this.outputEl.value = this.sliderState.sliderSettings.end;
+            this.outputEl.value = this.sliderState.sliderSettings.end.toString();
         } else if (this.sliderState.sliderSettings.current < this.sliderState.sliderSettings.start) {
-            this.outputEl.value = this.sliderState.start;      
+            this.outputEl.value = this.sliderState.sliderSettings.start.toString();      
         } else {
             this.outputEl.value = this.sliderState.sliderSettings.current.toString();        
         }
@@ -32,3 +31,5 @@ export class SingleOutput extends Output {
     }
     
 };
+
+export default XOutput;

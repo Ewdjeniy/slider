@@ -1,15 +1,16 @@
 import ObservableSubject from '../../observers.ts';
 
-export class Tip {   
+class Tip {   
     
-    subject: any = new ObservableSubject();
-    sliderState: any;
+    sliderState: SliderState;
     index: number;
     tipEl: HTMLElement = document.createElement('div');
     
-    constructor(index: number, sliderState: any) {
+    constructor(index: number, sliderState: SliderState) {
         this.sliderState = sliderState;
         this.index = index;
     }
     
 };
+
+export default Tip

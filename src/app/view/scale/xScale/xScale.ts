@@ -1,15 +1,16 @@
 import './xScale.css';
-import {Scale} from '../scale.ts';
+import Scale from '../scale.ts';
 
-export class XScale extends Scale{
-    constructor(sliderState: any) {
+class XScale extends Scale implements SliderScale {
+    
+    constructor(sliderState: Object) {
         super(sliderState);
         this.renderScale();
         this.setScaleValues();
         this.scaleEl.onclick = this.setSliderValue.bind(this);
     }
     
-    setSliderValue(event: PointerEvent): any {
+    setSliderValue(event: PointerEvent): boolean | void {
         if (event.target == this.sliderState.runners[0].runnerEl) {
             return false;
         }
@@ -38,13 +39,9 @@ export class XScale extends Scale{
         }
     }
     
-    countScaleStep(runnerEl): number {
-        return (parseInt(getComputedStyle(this.scaleEl).width) * this.sliderState.stepsCoefficient- parseInt(getComputedStyle(runnerEl).width)) / this.sliderState.stepsAmount; 
-    }
-    
     renderScale(): void {
-        const div:  any = document.createElement('div');
-        div.className = 'xScale'; 
+        const div: any = document.createElement('div');
+        div.className = 'x-scale'; 
         div.innerHTML = this.scaleHTML;
         this.sliderState.output.outputEl.after(div);
         this.scaleEl = div.getElementsByClassName('scale')[0];
@@ -52,3 +49,5 @@ export class XScale extends Scale{
     }
     
 };
+
+export default XScale;

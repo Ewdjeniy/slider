@@ -1,14 +1,15 @@
 import ObservableSubject from '../../observers.ts';
 
-export class Output {
+class Output {
 
-    subject: any = new ObservableSubject();
-    sliderState: any;
+    sliderState: SliderState;
     outputEl: HTMLInputElement;
 
-    constructor(input: HTMLInputElement, sliderState: any) {
+    constructor(input: HTMLInputElement, sliderState: SliderState) {
         this.sliderState = sliderState;
         this.outputEl = input;
     }
     
 };
+
+export default Output;

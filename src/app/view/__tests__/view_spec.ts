@@ -1,24 +1,147 @@
-import { ToxinSliderView } from '../view.ts';
-import { Scale } from '../scale/scale.ts';
-import { Runner } from '../runner/runner.ts';
-import { ProgressBar } from '../progressBar/progressBar.ts';
+import ToxinSliderView from '../view.ts';
+import ObservableSubject from '../../observers.ts';
+import XScale from '../scale/xScale/xScale.ts';
+import XRangeScale from '../scale/xRangeScale/xRangeScale.ts';
+import XDiapason from '../diapason/xDiapason/xDiapason.ts';
+import XRangeDiapason from '../diapason/xRangeDiapason/xRangeDiapason.ts';
+import XOutput from '../output/xOutput/xOutput.ts';
+import XRangeOutput from '../output/xRangeOutput/xRangeOutput.ts';
+import XRunner from '../runner/xRunner/xRunner.ts';
+import XRangeRunner from '../runner/xRangeRunner/xRangeRunner.ts';
+import XTip from '../tip/xTip/xTip.ts';
+import XRangeTip from '../tip/xRangeTip/xRangeTip.ts';
+import XProgressBar from '../progressBar/xProgressBar/xProgressBar.ts';
+import XRangeProgressBar from '../progressBar/xRangeProgressBar/xRangeProgressBar.ts';
 import * as $ from 'jquery';
 
 describe('ToxinSliderView', function() {
     let inpt: any;
+    let view: SliderView;
     
     beforeEach(function() {
-        inpt = setFixtures('<input type="text" id="slider">');
+        setFixtures('<input type="text" id="slider">');
+        inpt = document.getElementById('slider');
+        view = new ToxinSliderView(inpt);
     });
     
-//    it('должен быть объявлен', function() {
-//        expect(ToxinSliderView).toBeDefined();
-//    });
-//    
-//    it('получает ссылку на элемент на котором был инициализирован слайдер', function() {
-//        const view = new ToxinSliderView(inpt);
-//        expect(view.input).toBe(inpt);     
-//    });
+    it('должен быть объявлен', function() {
+        expect(ToxinSliderView).toBeDefined();
+    });
+    
+    it('получает ссылку на элемент на котором был инициализирован слайдер', function() {
+        expect(view.input).toBe(inpt);     
+    });
+    
+    it('обладает свойством sliderSettings в котором записаны настройки необходимые для представления слайдера', function() {
+        
+        expect(view.sliderSettings).toBeDefined();
+        expect(view.sliderSettings.start).toBeDefined();
+        expect(view.sliderSettings.end).toBeDefined();
+        expect(view.sliderSettings.step).toBeDefined();
+        expect(view.sliderSettings.current).toBeDefined();
+        expect(view.sliderSettings.scaleValues).toBeDefined();
+        expect(view.sliderSettings.direction).toBeDefined();
+        expect(view.sliderSettings.range).toBeDefined();
+        expect(view.sliderSettings.tip).toBeDefined();
+        expect(view.sliderSettings.separator).toBeDefined();
+        
+    });
+    
+    it('обладает свойством sliderState в котором хранятся ссылки на все элементы представления', function() {
+        
+        expect(view.sliderState).toBeDefined();
+        expect(view.sliderState.subject).toBeDefined();
+        expect(view.sliderState.sliderSettings).toBeDefined();
+        expect(view.sliderState.output).toBeDefined();
+        expect(view.sliderState.scale).toBeDefined();
+        expect(view.sliderState.ranges).toBeDefined();
+        expect(view.sliderState.runners).toBeDefined();
+        expect(view.sliderState.tips).toBeDefined();
+        expect(view.sliderState.progressBars).toBeDefined();
+        expect(view.sliderState.stepsAmount).toBeDefined();
+        expect(view.sliderState.stepsCoefficient).toBeDefined();
+
+    });
+    
+    it('метод setState переписывает свойство sliderState в зависимости от sliderSettings', function() {
+        
+        const testSliderState = function(outputClass, scaleClass, diapasonClass, runnerClass, tipClass, progressBarClass) {
+            expect(view.sliderState.subject).toEqual(new ObservableSubject());
+            expect(view.sliderState.sliderSettings).toEqual(view.sliderSettings);
+            expect(view.sliderState.output instanceof outputClass).toBe(true);
+            expect(view.sliderState.scale instanceof scaleClass).toBe(true);
+            view.sliderState.ranges.forEach(range => {
+                expect(range instanceof diapasonClass).toBe(true);
+            });
+            view.sliderState.runners.forEach(runner => {
+                expect(runner instanceof runnerClass).toBe(true);
+            });
+            view.sliderState.tips.forEach(tip => {
+                expect(tip instanceof tipClass).toBe(true);
+            });
+            view.sliderState.progressBars.forEach(progressBar => {
+                expect(progressBar instanceof progressBarClass).toBe(true);
+            });
+            expect(view.sliderState.stepsAmount).toEqual(Math.round((view.sliderSettings.end - view.sliderSettings.start) / view.sliderSettings.step));
+            expect(view.sliderState.stepsCoefficient).toEqual(((view.sliderSettings.step * view.sliderState.stepsAmount) / ((view.sliderSettings.end - view.sliderSettings.start) / 100)) / 100);
+        };
+        
+        view.sliderSettings = {
+            start: 0,
+            end: 1,
+            step: 2,
+            current: 3,
+            scaleValues: 4,
+            direction: 'x',
+            range: false,
+            tip: true,
+            separator: ' - '
+        };
+        
+        view.setState();
+        testSliderState(XOutput, XScale, XDiapason, XRunner, XTip, XProgressBar);
+        
+        view.sliderSettings = {
+            start: 0,
+            end: 1,
+            step: 2,
+            current: [3,4],
+            scaleValues: 5,
+            direction: 'x',
+            range: true,
+            tip: true,
+            separator: ' - '
+        };
+        
+        view.setState();
+        testSliderState(XRangeOutput, XRangeScale, XRangeDiapason, XRangeRunner, XRangeTip, XRangeProgressBar);
+    });
+    
+    it('метод update меняет свойство sliderSettings и запускает метод setState с обновлённым sliderSettings', function() {
+        const testState = {
+            start: 6,
+            end: 7,
+            step: 8,
+            current: [9,10],
+            scaleValues: 11,
+            direction: 'x',
+            range: true,
+            tip: true,
+            separator: ' - '
+        };
+        
+        spyOn(view, 'setState');
+        view.update(testState);
+        expect(view.sliderSettings).toEqual(testState);
+        expect(view.setState).toHaveBeenCalled();
+        expect(view.sliderState.sliderSettings).toEqual(testState);
+    });
+    
+    it('обладает методом getCurrentValue, который возвращает текущее значение слайдера', function() {
+        console.log(view.sliderState.progressBars[0].progressBarEl.style.width);
+        expect(view.getCurrentValue()).toEqual(view.sliderSettings.current);
+    });
+    
     
 //    describe('Scale', function() {
 //        

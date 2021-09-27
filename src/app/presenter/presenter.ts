@@ -1,27 +1,30 @@
 import ObservableSubject from '../observers.ts';
 
-export class ToxinSliderPresenter {
+class ToxinSliderPresenter implements SliderPresenter {
     
-    model: any;
-    view: any;
+    model: SliderModel;
+    view: SliderView;
     
-    constructor(model: any, view: any) {
+    constructor(model: SliderModel, view: SliderView) {
         this.model = model;
         this.view = view;
+        const that = this;
         
         this.view.update(this.model.state);
         
         this.model.subject.addObserver(function() {
-            view.update(model.state);
+            that.view.update(model.state);
         });
         
         this.model.modelCurrent.addObserver(function() {
-            view.updateCurrent(model.state.current);
+            that.view.updateCurrent(model.state.current);
         });
         
         this.view.subject.addObserver(function() {
-            model.setState({current: view.getCurrentValue()});
+            that.model.executeMethod('setState', {current: view.getCurrentValue()});
         });
     }
     
 }
+
+export default ToxinSliderPresenter;

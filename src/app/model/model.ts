@@ -1,26 +1,18 @@
 import * as $ from 'jquery';
 import ObservableSubject from '../observers.ts';
+import defaultSliderSettings from '../defaults.ts';
 
-export class ToxinSliderModel {
+class ToxinSliderModel implements SliderModel {
     
     subject: ObservableSubject = new ObservableSubject();
     modelCurrent: ObservableSubject = new ObservableSubject();
-    state: Object = {
-        start: -50,
-        end: 50,
-        step: 1,
-        current: 0,
-        scaleValues: 5,
-        direction: 'x',
-        range: false,
-        tip: false,
-    };
+    state: ToxinSliderOptions = defaultSliderSettings;
     
-    constructor(options: ToxinSliderOptions) {
-        this.state = $.extend( this.state, options );
+    constructor(options?: ToxinSliderOptions) {
+        this.setState(options);
     }
     
-    executeMethod(method: any, args: any): void {
+    public executeMethod(method: string, args: any): void {
         if (this[method]) {
             this[method](args);
         } else {
@@ -28,18 +20,20 @@ export class ToxinSliderModel {
         }
     }
     
-    setState(args: any): void {
-        this.state = $.extend( this.state, args );
+    protected setState(options: ToxinSliderOptions): void {
+        this.state = $.extend( this.state, options );
     }
     
-    update(args: any): void {
-        this.setState(args);
+    protected update(options: ToxinSliderOptions): void {
+        this.setState(options);
         this.subject.notifyObservers();
     }
     
-    setCurrent(current: any): void {
+    protected setCurrent(current: number | number[]): void {
         this.state.current = current;
         this.modelCurrent.notifyObservers();
     }
     
 }
+
+export default ToxinSliderModel;

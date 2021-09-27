@@ -1,8 +1,8 @@
 import ObservableSubject from '../../observers.ts';
 
-export class Scale {
-    subject:any = new ObservableSubject();
-    sliderState: any;
+class Scale {
+
+    sliderState: SliderState;
     scaleHTML: string = '<div class="scale"></div>' +
                         '<div class="scale-values"></div>';
     scaleEl:  HTMLElement;
@@ -12,4 +12,10 @@ export class Scale {
         this.sliderState = sliderState;
     }
     
+    countScaleStep(runnerEl): number {
+        return (parseInt(getComputedStyle(this.scaleEl).width) * this.sliderState.stepsCoefficient - parseInt(getComputedStyle(runnerEl).width)) / this.sliderState.stepsAmount; 
+    }
+    
 };
+
+export default Scale;

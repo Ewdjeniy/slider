@@ -1,4 +1,5 @@
-.xScale {
+.x-range-scale {
+    margin-top: 15px;
     .scale {
         font-size: 0.625rem;
         width: 100%;

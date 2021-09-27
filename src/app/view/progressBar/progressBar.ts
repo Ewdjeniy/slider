@@ -1,14 +1,13 @@
 import './progressBar.css';
 import ObservableSubject from '../../observers.ts';
 
-export class ProgressBar {
+class ProgressBar {
     
-    subject: any = new ObservableSubject();
-    sliderState: any;
+    sliderState: SliderState;
     index: number;
     progressBarEl: HTMLElement = document.createElement('div');
     
-    constructor(index: number, sliderState: any) {
+    constructor(index: number, sliderState: SliderState) {
         this.sliderState = sliderState;
         this.index = index;
         this.setFontSize();
@@ -19,3 +18,5 @@ export class ProgressBar {
     }
     
 };
+
+export default ProgressBar;

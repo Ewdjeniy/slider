@@ -1,9 +1,9 @@
 import './xTip.css';
-import {Tip} from '../tip.ts';
+import Tip from '../tip.ts';
 
-export class XTip extends Tip {   
+class XTip extends Tip implements SliderTip {   
     
-    constructor(index: number, sliderState: any) {
+    constructor(index: number, sliderState: SliderState) {
         super(index, sliderState);
         this.renderTip();
         this.setCurrent();
@@ -25,9 +25,9 @@ export class XTip extends Tip {
     
     setCurrent(): void {
         if (this.sliderState.sliderSettings.current > this.sliderState.sliderSettings.end) {
-            this.tipEl.innerHTML = this.sliderState.sliderSettings.end;
+            this.tipEl.innerHTML = this.sliderState.sliderSettings.end.toString();
         } else if (this.sliderState.sliderSettings.current < this.sliderState.sliderSettings.start) {
-            this.tipEl.innerHTML = this.sliderState.start;      
+            this.tipEl.innerHTML = this.sliderState.sliderSettings.start.toString();      
         } else {
             this.tipEl.innerHTML = this.sliderState.sliderSettings.current.toString();        
         }
@@ -39,3 +39,5 @@ export class XTip extends Tip {
     }
     
 };
+
+export default XTip;
