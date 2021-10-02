@@ -17,14 +17,14 @@ class ToxinSliderView implements SliderView {
     subject: ObservableSubject = new ObservableSubject();
     input: HTMLInputElement;
     sliderSettings: SliderSettings = {
-        start: 5,
+        start: 0,
         end: 100,
-        step: 5,
+        step: 1,
         current: 0,
         scaleValues: 0,
         direction: 'x',
         range: false,
-        tip: true,
+        tip: false,
         separator: ' - '
     };
     
@@ -53,6 +53,11 @@ class ToxinSliderView implements SliderView {
     
     setState(): void {
         
+        if(this.sliderSettings.current instanceof Array) {
+            this.sliderSettings.range = true;
+        } else {
+            this.sliderSettings.range = false;
+        }
         this.sliderState.ranges = [];
         this.sliderState.runners = [];
         this.sliderState.tips = [];
@@ -104,16 +109,7 @@ class ToxinSliderView implements SliderView {
     }
     
     updateCurrent(current: number | number[]): void {
-        
-        this.sliderState.sliderSettings.current = current;
-        this.sliderState.progressBars.forEach((bar) => {
-            bar.setCurrent();
-        });
-        this.sliderState.tips.forEach((tip) => {
-            tip.setCurrent();
-        });
-        this.sliderState.output.setCurrent();
-        
+        this.update({'current': current});
     }
     
 }

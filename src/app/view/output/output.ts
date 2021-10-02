@@ -1,5 +1,3 @@
-import ObservableSubject from '../../observers.ts';
-
 class Output {
 
     sliderState: SliderState;

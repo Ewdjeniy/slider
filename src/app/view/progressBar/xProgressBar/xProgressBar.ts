@@ -29,7 +29,6 @@ class XProgressBar extends ProgressBar implements SliderProgressBar {
     
     renderProgressBar(): void {
         this.progressBarEl.className = 'x-progress-bar';
-        this.progressBarEl.style.width = 3 + 'em';
         this.sliderState.runners[this.index].runnerEl.before(this.progressBarEl);
     }
 };

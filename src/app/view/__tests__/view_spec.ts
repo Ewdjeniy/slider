@@ -1,5 +1,6 @@
 import ToxinSliderView from '../view.ts';
 import ObservableSubject from '../../observers.ts';
+import Scale from '../scale/scale.ts';
 import XScale from '../scale/xScale/xScale.ts';
 import XRangeScale from '../scale/xRangeScale/xRangeScale.ts';
 import XDiapason from '../diapason/xDiapason/xDiapason.ts';
@@ -17,11 +18,20 @@ import * as $ from 'jquery';
 describe('ToxinSliderView', function() {
     let inpt: any;
     let view: SliderView;
+    let scaleStartX: number;
+    const setSizes: voidFunction = function() {
+        view.sliderState.scale.scaleEl.style.width = '105px';
+        view.sliderState.runners[0].runnerEl.style.width = '5px';
+        view.sliderState.progressBars[0].setFontSize();
+        view.sliderState.runners[0].mousePosOnRunner = 0;
+        scaleStartX = view.sliderState.scale.scaleEl.getBoundingClientRect().left + parseInt(getComputedStyle(view.sliderState.scale.scaleEl).borderLeftWidth) + parseInt(getComputedStyle(view.sliderState.scale.scaleEl).paddingLeft);
+    };
     
     beforeEach(function() {
         setFixtures('<input type="text" id="slider">');
         inpt = document.getElementById('slider');
         view = new ToxinSliderView(inpt);
+        setSizes();
     });
     
     it('должен быть объявлен', function() {
@@ -138,28 +148,37 @@ describe('ToxinSliderView', function() {
     });
     
     it('обладает методом getCurrentValue, который возвращает текущее значение слайдера', function() {
-        console.log(view.sliderState.progressBars[0].progressBarEl.style.width);
         expect(view.getCurrentValue()).toEqual(view.sliderSettings.current);
     });
     
+    it('обладает методом updateCurrent, который меняет текущее значение слайдера на переданный параметр', function() {
+        view.updateCurrent(75);
+        
+        expect(view.sliderSettings.current).toEqual(75);
+        expect(view.sliderState.sliderSettings.current).toEqual(75);
+        view.sliderState.progressBars.forEach((bar) => {
+            expect(parseFloat(bar.progressBarEl.style.width)).toEqual(75);
+        });
+        view.sliderState.tips.forEach((tip) => {
+            expect(parseFloat(tip.tipEl.innerHTML)).toEqual(75);
+        });
+        expect(+view.sliderState.output.outputEl.value).toEqual(75);
+        
+        const testCurrent = [5,25];
+        view.updateCurrent(testCurrent);
+        
+        expect(view.sliderSettings.current).toEqual(testCurrent);
+        expect(view.sliderState.sliderSettings.current).toEqual(testCurrent);
+        view.sliderState.progressBars.forEach((bar, index) => {
+            expect(parseFloat(bar.progressBarEl.style.width)).toEqual(testCurrent[index]);
+        });
+        view.sliderState.tips.forEach((tip, index) => {
+            expect(parseFloat(tip.tipEl.innerHTML)).toEqual(testCurrent[index]);
+        });
+        expect(view.sliderState.output.outputEl.value).toEqual(testCurrent[0] + view.sliderSettings.separator + testCurrent[1]);
+        
+    });
     
-//    describe('Scale', function() {
-//        
-//        it('должен быть объявлен', function() {
-//            expect(Scale).toBeDefined();
-//        });
-//        
-//        it('получает ссылку на элемент на котором был инициализирован слайдер', function() {
-//            const scale = new Scale(inpt, {});
-//            expect(scale.input).toBe(inpt);       
-//        });
-//        
-//        it('отрисовывает шкалу сразу за элементом на котором иницилизирован слайдер', function() {
-//            const scale = new Scale(inpt, {});
-//            expect($(inpt).next()).toHaveClass('toxinScale');
-//        });
-//        
-//    });
     
 //    describe('Runner', function() {
 //        

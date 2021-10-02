@@ -41,7 +41,6 @@ class XRangeProgressBar extends ProgressBar implements SliderProgressBar {
     
     renderProgressBar(): void {
         this.progressBarEl.className = 'x-range-progress-bar';
-        this.progressBarEl.style.width = Math.round((this.sliderState.sliderSettings.current[this.index] - this.sliderState.sliderSettings.start) / this.sliderState.sliderSettings.step) + 'em';
         this.sliderState.runners[this.index].runnerEl.before(this.progressBarEl);
     }
 };
