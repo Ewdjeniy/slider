@@ -3,14 +3,13 @@ import Diapason from '../diapason.ts';
 
 class XDiapason extends Diapason {   
     
-    constructor(index: number, sliderState: SliderState) {
-        super(index, sliderState);
-        this.renderDiapason();
+    constructor() {
+        super();
     }
     
-    renderDiapason(): void {
-        this.rangeEl.className = 'x-diapason';
-        this.sliderState.scale.scaleEl.append(this.rangeEl);
+    render(el): void {
+        this.diapasonEl.className = 'diapason x-diapason';
+        el.append(this.diapasonEl);
     }
     
 };

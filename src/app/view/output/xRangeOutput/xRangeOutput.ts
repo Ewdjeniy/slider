@@ -1,44 +1,44 @@
 import Output from '../output.ts';
 
 class XRangeOutput extends Output implements SliderOutput {
-    constructor(input: HTMLInputElement, sliderState: SliderState) {
-        super(input, sliderState);
-        this.setCurrent();
+    constructor(input: HTMLInputElement) {
+        super(input);
     }
     
-    setCurrent(): void {
-        this.sliderState.sliderSettings.current.forEach((value) => {
-            if (value > this.sliderState.sliderSettings.end) {
-                value = this.sliderState.sliderSettings.end;
-            } else if (value < this.sliderState.sliderSettings.start) {
-                value = this.sliderState.sliderSettings.start;      
+    setCurrent(current, start, end, separator): void {
+        current.forEach((value) => {
+            if (value > end) {
+                value = end;
+            } else if (value < start) {
+                value = start;      
             }
         })
-        this.outputEl.value = this.sliderState.sliderSettings.current[0] + this.sliderState.sliderSettings.separator + this.sliderState.sliderSettings.current[1];
+        this.outputEl.value = current[0] + separator + current[1];
     }
     
-    countOutputValue(): [number, number] {
+    countOutputValue(elBar, stepsAmount, start, end, step, secondElBar, separator): [number, number] {
         let outputValue: [number, number] = [0, 0];
         
-        if (parseFloat(this.sliderState.progressBars[0].progressBarEl.style.width) <= this.sliderState.stepsAmount) {
-            outputValue[0] = this.sliderState.sliderSettings.start + parseInt(this.sliderState.progressBars[0].progressBarEl.style.width) * this.sliderState.sliderSettings.step;
+        if (parseFloat(elBar.style.width) <= stepsAmount) {
+            outputValue[0] = start + parseInt(elBar.style.width) * step;
         } else {
-            outputValue[0] = this.sliderState.sliderSettings.end;
+            outputValue[0] = end;
         }
         
-        if (parseFloat(this.sliderState.progressBars[1].progressBarEl.style.width) <= this.sliderState.stepsAmount) {
-            outputValue[1] = this.sliderState.sliderSettings.start + parseInt(this.sliderState.progressBars[1].progressBarEl.style.width) * this.sliderState.sliderSettings.step;
+        if (parseFloat(secondElBar.style.width) <= stepsAmount) {
+            outputValue[1] = start + parseInt(secondElBar.style.width) * step;
         } else {
-            outputValue[1] = this.sliderState.sliderSettings.end;
+            outputValue[1] = end;
         }
         
-        if (this.sliderState.sliderSettings.range) {
-            this.outputEl.value = outputValue[0].toString() + this.sliderState.sliderSettings.separator + outputValue[1].toString();
-        } else {
-            this.outputEl.value = outputValue[0].toString(); 
+        if (outputValue[1] < outputValue[0]) {
+            outputValue = [outputValue[1], outputValue[0]];         
         }
+        
+        this.outputEl.value = outputValue[0].toString() + separator + outputValue[1].toString();
         return outputValue;
     }
+
 };
 
 export default XRangeOutput;

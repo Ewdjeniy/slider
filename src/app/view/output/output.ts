@@ -1,10 +1,8 @@
 class Output {
 
-    sliderState: SliderState;
     outputEl: HTMLInputElement;
 
-    constructor(input: HTMLInputElement, sliderState: SliderState) {
-        this.sliderState = sliderState;
+    constructor(input: HTMLInputElement) {
         this.outputEl = input;
     }
     

@@ -1,13 +1,23 @@
-const defaultSliderSettings: ToxinSliderOptions = {
+export const defaultSliderSettingsModel: ToxinSliderOptions = {
     start: 0,
     end: 100,
     step: 1,
-    current: 0,
-    scaleValues: 0,
+    current: 25,
+    scaleValuesAmount: 2,
     direction: 'x',
     range: false,
-    tip: false,
+    tip: true,
     separator: ' - '
 };
 
-export default defaultSliderSettings;
+export const defaultSliderSettingsView: SliderSettings = {
+    start: 0,
+    end: 100,
+    step: 1,
+    current: 25,
+    scaleValuesAmount: 2,
+    direction: 'x',
+    range: false,
+    tip: true,
+    separator: ' - '
+};

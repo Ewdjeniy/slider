@@ -3,45 +3,66 @@ import ProgressBar from '../progressBar.ts';
 
 class XRangeProgressBar extends ProgressBar implements SliderProgressBar {
     
-    constructor(index: number, sliderState: SliderState) {
-        super(index, sliderState);
-        this.renderProgressBar();
-        this.setCurrent();
+    constructor() {
+        super();
     }
     
-    setCurrent(): void {
-        this.progressBarEl.style.width = Math.round((this.sliderState.sliderSettings.current[this.index] - this.sliderState.sliderSettings.start) / this.sliderState.sliderSettings.step) + 'em';
+    setCurrent(current, start, step, i): void {
+        this.progressBarEl.style.width = Math.round((current[i] - start) / step) + 'em';
     }
     
-    setProgressBarSize(event: PointerEvent): void {
-        const scaleStartX: number = this.sliderState.scale.scaleEl.getBoundingClientRect().left + parseInt(getComputedStyle(this.sliderState.scale.scaleEl).borderLeftWidth) + parseInt(getComputedStyle(this.sliderState.scale.scaleEl).paddingLeft);
-				const scaleValue: number = event.clientX - scaleStartX - this.sliderState.runners[this.index].mousePosOnRunner;
-        let size: string;
-        
+    countProgressBarSize(event: PointerEvent, scaleStartX, scaleStep, mousePosOnRunner, el): number {
+				const scaleValue: number = event.clientX - scaleStartX - mousePosOnRunner;
+        let size: number;
         if (scaleValue >= 0) {
-            size = Math.round(scaleValue / this.sliderState.scale.countScaleStep(this.sliderState.runners[this.index].runnerEl)) + 'em';
-            if (parseFloat(getComputedStyle(this.sliderState.progressBars[0].progressBarEl).width) > parseFloat(getComputedStyle(this.sliderState.progressBars[1].progressBarEl).width)) {
-                this.sliderState.progressBars.forEach((progress) => progress.progressBarEl.style.width = size); 
-            } else {
-                this.progressBarEl.style.width = size;  
-            }
+            size = Math.round(scaleValue / scaleStep);
 				} else {
-            if (parseFloat(getComputedStyle(this.sliderState.progressBars[0].progressBarEl).width) > parseFloat(getComputedStyle(this.sliderState.progressBars[1].progressBarEl).width)) {
-                this.sliderState.progressBars.forEach((progress) => progress.progressBarEl.style.width = '0em'); 
-            } else {
-                this.progressBarEl.style.width = '0em';  
-            }
+            size = 0;
 				}
         
-        if (parseFloat(getComputedStyle(this.sliderState.progressBars[0].progressBarEl).width) > parseFloat(getComputedStyle(this.sliderState.progressBars[1].progressBarEl).width)) {
-            this.sliderState.progressBars.forEach((progress) => progress.progressBarEl.style.width = size); 
+        if (el && 
+            +getComputedStyle(el.parentElement).zIndex > +getComputedStyle(this.progressBarEl.parentElement).zIndex && 
+            parseFloat(getComputedStyle(el).width) > parseFloat(getComputedStyle(this.progressBarEl).width)) {
+            el.style.width = size + 'em';
+            this.progressBarEl.style.width = size + 'em';
+        } else {
+            this.progressBarEl.style.width = size + 'em'; 
         }
-        this.sliderState.subject.notifyObservers();
+        
+        return size;
     }
     
-    renderProgressBar(): void {
-        this.progressBarEl.className = 'x-range-progress-bar';
-        this.sliderState.runners[this.index].runnerEl.before(this.progressBarEl);
+    
+//    
+//    setProgressBarSize(event: PointerEvent): void {
+//        const scaleStartX: number = this.sliderState.scale.scaleEl.getBoundingClientRect().left + parseInt(getComputedStyle(this.sliderState.scale.scaleEl).borderLeftWidth) + parseInt(getComputedStyle(this.sliderState.scale.scaleEl).paddingLeft);
+//				const scaleValue: number = event.clientX - scaleStartX - this.sliderState.runners[this.index].mousePosOnRunner;
+//        let size: string;
+//        
+//        if (scaleValue >= 0) {
+//            size = Math.round(scaleValue / this.sliderState.scale.countScaleStep(this.sliderState.runners[this.index].runnerEl)) + 'em';
+//            if (parseFloat(getComputedStyle(this.sliderState.progressBars[0].progressBarEl).width) > parseFloat(getComputedStyle(this.sliderState.progressBars[1].progressBarEl).width)) {
+//                this.sliderState.progressBars.forEach((progress) => progress.progressBarEl.style.width = size); 
+//            } else {
+//                this.progressBarEl.style.width = size;  
+//            }
+//				} else {
+//            if (parseFloat(getComputedStyle(this.sliderState.progressBars[0].progressBarEl).width) > parseFloat(getComputedStyle(this.sliderState.progressBars[1].progressBarEl).width)) {
+//                this.sliderState.progressBars.forEach((progress) => progress.progressBarEl.style.width = '0em'); 
+//            } else {
+//                this.progressBarEl.style.width = '0em';  
+//            }
+//				}
+//        
+//        if (parseFloat(getComputedStyle(this.sliderState.progressBars[0].progressBarEl).width) > parseFloat(getComputedStyle(this.sliderState.progressBars[1].progressBarEl).width)) {
+//            this.sliderState.progressBars.forEach((progress) => progress.progressBarEl.style.width = size); 
+//        }
+//        this.sliderState.subject.notifyObservers();
+//    }
+    
+    render(el): void {
+        this.progressBarEl.className = 'progress-bar x-range-progress-bar';
+        el.before(this.progressBarEl);
     }
 };
 

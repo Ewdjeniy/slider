@@ -1,10 +1,13 @@
+import { defaultSliderSettingsView } from '../defaults.ts';
 import ObservableSubject from '../observers.ts';
+import XOutput from './output/xOutput/xOutput.ts';
+import XRangeOutput from './output/xRangeOutput/xRangeOutput.ts';
 import XScale from './scale/xScale/xScale.ts';
+import XRangeScaleValues from './scaleValues/xRangeScaleValues/xRangeScaleValues.ts';
+import XScaleValues from './scaleValues/xScaleValues/xScaleValues.ts';
 import XRangeScale from './scale/xRangeScale/xRangeScale.ts';
 import XDiapason from './diapason/xDiapason/xDiapason.ts';
 import XRangeDiapason from './diapason/xRangeDiapason/xRangeDiapason.ts';
-import XOutput from './output/xOutput/xOutput.ts';
-import XRangeOutput from './output/xRangeOutput/xRangeOutput.ts';
 import XRunner from './runner/xRunner/xRunner.ts';
 import XRangeRunner from './runner/xRangeRunner/xRangeRunner.ts';
 import XTip from './tip/xTip/xTip.ts';
@@ -14,104 +17,314 @@ import XRangeProgressBar from './progressBar/xRangeProgressBar/xRangeProgressBar
 
 
 class ToxinSliderView implements SliderView {
-    subject: ObservableSubject = new ObservableSubject();
-    input: HTMLInputElement;
-    sliderSettings: SliderSettings = {
-        start: 0,
-        end: 100,
-        step: 1,
-        current: 0,
-        scaleValues: 0,
-        direction: 'x',
-        range: false,
-        tip: false,
-        separator: ' - '
-    };
     
-    sliderState: SliderState = {
-        subject: null,
-        sliderSettings: null,
+    subjectViewChangeCurrent: ObservableSubject = new ObservableSubject();
+    input: HTMLInputElement;
+    sliderEl: HTMLElement;
+    sliderSettings: SliderSettings = defaultSliderSettingsView;
+    state: ViewState = {
         output: null,
         scale: null,
-        ranges: [],
+        scaleValues: null,
+        diapasones: [],
         runners: [],
         tips: [],
         progressBars: [],
         stepsAmount: 0,
         stepsCoefficient: 0,
-    };
+    };   
     
     constructor(input: HTMLInputElement) {
+        
         this.input = input;
-        this.sliderState.subject = this.subject;
+        this.init();
+        
+    }
+    
+    init(): void {
         this.setState();
+        this.render();
+        this.setElementsValues();
+        this.state.runners.forEach((runner, i) => {
+            const that = this;
+            runner.runnerEl.onpointerdown = function(pointerDownEvent) {
+                that.updateSliderOnDragging(pointerDownEvent, i);
+            };
+        });
+        this.state.scale.scaleEl.onpointerdown = this.updateSliderOnPointerDown.bind(this);
     }
     
     getCurrentValue(): number | number[] {
-        return this.sliderState.output.countOutputValue();
+        let current: number | number[];
+        if (this.sliderSettings.range) {
+            current = this.state.output.countOutputValue(
+                this.state.progressBars[0].progressBarEl,
+                this.state.stepsAmount,
+                this.sliderSettings.start,
+                this.sliderSettings.end,
+                this.sliderSettings.step,
+                this.state.progressBars[1].progressBarEl,
+                this.sliderSettings.separator
+            );
+        } else {
+            current = this.state.output.countOutputValue(
+                this.state.progressBars[0].progressBarEl,
+                this.state.stepsAmount,
+                this.sliderSettings.start,
+                this.sliderSettings.end,
+                this.sliderSettings.step
+            );
+        }
+        return current;
+    }
+    
+    updateSliderOnPointerDown(e: PointerEvent): boolean {
+        let n: number;
+        let current: number | number[];
+        
+        for (var i = 0; i < this.state.runners.length; i++) {
+            if (event.target == this.state.runners[i].runnerEl) {
+                return false;
+            }
+        }
+        
+        if (i == 1) {
+            i -= 1;
+        } else {
+            if (e.clientX > this.state.runners[1].runnerEl.getBoundingClientRect().left) {
+                i = 1;
+                n = 0;
+            } else if (e.clientX < this.state.runners[0].runnerEl.getBoundingClientRect().left) {
+                i = 0;
+                n = 1;
+            } else if (
+                e.clientX - (this.state.runners[0].runnerEl.getBoundingClientRect().left + parseFloat(getComputedStyle(this.state.runners[0].runnerEl).width) / 2) < (this.state.runners[1].runnerEl.getBoundingClientRect().left + parseFloat(getComputedStyle(this.state.runners[1].runnerEl).width) / 2) - e.clientX) {
+                i = 0;
+                n = 1;
+            } else {
+                i = 1;
+                n = 0;
+            }
+        }
+        
+        const mousePosOnRunner: number = parseFloat(getComputedStyle(this.state.runners[i].runnerEl).width) / 2;
+        this.state.progressBars[i].countProgressBarSize(
+            e,
+            this.state.scale.returnScaleStart(),
+            this.state.scale.returnScaleStep(this.state.runners[i].runnerEl, this.state.stepsCoefficient, this.state.stepsAmount),
+            mousePosOnRunner
+        );
+        if (n ==0 || n ==1) {
+            current = this.state.output.countOutputValue(
+                this.state.progressBars[i].progressBarEl,
+                this.state.stepsAmount,
+                this.sliderSettings.start,
+                this.sliderSettings.end,
+                this.sliderSettings.step,
+                this.state.progressBars[n].progressBarEl,
+                this.sliderSettings.separator
+            );
+        } else {
+            current = this.state.output.countOutputValue(
+                this.state.progressBars[i].progressBarEl,
+                this.state.stepsAmount,
+                this.sliderSettings.start,
+                this.sliderSettings.end,
+                this.sliderSettings.step
+            );
+        }
+        
+        this.state.tips.forEach((tip, j) => {
+            tip.showTip(
+                this.state.progressBars[j].progressBarEl,
+                this.state.stepsAmount,
+                this.sliderSettings.start,
+                this.sliderSettings.end,
+                this.sliderSettings.step
+            );
+        });
+        
+        this.subjectViewChangeCurrent.notifyObservers(current);
+        
+        return false;
+        
+    }  
+    
+    updateSliderOnDragging(pointerDownEvent: PointerEvent, i): boolean {
+        
+        const that = this;
+        const mousePosOnRunner: number = that.state.runners[i].returnMousePosOnRunner(pointerDownEvent);
+        const removeListenersFromDocument = function() {
+            document.removeEventListener('pointermove', changeProgressBar);
+            document.removeEventListener('pointermove', changeOutput);
+            document.removeEventListener('pointermove', changeTip);
+            document.removeEventListener('pointerup', removeListenersFromDocument);
+        }
+        const changeProgressBar: voidFunction = function(moveEvent) {
+            let secondBarEl: boolean | HTMLElement = false;
+            let size: number;
+            
+            if (that.state.progressBars.length > 1) {
+                const n = (i == 0) ? 1 : 0;
+                secondBarEl = that.state.progressBars[n].progressBarEl;
+            }
+            
+            size = that.state.progressBars[i].countProgressBarSize(
+                moveEvent,
+                that.state.scale.returnScaleStart(),
+                that.state.scale.returnScaleStep(that.state.runners[i].runnerEl, that.state.stepsCoefficient, that.state.stepsAmount),
+                mousePosOnRunner,
+                secondBarEl
+            );
+            
+            if(secondBarEl && parseFloat(getComputedStyle(that.state.progressBars[0].progressBarEl).width) > parseFloat(getComputedStyle(that.state.progressBars[1].progressBarEl).width)) {
+                that.state.progressBars[0].progressBarEl.style.width = size + 'em';
+                that.state.progressBars[1].progressBarEl.style.width = size + 'em';
+            }
+            
+        };
+        const changeOutput: voidFunction = function() {
+            let secondBarEl: boolean | HTMLElement = false;
+            if (that.state.progressBars.length > 1) {
+                const n = (i == 0) ? 1 : 0;
+                secondBarEl = that.state.progressBars[n].progressBarEl;
+            }
+            
+            let current: number | number[] = that.state.output.countOutputValue(
+                that.state.progressBars[i].progressBarEl,
+                that.state.stepsAmount,
+                that.sliderSettings.start,
+                that.sliderSettings.end,
+                that.sliderSettings.step,
+                secondBarEl,
+                that.sliderSettings.separator
+            );
+            that.subjectViewChangeCurrent.notifyObservers(current);
+        };
+        const changeTip: voidFunction = function() {
+            that.state.tips.forEach((tip, j) => {
+                tip.showTip(
+                    that.state.progressBars[j].progressBarEl,
+                    that.state.stepsAmount,
+                    that.sliderSettings.start,
+                    that.sliderSettings.end,
+                    that.sliderSettings.step
+                );
+            });
+        };
+        
+        document.addEventListener('pointermove', changeProgressBar);
+        document.addEventListener('pointermove', changeOutput);
+        document.addEventListener('pointermove', changeTip);
+        document.addEventListener('pointerup', removeListenersFromDocument);
+        
+        return false;
+        
     }
     
     setState(): void {
+        
+        if (this.sliderSettings.range == true && !(this.sliderSettings.current instanceof Array)) {
+            this.sliderSettings.current = [this.sliderSettings.current, this.sliderSettings.current];
+        }
         
         if(this.sliderSettings.current instanceof Array) {
             this.sliderSettings.range = true;
         } else {
             this.sliderSettings.range = false;
         }
-        this.sliderState.ranges = [];
-        this.sliderState.runners = [];
-        this.sliderState.tips = [];
-        this.sliderState.progressBars = [];
-        this.sliderState.stepsAmount = Math.round((this.sliderSettings.end - this.sliderSettings.start) / this.sliderSettings.step);
-        this.sliderState.stepsCoefficient = ((this.sliderSettings.step * this.sliderState.stepsAmount) / ((this.sliderSettings.end - this.sliderSettings.start) / 100)) / 100;
-        this.sliderState.sliderSettings = this.sliderSettings;
+        
+        this.state.diapasones = [];
+        this.state.runners = [];
+        this.state.tips = [];
+        this.state.progressBars = [];
+        this.state.stepsAmount = Math.round((this.sliderSettings.end - this.sliderSettings.start) / this.sliderSettings.step);
+        this.state.stepsCoefficient = ((this.sliderSettings.step * this.state.stepsAmount) / ((this.sliderSettings.end - this.sliderSettings.start) / 100)) / 100;
         
         switch (this.sliderSettings.direction) {
+                
             case 'x':
-                this.sliderState.output = this.sliderSettings.range ? new XRangeOutput(this.input, this.sliderState) : new XOutput(this.input, this.sliderState);
-                this.sliderState.scale = this.sliderSettings.range ? new XRangeScale(this.sliderState) : new XScale(this.sliderState);
+                
+                this.state.output = this.sliderSettings.range ? new XRangeOutput(this.input) : new XOutput(this.input);
+                this.state.scale = this.sliderSettings.range ? new XRangeScale() : new XScale();
+                this.state.scaleValues = this.sliderSettings.range ? new XRangeScaleValues() : new XScaleValues();
                 if(this.sliderSettings.range) {
-                    this.sliderState.ranges.push(new XRangeDiapason(0, this.sliderState));
-                    this.sliderState.ranges.push(new XRangeDiapason(1, this.sliderState)); 
+                    this.state.diapasones.push(new XRangeDiapason());
+                    this.state.diapasones.push(new XRangeDiapason()); 
                 } else {
-                    this.sliderState.ranges.push(new XDiapason(0, this.sliderState));
+                    this.state.diapasones.push(new XDiapason());
                 }
-                this.sliderState.ranges.forEach((range, index) => {
-                    if (this.sliderSettings.range) {
-                        this.sliderState.runners.push(new XRangeRunner(index, this.sliderState));
+                
+                for (let i = 0; i < this.state.diapasones.length; i++) {
+                    if (this.state.diapasones.length > 1) {
+                        this.state.runners.push(new XRangeRunner());
                         if(this.sliderSettings.tip) {
-                            this.sliderState.tips.push(new XRangeTip(index, this.sliderState));
+                            this.state.tips.push(new XRangeTip());
                         }
-                        this.sliderState.progressBars.push(new XRangeProgressBar(index, this.sliderState));
+                        this.state.progressBars.push(new XRangeProgressBar());
                     } else {
-                        this.sliderState.runners.push(new XRunner(index, this.sliderState));
+                        this.state.runners.push(new XRunner());
                         if(this.sliderSettings.tip) {
-                            this.sliderState.tips.push(new XTip(index, this.sliderState));
+                            this.state.tips.push(new XTip());
                         }
-                        this.sliderState.progressBars.push(new XProgressBar(index, this.sliderState));
+                        this.state.progressBars.push(new XProgressBar());
                     }
-                });
+                }
+                
                 break;
         }
         
     }
     
+    setElementsValues(): void {
+        this.state.scaleValues.setScaleValues(this.sliderSettings.scaleValuesAmount, this.sliderSettings.start, this.sliderSettings.end);
+        if (this.state.diapasones.length > 1) {
+            this.state.diapasones[0].diapasonEl.style.zIndex = +getComputedStyle(this.state.diapasones[0].diapasonEl).zIndex + 1;
+            this.state.diapasones[0].diapasonEl.style.background = getComputedStyle(this.state.scale.scaleEl).background;     
+        }
+        
+        this.state.progressBars.forEach((bar, i) => {
+            bar.setFontSize(this.state.scale.returnScaleStep(this.state.runners[i].runnerEl, this.state.stepsCoefficient, this.state.stepsAmount));
+            bar.setCurrent(this.sliderSettings.current, this.sliderSettings.start, this.sliderSettings.step, i);
+        });
+        this.state.output.setCurrent(this.sliderSettings.current, this.sliderSettings.start, this.sliderSettings.end, this.sliderSettings.separator);
+        this.state.tips.forEach((tip, i) => {
+            tip.setCurrent(this.sliderSettings.current, this.sliderSettings.start, this.sliderSettings.end, i);
+        });
+    }
+    
+    render(): void {
+        
+        this.sliderEl = document.createElement('div');
+        this.sliderEl.className = 'toxin-slider';
+        this.input.after(this.sliderEl);
+        this.state.scale.render(this.sliderEl);
+        this.state.scaleValues.render(this.state.scale.scaleEl);
+        this.state.diapasones.forEach((diapasone, i) => {
+            
+            diapasone.render(this.state.scale.scaleEl)
+            this.state.runners[i].render(diapasone.diapasonEl);
+            this.state.progressBars[i].render(this.state.runners[i].runnerEl);
+            if (this.sliderSettings.tip) {
+                this.state.tips[i].render(this.state.runners[i].runnerEl);
+            }
+            
+        });
+        
+    }
+    
     update(settings: Object): void {
         
-        this.sliderState.scale.scaleEl.parentElement.remove();
+        this.sliderEl.remove();
         for (let key in settings) {
             if (this.sliderSettings.hasOwnProperty(key)) {
                 this.sliderSettings[key] = settings[key]; 
             }
         }
-        this.setState();
+        this.init();
         
     }
-    
-    updateCurrent(current: number | number[]): void {
-        this.update({'current': current});
-    }
-    
+
 }
 
 export default ToxinSliderView;

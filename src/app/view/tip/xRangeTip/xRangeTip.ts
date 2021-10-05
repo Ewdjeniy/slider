@@ -3,39 +3,23 @@ import Tip from '../tip.ts';
 
 class XRangeTip extends Tip implements SliderTip {   
     
-    constructor(index: number, sliderState: SliderState) {
-        super(index, sliderState);
-        this.renderTip();
-        this.setCurrent();
+    constructor() {
+        super();
     }
     
-    
-    showTip(): number {
-        let outputValue: number;
-        
-        if (parseInt(this.sliderState.progressBars[this.index].progressBarEl.style.width) <= this.sliderState.stepsAmount) {
-            outputValue = +this.sliderState.sliderSettings.start + parseInt(this.sliderState.progressBars[this.index].progressBarEl.style.width) * this.sliderState.sliderSettings.step;
+    setCurrent(current, start, end, i): void {
+        if (current > end) {
+            this.tipEl.innerHTML = end.toString();
+        } else if (current < start) {
+            this.tipEl.innerHTML = start.toString();      
         } else {
-            outputValue = +this.sliderState.sliderSettings.end;
-        }
-        
-        this.tipEl.innerHTML = outputValue.toString(); 
-        return outputValue;
-    }
-    
-    setCurrent(): void {
-        if (this.sliderState.sliderSettings.current[this.index] > this.sliderState.sliderSettings.end) {
-            this.tipEl.innerHTML = this.sliderState.sliderSettings.end.toString();
-        } else if (this.sliderState.sliderSettings.current[this.index] < this.sliderState.sliderSettings.start) {
-            this.tipEl.innerHTML = this.sliderState.sliderSettings.start.toString();      
-        } else {
-            this.tipEl.innerHTML = this.sliderState.sliderSettings.current[this.index].toString();        
+            this.tipEl.innerHTML = current[i].toString();        
         }
     }
     
-    renderTip(): void {
-        this.tipEl.className = "x-range-tip";
-        this.sliderState.runners[this.index].runnerEl.append(this.tipEl);
+    render(runnerEl): void {
+        this.tipEl.className = "tip x-range-tip";
+        runnerEl.append(this.tipEl);
     }
     
 };

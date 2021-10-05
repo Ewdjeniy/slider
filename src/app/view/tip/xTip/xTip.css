@@ -9,4 +9,5 @@
     align-items: center;
     color: white;
     border-radius: 0.2em;
+    user-select: none;
 }

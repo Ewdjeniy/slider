@@ -2,28 +2,27 @@ import Output from '../output.ts';
 
 class XOutput extends Output implements SliderOutput {
 
-    constructor(input: HTMLInputElement, sliderState: SliderState) {
-        super(input, sliderState);
-        this.setCurrent();
+    constructor(input: HTMLInputElement) {
+        super(input);
     }
     
-    setCurrent(): void {
-        if (this.sliderState.sliderSettings.current > this.sliderState.sliderSettings.end) {
-            this.outputEl.value = this.sliderState.sliderSettings.end.toString();
-        } else if (this.sliderState.sliderSettings.current < this.sliderState.sliderSettings.start) {
-            this.outputEl.value = this.sliderState.sliderSettings.start.toString();      
+    setCurrent(current, start, end): void {
+        if (current > end) {
+            this.outputEl.value = end.toString();
+        } else if (current < start) {
+            this.outputEl.value = start.toString();      
         } else {
-            this.outputEl.value = this.sliderState.sliderSettings.current.toString();        
+            this.outputEl.value = current.toString();        
         }
     }
     
-    countOutputValue(): number {
+    countOutputValue(elBar, stepsAmount, start, end, step): number {
         let outputValue: number;
         
-        if (parseInt(this.sliderState.progressBars[0].progressBarEl.style.width) <= this.sliderState.stepsAmount) {
-            outputValue = +this.sliderState.sliderSettings.start + parseInt(this.sliderState.progressBars[0].progressBarEl.style.width) * this.sliderState.sliderSettings.step;
+        if (parseInt(elBar.style.width) <= stepsAmount) {
+            outputValue = +start + parseInt(elBar.style.width) * step;
         } else {
-            outputValue = +this.sliderState.sliderSettings.end;
+            outputValue = +end;
         }
         
         this.outputEl.value = outputValue.toString(); 

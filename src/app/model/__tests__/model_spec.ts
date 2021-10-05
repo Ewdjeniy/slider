@@ -1,49 +1,54 @@
 import ToxinSliderModel from '../model.ts';
-import defaultSliderSettings from '../../defaults.ts';
+import { defaultSliderSettingsModel } from '../../defaults.ts';
 
 describe('ToxinSliderModel', function() {
     
-    it('должен быть объявлен', function() {
+    let model: any;
+    
+    beforeEach(function() {
+        model = new ToxinSliderModel();
+    });
+    
+    it('Должен быть объявлен', function() {
         expect(ToxinSliderModel).toBeDefined();
     });
     
-    it('должен записывать дефолтные значения в свойство state', function() {
+    it('Записывает дефолтные значения в свойство state', function() {
         const model: SliderModel = new ToxinSliderModel();
-        expect(model.state).toBe(defaultSliderSettings);
+        expect(model.state).toBe(defaultSliderSettingsModel);
     });
     
-    it('конструктор класса может менять дефолтные значения в свойстве state', function() {
-        const model: SliderModel = new ToxinSliderModel({
+    it('Конструктор класса может менять дефолтные значения в свойстве state', function() {
+        const testModel: SliderModel = new ToxinSliderModel({
             start: 1,
             end: 2,
             step: 3,
             current: 4,
-            scaleValues: 5,
+            scaleValuesAmount: 5,
             direction: 'y',
             range: true,
             tip: true,
             separator: ' : '
         });
         
-        expect(model.state.start).toEqual(1);
-        expect(model.state.end).toEqual(2);
-        expect(model.state.step).toEqual(3);
-        expect(model.state.current).toEqual(4);
-        expect(model.state.scaleValues).toEqual(5);
-        expect(model.state.direction).toEqual('y');
-        expect(model.state.range).toEqual(true);
-        expect(model.state.tip).toEqual(true);
-        expect(model.state.separator).toEqual(' : ');
+        expect(testModel.state.start).toEqual(1);
+        expect(testModel.state.end).toEqual(2);
+        expect(testModel.state.step).toEqual(3);
+        expect(testModel.state.current).toEqual(4);
+        expect(testModel.state.scaleValuesAmount).toEqual(5);
+        expect(testModel.state.direction).toEqual('y');
+        expect(testModel.state.range).toEqual(true);
+        expect(testModel.state.tip).toEqual(true);
+        expect(testModel.state.separator).toEqual(' : ');
     });
     
     it('Обладает методом setState, который переписывает свойство state', function() {
-        const model: any = new ToxinSliderModel();
         model.setState({
             start: 1,
             end: 2,
             step: 3,
             current: 4,
-            scaleValues: 5,
+            scaleValuesAmount: 5,
             direction: 'y',
             range: true,
             tip: true,
@@ -54,7 +59,7 @@ describe('ToxinSliderModel', function() {
             end: 2,
             step: 3,
             current: 4,
-            scaleValues: 5,
+            scaleValuesAmount: 5,
             direction: 'y',
             range: true,
             tip: true,
@@ -66,7 +71,7 @@ describe('ToxinSliderModel', function() {
         const model: any = new ToxinSliderModel();
         let testValue: number = 0;
         
-        model.subject.addObserver(function() {
+        model.subjectModelUpdateState.addObserver(function() {
             testValue = 1;
         });
         model.update({step: 4});
@@ -78,7 +83,7 @@ describe('ToxinSliderModel', function() {
         const model: any = new ToxinSliderModel();
         let testValue: number = 0;
         
-        model.modelCurrent.addObserver(function() {
+        model.subjectModelChangeCurrent.addObserver(function() {
             testValue = 1;
         });
         model.setCurrent(25);

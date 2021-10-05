@@ -1,12 +1,12 @@
 import * as $ from 'jquery';
 import ObservableSubject from '../observers.ts';
-import defaultSliderSettings from '../defaults.ts';
+import { defaultSliderSettingsModel } from '../defaults.ts';
 
 class ToxinSliderModel implements SliderModel {
     
-    subject: ObservableSubject = new ObservableSubject();
-    modelCurrent: ObservableSubject = new ObservableSubject();
-    state: ToxinSliderOptions = defaultSliderSettings;
+    subjectModelUpdateState: ObservableSubject = new ObservableSubject();
+    subjectModelChangeCurrent: ObservableSubject = new ObservableSubject();
+    state: ToxinSliderOptions = defaultSliderSettingsModel;
     
     constructor(options?: ToxinSliderOptions) {
         this.setState(options);
@@ -26,12 +26,12 @@ class ToxinSliderModel implements SliderModel {
     
     protected update(options: ToxinSliderOptions): void {
         this.setState(options);
-        this.subject.notifyObservers();
+        this.subjectModelUpdateState.notifyObservers();
     }
     
     protected setCurrent(current: number | number[]): void {
         this.state.current = current;
-        this.modelCurrent.notifyObservers();
+        this.subjectModelChangeCurrent.notifyObservers();
     }
     
 }

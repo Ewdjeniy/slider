@@ -3,7 +3,7 @@ interface ToxinSliderOptions {
     end?: number;
     step?: number;
     current?: number | number[];
-    scaleValues?: number;
+    scaleValuesAmount?: number;
     direction?: string;
     range?: boolean;
     tip?: boolean;
@@ -30,51 +30,47 @@ interface Object {
      
 type voidFunction = (data?: any) => void;
   
+
 interface SliderTip {
-    sliderState: SliderState;
     tipEl: HTMLElement;
-    index: number;
-    renderTip(): void;
-    showTip(): number;
-    setCurrent(): void;
+    render(el: HTMLElement): void;
+    setCurrent(current: number | number[], start: number, end: number, i: number): void;
+    showTip(barEl: HTMLElement, stepsAmount: number, start: number, end: number, step: number): number;
 }
 
 interface SliderProgressBar {
-    sliderState: SliderState;
     progressBarEl: HTMLElement;
-    index: number;
-    renderProgressBar(): void;
-    setFontSize(): void;
-    setCurrent(): void;
-    setProgressBarSize(event: PointerEvent): void;
-    
+    render(runnerEl: HTMLElement): void;
+    setFontSize(scaleStepVal: number): void;
+    setCurrent(current: number | number[], start: number, step: number, i: number): void;
+    countProgressBarSize(event: PointerEvent, scaleStartX: number, mousePosOnRunner: number, scaleStep: number, secondBarEl?: HTMLElement | boolean): number;
 }
 
 interface SliderRunner {
-    sliderState: SliderState;
+    subject: ObservableSubject;
     runnerEl: HTMLElement;
-    index: number;
-    mousePosOnRunner: number;
-    renderRunner(): void;
-    updateSlider(e: PointerEvent): boolean;
+    render(diapasoneEl: HTMLElement): void;
+    returnMousePosOnRunner(pointerDownEvent: PointerEvent): number;
 }
 
 interface SliderScale {
-    sliderState: SliderState;
-    scaleHTML: string;
+    subject: ObservableSubject;
     scaleEl: HTMLElement;
+    render(sliderEl: HTMLElement): void;
+    returnScaleStep(runnerEl: HTMLElement, stepsCoefficient: number, stepsAmount: number): number;
+    returnScaleStart(): number;
+}
+
+interface SliderScaleValues {
     scaleValuesEl: HTMLElement;
-    countScaleStep(runnerEl: HTMLElement): number;
-    setSliderValue(event: PointerEvent): boolean | void;
-    setScaleValues(): void;
-    renderScale(): void;
+    render(scaleEl: HTMLElement): void;
+    setScaleValues(scaleValuesAmount: number, start: number, end: number): void;
 }
 
 interface SliderOutput {
-    sliderState: Object;
     outputEl: HTMLInputElement;
-    setCurrent(): void;
-    countOutputValue(): number | number[];
+    setCurrent(current: number | number[], start: number, end: number, separator: string): void;
+    countOutputValue(elBar: HTMLElement, stepsAmount: number, start: number, end: number, step: number, secondElBar?: HTMLElement | boolean, separator?: string): number | number[];
 }
 
 interface SliderSettings {
@@ -82,55 +78,42 @@ interface SliderSettings {
     end: number;
     step: number;
     current: any;
-    scaleValues: number;
+    scaleValuesAmount: number;
     direction: string;
     range: boolean;
     tip: boolean;
     separator: string;
 }
+     
+interface SliderModel {
+    state: ToxinSliderOptions;
+    subjectModelUpdateState: ObservableSubject;
+    subjectModelChangeCurrent: ObservableSubject;
+    
+    executeMethod(method: string, args: any): void;
+}
 
-interface SliderState {
-    subject: ObservableSubject;
-    sliderSettings: SliderSettings;
+interface SliderView {
+    subjectViewChangeCurrent: ObservableSubject;
+    update(settings: Object): void;
+    getCurrentValue(): number | number[];
+}
+
+interface ViewState {
     output: SliderOutput;
     scale: SliderScale;
-    ranges: any[];
+    scaleValues: SliderScaleValues;
+    diapasones: any[];
     runners: SliderRunner[];
     tips: SliderTip[];
     progressBars: SliderProgressBar[];
     stepsAmount: number;
     stepsCoefficient: number;
 }
-     
-interface SliderModel {
-    state: ToxinSliderOptions;
-    subject: ObservableSubject;
-    modelCurrent: ObservableSubject;
-    
-    executeMethod(method: string, args: any): void;
-}
-
-interface SliderView {
-    subject: ObservableSubject;
-    input: HTMLInputElement;
-    sliderSettings: Object;
-    
-    sliderState: Object;
-
-    getCurrentValue(): number | number[];
-    
-    setState(): void;
-    
-    update(settings: Object): void;
-    
-    updateCurrent(current: number | number[]): void;
-}
 
 interface SliderPresenter {
-    model: SliderModel;
-    view: SliderView;
-}
 
+}
 
 // Type definitions for Jasmine-JQuery 1.5.8
 // Project: https://github.com/velesin/jasmine-jquery

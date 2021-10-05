@@ -2,13 +2,23 @@ import ObservableSubject from '../../observers.ts';
 
 class Tip {   
     
-    sliderState: SliderState;
-    index: number;
     tipEl: HTMLElement = document.createElement('div');
     
-    constructor(index: number, sliderState: SliderState) {
-        this.sliderState = sliderState;
-        this.index = index;
+    constructor() {
+
+    }
+    
+    showTip(barEl, stepsAmount, start, end, step): number {
+        let outputValue: number;
+        
+        if (parseInt(barEl.style.width) <= stepsAmount) {
+            outputValue = +start + parseInt(barEl.style.width) * step;
+        } else {
+            outputValue = +end;
+        }
+        
+        this.tipEl.innerHTML = outputValue.toString(); 
+        return outputValue;
     }
     
 };

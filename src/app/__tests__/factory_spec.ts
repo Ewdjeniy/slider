@@ -8,11 +8,11 @@ describe('jquery.toxinSlider', function() {
         inpt = document.getElementById('slider');
     });
     
-    it('должен быть доступен в объекте jquery', function() {
+    it('Должен быть доступен в объекте jquery', function() {
         expect($.fn.toxinSlider).toBeDefined();
     });
     
-    it('должен иметь цепной способ вызова', function() {
+    it('Должен иметь цепной способ вызова', function() {
         expect($(inpt).toxinSlider()).toEqual(inpt);
     });
 });
