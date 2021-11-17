@@ -1,0 +1,9 @@
+.y-scale-values {
+    font-size: 2em;
+    user-select: none;
+    display: inline-flex;
+    flex-direction: column-reverse;
+    height: 500px;
+    vertical-align: top;
+    justify-content: space-between;
+}

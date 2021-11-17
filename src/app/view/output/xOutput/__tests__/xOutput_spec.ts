@@ -1,57 +1,57 @@
 import ToxinSliderView from '../../../view.ts';
-import XScale from '../../../scale/xScale/xScale.ts';
-import XDiapason from '../../../diapason/xDiapason/xDiapason.ts';
 import XOutput from '../xOutput.ts';
-import XRunner from '../../../runner/xRunner/xRunner.ts';
-import XTip from '../../../tip/xTip/xTip.ts';
-import XProgressBar from '../../../progressBar/xProgressBar/xProgressBar.ts';
-import * as $ from 'jquery';
-
-
         
-describe('XOutput', function() {
-         
-    let inpt: any;
-    let view: any;
+const testXOutput = function(sliderSettings) {
+    
+    describe('XOutput', function() {
+        
+        let inpt: any;
+        let view: any;
+        const setSizes: voidFunction = function(view) {
+            view.state.runners[0].runnerEl.style.width = '15px';
 
-    beforeEach(function() {
-        setFixtures('<input type="text" id="slider">');
-        inpt = document.getElementById('slider');
-        view = new ToxinSliderView(inpt);
-        view.update({
-            start: -50,
-            end: 50,
-            step: 1,
-            current: 25,
-            scaleValuesAmount: 2,
-            direction: 'x',
-            range: false,
-            tip: true,
-            separator: ' - '
+            view.state.progressBars[0].setFontSize(view.state.scale.returnScaleStep(view.state.runners[0].runnerEl, view.state.stepsCoefficient, view.state.stepsAmount));
+
+            view.state.progressBars[0].setCurrent(view.sliderSettings.current, view.sliderSettings.start, view.sliderSettings.step);
+            view.setElementsValues();
+            view.state.diapasones[0].diapasonEl.style.display = 'flex';
+        };
+
+        beforeEach(function() {
+            setFixtures('<input type="text" id="slider">');
+            inpt = document.getElementById('slider');
+            view = new ToxinSliderView(inpt);
+            if (sliderSettings) {
+                view.update(sliderSettings);
+            }
+            setSizes(view);
         });
-    });
-        
-    it('должен быть объявлен', function() {
-        expect(XOutput).toBeDefined();
-    });
-    
-    it('метод setCurrent записывает текущее значение слайдера в инпут', function() {
-        
-        for (let i = -25; i < 25; i++) {
-            view.sliderSettings.current = i;
 
-            view.state.output.setCurrent(view.sliderSettings.current, view.sliderSettings.start, view.sliderSettings.end);
-            expect(view.state.output.outputEl.value).toEqual(i.toString());
-        }
-        
-    });
-    
-    it('countOutputValue переписывает значение инпута в зависимости от длины прогресс бара и возвращает это значение', function() {
- 
-        expect(view.state.output.countOutputValue(view.state.progressBars[0].progressBarEl, view.state.stepsAmount, view.sliderSettings.start, view.sliderSettings.end, view.sliderSettings.step)).toEqual(view.sliderSettings.current);
-        expect(view.state.output.countOutputValue(view.state.progressBars[0].progressBarEl, view.state.stepsAmount, view.sliderSettings.start, view.sliderSettings.end, view.sliderSettings.step).toString()).toEqual(view.state.output.outputEl.value);
+        it('должен быть объявлен', function() {
+            expect(XOutput).toBeDefined();
+        });
+
+        it('метод setCurrent записывает значение, переданное в параметрах, в инпут', function() {
+            
+            let expectedValue = view.sliderSettings.current;
+            expectedValue = (view.sliderSettings.current >= view.sliderSettings.start) ? expectedValue : view.sliderSettings.start;
+            expectedValue = (view.sliderSettings.current <= view.sliderSettings.end) ? expectedValue : view.sliderSettings.end;
+            
+            view.state.output.setCurrent(expectedValue, view.sliderSettings.start, view.sliderSettings.end);
+            expect(expectedValue.toString()).toEqual(view.state.output.outputEl.value);
+
+        });
+
+        it('countOutputValue переписывает значение инпута в зависимости от длины прогресс бара и возвращает это значение', function() {
+
+            const outputValue = view.state.output.countOutputValue(view.state.progressBars[0].progressBarEl, view.state.stepsAmount, view.sliderSettings.start, view.sliderSettings.end, view.sliderSettings.step);
+
+            expect(outputValue.toString()).toEqual(inpt.value);
+
+        });
         
     });
 
-});
+}
     
+export default testXOutput;

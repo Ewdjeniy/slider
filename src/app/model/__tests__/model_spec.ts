@@ -1,5 +1,5 @@
 import ToxinSliderModel from '../model.ts';
-import { defaultSliderSettingsModel } from '../../defaults.ts';
+import { defaultSliderSettingsModel } from '../defaults.ts';
 
 describe('ToxinSliderModel', function() {
     

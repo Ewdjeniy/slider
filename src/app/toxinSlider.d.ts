@@ -47,14 +47,12 @@ interface SliderProgressBar {
 }
 
 interface SliderRunner {
-    subject: ObservableSubject;
     runnerEl: HTMLElement;
     render(diapasoneEl: HTMLElement): void;
     returnMousePosOnRunner(pointerDownEvent: PointerEvent): number;
 }
 
 interface SliderScale {
-    subject: ObservableSubject;
     scaleEl: HTMLElement;
     render(sliderEl: HTMLElement): void;
     returnScaleStep(runnerEl: HTMLElement, stepsCoefficient: number, stepsAmount: number): number;
@@ -68,7 +66,6 @@ interface SliderScaleValues {
 }
 
 interface SliderOutput {
-    outputEl: HTMLInputElement;
     setCurrent(current: number | number[], start: number, end: number, separator: string): void;
     countOutputValue(elBar: HTMLElement, stepsAmount: number, start: number, end: number, step: number, secondElBar?: HTMLElement | boolean, separator?: string): number | number[];
 }
@@ -89,11 +86,11 @@ interface SliderModel {
     state: ToxinSliderOptions;
     subjectModelUpdateState: ObservableSubject;
     subjectModelChangeCurrent: ObservableSubject;
-    
     executeMethod(method: string, args: any): void;
 }
 
 interface SliderView {
+    input: HTMLInputElement;
     subjectViewChangeCurrent: ObservableSubject;
     update(settings: Object): void;
     getCurrentValue(): number | number[];

@@ -1,28 +1,54 @@
 import ToxinSliderView from '../view.ts';
-import ObservableSubject from '../../observers.ts';
-import XOutput from '../output/xOutput/xOutput.ts';
-import XRangeOutput from '../output/xRangeOutput/xRangeOutput.ts';
-import XScale from '../scale/xScale/xScale.ts';
-import XRangeScale from '../scale/xRangeScale/xRangeScale.ts';
-import XDiapason from '../diapason/xDiapason/xDiapason.ts';
-import XRangeDiapason from '../diapason/xRangeDiapason/xRangeDiapason.ts';
-import XRunner from '../runner/xRunner/xRunner.ts';
-import XRangeRunner from '../runner/xRangeRunner/xRangeRunner.ts';
-import XTip from '../tip/xTip/xTip.ts';
-import XRangeTip from '../tip/xRangeTip/xRangeTip.ts';
-import XProgressBar from '../progressBar/xProgressBar/xProgressBar.ts';
-import XRangeProgressBar from '../progressBar/xRangeProgressBar/xRangeProgressBar.ts';
-import * as $ from 'jquery';
 
-describe('ToxinSliderView', function() {
-    let inpt: any;
-    let view: SliderView;
+const testToxinSliderView = function(sliderSettings) {
     
-    beforeEach(function() {
-        setFixtures('<input type="text" id="slider">');
-        inpt = document.getElementById('slider');
-        view = new ToxinSliderView(inpt);
-    });
+    const describeFunc = function(testSubviews?: any) {
     
+        describe('ToxinSliderView', function() {
 
-});
+            let inpt: any;
+            let view: any;
+
+            beforeEach(function() {
+                setFixtures('<div id="test" style="width: 120px;"><input type="text" id="slider"></div>');
+                inpt = document.getElementById('slider');
+                view = new ToxinSliderView(inpt);
+                if (sliderSettings) {
+                    view.update(sliderSettings);  
+                }
+            });
+
+            afterEach (function() {
+                view.sliderEl.remove();
+            });
+
+            it('Должен быть объявлен', function() {
+                expect(ToxinSliderView).toBeDefined();
+            });
+            
+            it('Метод getCurrentValue возвращает текущее значение слайдера', function() {
+                
+                const expectedValue = (view.getCurrentValue() instanceof Array) ? view.getCurrentValue()[0] + view.sliderSettings.separator + view.getCurrentValue()[1] : view.getCurrentValue().toString();
+                
+                expect(expectedValue).toEqual(inpt.value);
+                
+            });
+
+            if (testSubviews) {
+                testSubviews();
+            }
+
+        });
+    }
+    
+    return {
+        testItself: function() {describeFunc();},
+        testItselfWithSubViews: function(testFunction: any) {
+            describeFunc(testFunction);
+        }
+    };
+    
+}
+
+
+export default testToxinSliderView;

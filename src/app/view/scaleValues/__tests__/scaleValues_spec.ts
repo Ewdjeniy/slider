@@ -1,58 +1,72 @@
-//import ToxinSliderView from '../../view.ts';
-//import Scale from '../scale.ts';
-//import XScale from '../xScale/xScale.ts';
-//import XDiapason from '../../diapason/xDiapason/xDiapason.ts';
-//import XOutput from '../../output/xOutput/xOutput.ts';
-//import XRunner from '../../runner/xRunner/xRunner.ts';
-//import XTip from '../../tip/xTip/xTip.ts';
-//import XProgressBar from '../../progressBar/xProgressBar/xProgressBar.ts';
-//import * as $ from 'jquery';
-//
-// describe('Scale', function() {
-//        
-//    let inpt: any;
-//    let view: SliderView;
-//    let scaleStartX: number;
-//    const setSizes: voidFunction = function() {
-//        view.sliderState.scale.scaleEl.style.width = '105px';
-//        view.sliderState.runners[0].runnerEl.style.width = '5px';
-//        view.sliderState.progressBars[0].setFontSize();
-//        view.sliderState.runners[0].mousePosOnRunner = 0;
-//        scaleStartX = view.sliderState.scale.scaleEl.getBoundingClientRect().left + parseInt(getComputedStyle(view.sliderState.scale.scaleEl).borderLeftWidth) + parseInt(getComputedStyle(view.sliderState.scale.scaleEl).paddingLeft);
-//    };
-//
-//     beforeEach(function() {
-//         setFixtures('<input type="text" id="slider">');
-//         inpt = document.getElementById('slider');
-//         view = new ToxinSliderView(inpt);
-//         setSizes();
-//     });
-//     
-//     it('должен быть объявлен', function() {
-//         expect(Scale).toBeDefined();
-//     });
-//        
-//     it('получает ссылку на view.sliderState', function() {
-//         expect(view.sliderState.scale.sliderState).toBe(view.sliderState);
-//     });
-//        
-//     it('обладает методом setScaleValues, который отрисовавает значения шкалы в зависимости от view.sliderSettings.scaleValues', function() {
-//         view.update({scaleValues: 2});
-//         expect(view.sliderState.scale.scaleValuesEl.innerHTML).toBe('<span class="scale-first-value">0</span><span class="scale-last-value">100</span>');
-//     });
-//        
-//     it('обладает методом countScaleStep, который возвращает шаг бегунка в зависимости от ширины шкалы, бегунка, начального, конечного значения и шага слайдера', function() {
-//         view.update({step: 5});
-//         view.sliderState.scale.scaleEl.style.width = '105px';
-//         view.sliderState.runners[0].runnerEl.style.width = '5px';
-//         
-//         expect(view.sliderState.scale.countScaleStep(view.sliderState.runners[0].runnerEl)).toEqual(5);
-//         
-//         view.update({step: 10});
-//         view.sliderState.scale.scaleEl.style.width = '210px';
-//         view.sliderState.runners[0].runnerEl.style.width = '10px';
-//            
-//         expect(view.sliderState.scale.countScaleStep(view.sliderState.runners[0].runnerEl)).toEqual(20);
-//     });
-//        
-//});
+import ToxinSliderView from '../../view.ts';
+import ScaleValues from '../scaleValues.ts';
+import testXScaleValues from '../xScaleValues/__tests__/xScaleValues_spec.ts';
+import testXRangeScaleValues from '../xRangeScaleValues/__tests__/xRangeScaleValues_spec.ts';
+        
+const testScaleValues = function(sliderSettings) {
+    
+    const describeFunc = function(testFunction?: any) {
+    
+        describe('ScaleValues', function() {
+
+            let inpt: any;
+            let view: any;
+
+            beforeEach(function() {
+                setFixtures('<input type="text" id="slider">');
+                inpt = document.getElementById('slider');
+                view = new ToxinSliderView(inpt);
+                if (sliderSettings) {
+                    view.update(sliderSettings);  
+                }
+            });
+
+            afterEach (function() {
+                view.sliderEl.remove();
+            });
+
+            it('Должен быть объявлен', function() {
+                expect(ScaleValues).toBeDefined();
+            });
+
+            it('Метод setScaleValues проставляет значения шкалы, количество значений зависит от view.sliderSettings.scaleValuesAmount', function() {
+        
+                let expectedValue = '';
+                
+                if (view.sliderSettings.scaleValuesAmount == 1) {
+                    expectedValue = '<span class="scale-first-value">' + view.sliderSettings.start + '</span>'; 
+                } else if (view.sliderSettings.scaleValuesAmount == 2) {
+                    expectedValue = '<span class="scale-first-value">' + view.sliderSettings.start + '</span>' + '<span class="scale-last-value">' + view.sliderSettings.end + '</span>';      
+                } else if (view.sliderSettings.scaleValuesAmount > 2) {
+                    let result: string = '<span class="scale-first-value">' + view.sliderSettings.start + '</span>';
+                    for (let i = 1; i < view.sliderSettings.scaleValuesAmount - 1; i++) {
+                        result += '<span class="scale-value">';
+                        result += Math.round(+view.sliderSettings.start + ((+view.sliderSettings.end - (+view.sliderSettings.start))  / (view.sliderSettings.scaleValuesAmount - 1)) * i);
+                        result += '</span>';
+                    }
+                    result += '<span class="scale-last-value">' + view.sliderSettings.end + '</span>';
+                    expectedValue = result;
+                }
+                
+                expect(view.state.scaleValues.scaleValuesEl.innerHTML).toBe(expectedValue);
+                
+            });
+
+            if (testFunction) {
+                testFunction(sliderSettings);
+            }
+
+        });
+        
+    }
+    
+    return {
+        testItself: function() {describeFunc();},
+        testItselfWithSubClass: function(testFunction: any) {
+            describeFunc(testFunction);
+        }
+    };
+
+}
+    
+export default testScaleValues;

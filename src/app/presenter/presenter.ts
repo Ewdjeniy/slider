@@ -6,11 +6,12 @@ class ToxinSliderPresenter implements SliderPresenter {
     view: SliderView;
     
     constructor(model: SliderModel, view: SliderView) {
+        
         this.model = model;
         this.view = view;
         const that = this;
         
-        this.view.update(this.model.state);
+//        this.view.update(this.model.state);
         
         this.model.subjectModelUpdateState.addObserver(function() {
             that.view.update(model.state);
@@ -23,6 +24,7 @@ class ToxinSliderPresenter implements SliderPresenter {
         this.view.subjectViewChangeCurrent.addObserver(function(currentValue) {
             that.model.executeMethod('setState', {current: currentValue});
         });
+        
     }
     
 }

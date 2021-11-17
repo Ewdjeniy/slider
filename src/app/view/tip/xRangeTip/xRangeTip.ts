@@ -17,6 +17,19 @@ class XRangeTip extends Tip implements SliderTip {
         }
     }
     
+    showTip(barEl, stepsAmount, start, end, step): number {
+        let outputValue: number;
+        
+        if (parseInt(barEl.style.width) <= stepsAmount) {
+            outputValue = +start + parseInt(barEl.style.width) * step;
+        } else {
+            outputValue = +end;
+        }
+        
+        this.tipEl.innerHTML = outputValue.toString(); 
+        return outputValue;
+    }
+    
     render(runnerEl): void {
         this.tipEl.className = "tip x-range-tip";
         runnerEl.append(this.tipEl);

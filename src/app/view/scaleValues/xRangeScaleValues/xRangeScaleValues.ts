@@ -1,7 +1,7 @@
 import './xRangeScaleValues.css';
 import ScaleValues from '../scaleValues.ts';
 
-class XRangeScaleValues extends ScaleValues {
+class XRangeScaleValues extends ScaleValues implements SliderScaleValues {
     
     constructor() {
         super();

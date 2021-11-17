@@ -9,15 +9,3 @@ export const defaultSliderSettingsModel: ToxinSliderOptions = {
     tip: true,
     separator: ' - '
 };
-
-export const defaultSliderSettingsView: SliderSettings = {
-    start: 0,
-    end: 100,
-    step: 1,
-    current: 25,
-    scaleValuesAmount: 2,
-    direction: 'x',
-    range: false,
-    tip: true,
-    separator: ' - '
-};

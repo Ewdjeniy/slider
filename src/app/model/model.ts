@@ -1,6 +1,6 @@
 import * as $ from 'jquery';
 import ObservableSubject from '../observers.ts';
-import { defaultSliderSettingsModel } from '../defaults.ts';
+import { defaultSliderSettingsModel } from './defaults.ts';
 
 class ToxinSliderModel implements SliderModel {
     

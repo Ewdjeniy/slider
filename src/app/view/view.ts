@@ -1,19 +1,33 @@
-import { defaultSliderSettingsView } from '../defaults.ts';
+import { defaultSliderSettingsView } from './defaults.ts';
 import ObservableSubject from '../observers.ts';
 import XOutput from './output/xOutput/xOutput.ts';
 import XRangeOutput from './output/xRangeOutput/xRangeOutput.ts';
+import YOutput from './output/yOutput/yOutput.ts';
+import YRangeOutput from './output/yRangeOutput/yRangeOutput.ts';
 import XScale from './scale/xScale/xScale.ts';
-import XRangeScaleValues from './scaleValues/xRangeScaleValues/xRangeScaleValues.ts';
-import XScaleValues from './scaleValues/xScaleValues/xScaleValues.ts';
 import XRangeScale from './scale/xRangeScale/xRangeScale.ts';
+import YScale from './scale/yScale/yScale.ts';
+import YRangeScale from './scale/yRangeScale/yRangeScale.ts';
+import XScaleValues from './scaleValues/xScaleValues/xScaleValues.ts';
+import XRangeScaleValues from './scaleValues/xRangeScaleValues/xRangeScaleValues.ts';
+import YScaleValues from './scaleValues/yScaleValues/yScaleValues.ts';
+import YRangeScaleValues from './scaleValues/yRangeScaleValues/yRangeScaleValues.ts';
 import XDiapason from './diapason/xDiapason/xDiapason.ts';
 import XRangeDiapason from './diapason/xRangeDiapason/xRangeDiapason.ts';
+import YDiapason from './diapason/yDiapason/yDiapason.ts';
+import YRangeDiapason from './diapason/yRangeDiapason/yRangeDiapason.ts';
 import XRunner from './runner/xRunner/xRunner.ts';
 import XRangeRunner from './runner/xRangeRunner/xRangeRunner.ts';
+import YRunner from './runner/yRunner/yRunner.ts';
+import YRangeRunner from './runner/yRangeRunner/yRangeRunner.ts';
 import XTip from './tip/xTip/xTip.ts';
 import XRangeTip from './tip/xRangeTip/xRangeTip.ts';
+import YTip from './tip/yTip/yTip.ts';
+import YRangeTip from './tip/yRangeTip/yRangeTip.ts';
 import XProgressBar from './progressBar/xProgressBar/xProgressBar.ts';
 import XRangeProgressBar from './progressBar/xRangeProgressBar/xRangeProgressBar.ts';
+import YProgressBar from './progressBar/yProgressBar/yProgressBar.ts';
+import YRangeProgressBar from './progressBar/yRangeProgressBar/yRangeProgressBar.ts';
 
 
 class ToxinSliderView implements SliderView {
@@ -177,11 +191,6 @@ class ToxinSliderView implements SliderView {
                 secondBarEl
             );
             
-            if(secondBarEl && parseFloat(getComputedStyle(that.state.progressBars[0].progressBarEl).width) > parseFloat(getComputedStyle(that.state.progressBars[1].progressBarEl).width)) {
-                that.state.progressBars[0].progressBarEl.style.width = size + 'em';
-                that.state.progressBars[1].progressBarEl.style.width = size + 'em';
-            }
-            
         };
         const changeOutput: voidFunction = function() {
             let secondBarEl: boolean | HTMLElement = false;
@@ -272,6 +281,36 @@ class ToxinSliderView implements SliderView {
                 }
                 
                 break;
+                
+            case 'y':
+                
+                this.state.output = this.sliderSettings.range ? new YRangeOutput(this.input) : new YOutput(this.input);
+                this.state.scale = this.sliderSettings.range ? new YRangeScale() : new YScale();
+                this.state.scaleValues = this.sliderSettings.range ? new YRangeScaleValues() : new YScaleValues();
+                if(this.sliderSettings.range) {
+                    this.state.diapasones.push(new YRangeDiapason());
+                    this.state.diapasones.push(new YRangeDiapason()); 
+                } else {
+                    this.state.diapasones.push(new YDiapason());
+                }
+                
+                for (let i = 0; i < this.state.diapasones.length; i++) {
+                    if (this.state.diapasones.length > 1) {
+                        this.state.runners.push(new YRangeRunner());
+                        if(this.sliderSettings.tip) {
+                            this.state.tips.push(new YRangeTip());
+                        }
+                        this.state.progressBars.push(new YRangeProgressBar());
+                    } else {
+                        this.state.runners.push(new YRunner());
+                        if(this.sliderSettings.tip) {
+                            this.state.tips.push(new YTip());
+                        }
+                        this.state.progressBars.push(new YProgressBar());
+                    }
+                }
+                
+                break;
         }
         
     }
@@ -316,13 +355,23 @@ class ToxinSliderView implements SliderView {
     update(settings: Object): void {
         
         this.sliderEl.remove();
+        this.sliderSettings = {
+            start: 23,
+            end: 133,
+            step: 3,
+            current: 33,
+            scaleValuesAmount: 3,
+            direction: 'x',
+            range: false,
+            tip: true,
+            separator: ' - '
+        }
         for (let key in settings) {
-            if (this.sliderSettings.hasOwnProperty(key)) {
+            if (key in this.sliderSettings) {
                 this.sliderSettings[key] = settings[key]; 
             }
         }
-        this.init();
-        
+        this.init();   
     }
 
 }

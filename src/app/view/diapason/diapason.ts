@@ -4,8 +4,7 @@ class Diapason {
     
     constructor() {
 
-    }
-    
+    }    
 };
 
 export default Diapason;
