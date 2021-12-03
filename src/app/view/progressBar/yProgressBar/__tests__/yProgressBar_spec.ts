@@ -71,11 +71,8 @@ const testYProgressBar = function(sliderSettings) {
         });
         
         it('Метод countProgressBarSize устанавливает высоту прогресс бара при наступлении события и возвращает это значение', function() {
-            
-            console.log(view.state.scale.scaleEl.getBoundingClientRect().bottom);
-            console.log(view.state.scale.scaleEl.getBoundingClientRect().top);
 
-            for (let i = view.state.scale.scaleEl.getBoundingClientRect().bottom ; i > view.state.scale.scaleEl.getBoundingClientRect().top; i-- ) {
+            for ( let i = view.state.scale.scaleEl.getBoundingClientRect().bottom ; i > view.state.scale.scaleEl.getBoundingClientRect().top; i-- ) {
                 const moveEvent = new PointerEvent("pointermove", {
                     clientY: i
                 });

@@ -21,6 +21,8 @@ import ObservableSubject from './observers.ts';
     $.fn.toxinSlider = function( method?: string | Object, args?: any ): JQuery {
         if ( typeof method === 'object' || !method ) {
             return init.apply( this, arguments );
+        } else if (method === 'get') {
+            return model.get[args]();        
         } else {
             return this.each(function() {
                 model.executeMethod(method, args);
@@ -29,3 +31,5 @@ import ObservableSubject from './observers.ts';
     };
 
 })( jQuery );
+
+$('.slider').toxinSlider();

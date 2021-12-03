@@ -7,25 +7,20 @@ class YOutput extends Output implements SliderOutput {
     }
     
     setCurrent(current, start, end): void {
-        if (current > end) {
-            this.outputEl.value = end.toString();
-        } else if (current < start) {
-            this.outputEl.value = start.toString();      
-        } else {
-            this.outputEl.value = current.toString();        
-        }
+        this.outputEl.value = current;        
     }
     
-    countOutputValue(elBar, stepsAmount, start, end, step): number {
+    countOutputValue(elBar, stepsAmount, start, end, step, decimalPlaces): number {
         let outputValue: number;
         
-        if (parseInt(elBar.style.height) <= stepsAmount) {
+        if (parseInt(elBar.style.height) < stepsAmount) {
             outputValue = +start + parseInt(elBar.style.height) * step;
         } else {
             outputValue = +end;
         }
         
-        this.outputEl.value = outputValue.toString(); 
+        outputValue = parseFloat(outputValue.toFixed(decimalPlaces));
+        this.outputEl.value = outputValue.toString();
         return outputValue;
     }
     

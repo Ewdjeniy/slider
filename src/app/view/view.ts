@@ -1,3 +1,4 @@
+import './view.css';
 import { defaultSliderSettingsView } from './defaults.ts';
 import ObservableSubject from '../observers.ts';
 import XOutput from './output/xOutput/xOutput.ts';
@@ -46,6 +47,7 @@ class ToxinSliderView implements SliderView {
         progressBars: [],
         stepsAmount: 0,
         stepsCoefficient: 0,
+        decimalPlaces: 0
     };   
     
     constructor(input: HTMLInputElement) {
@@ -66,34 +68,97 @@ class ToxinSliderView implements SliderView {
             };
         });
         this.state.scale.scaleEl.onpointerdown = this.updateSliderOnPointerDown.bind(this);
+        this.state.scaleValues.scaleValuesEl.onclick = this.updateSliderOnScaleValuesClick.bind(this);
     }
     
     getCurrentValue(): number | number[] {
         let current: number | number[];
-        if (this.sliderSettings.range) {
-            current = this.state.output.countOutputValue(
-                this.state.progressBars[0].progressBarEl,
-                this.state.stepsAmount,
-                this.sliderSettings.start,
-                this.sliderSettings.end,
-                this.sliderSettings.step,
-                this.state.progressBars[1].progressBarEl,
-                this.sliderSettings.separator
-            );
-        } else {
-            current = this.state.output.countOutputValue(
-                this.state.progressBars[0].progressBarEl,
-                this.state.stepsAmount,
-                this.sliderSettings.start,
-                this.sliderSettings.end,
-                this.sliderSettings.step
-            );
-        }
+        current = this.state.output.countOutputValue(
+            this.state.progressBars[0].progressBarEl,
+            this.state.stepsAmount,
+            this.sliderSettings.start,
+            this.sliderSettings.end,
+            this.sliderSettings.step,
+            this.state.decimalPlaces,
+            this.state.progressBars[1].progressBarEl,
+            this.sliderSettings.separator
+        );
         return current;
     }
     
+    updateSliderOnScaleValuesClick(e: PointerEvent): void {
+        
+        const scaleValueElements = this.state.scaleValues.scaleValuesEl.getElementsByClassName('scale-value');
+        const runnerIndex = this.returnNearestRunnerIndex(e);
+        let current: any;
+        
+        for (let i = 0; i < scaleValueElements.length; i++) {
+            if (scaleValueElements[i] == e.target) { 
+                if (this.sliderSettings.range) {
+                    current = this.state.output.outputEl.value.split(this.sliderSettings.separator);
+                    current[runnerIndex] = scaleValueElements[i].innerHTML;
+                } else {
+                    current = +scaleValueElements[i].innerHTML;
+                }
+                
+                this.state.progressBars[runnerIndex].setCurrent(current, this.sliderSettings.start, this.sliderSettings.end, this.sliderSettings.step, runnerIndex);
+                this.state.output.setCurrent(current, this.sliderSettings.start, this.sliderSettings.end, this.sliderSettings.separator);
+                this.state.tips.forEach((tip, i) => {
+                    tip.setCurrent(current, this.sliderSettings.start, this.sliderSettings.end, i);
+                });
+                this.subjectViewChangeCurrent.notifyObservers(current);
+                this.state.output.dispatchEvent();
+                return;
+            }
+        }
+        this.updateSliderOnPointerDown(e);
+        
+    }
+    
+    returnNearestRunnerIndex(e: PointerEvent): number {
+        
+        let nearestRunnerIndex;
+    
+        if (!this.sliderSettings.range) {
+            nearestRunnerIndex = 0;
+        } else {
+            
+            switch (this.sliderSettings.direction) {
+             
+                case 'x':
+                    if (e.clientX > this.state.runners[1].runnerEl.getBoundingClientRect().right) {
+                        nearestRunnerIndex = 1;
+                    } else if (e.clientX < this.state.runners[0].runnerEl.getBoundingClientRect().left) {
+                        nearestRunnerIndex = 0;
+                    } else if (
+                        e.clientX - (this.state.runners[0].runnerEl.getBoundingClientRect().left + parseFloat(getComputedStyle(this.state.runners[0].runnerEl).width) / 2) < (this.state.runners[1].runnerEl.getBoundingClientRect().left + parseFloat(getComputedStyle(this.state.runners[1].runnerEl).width) / 2) - e.clientX) {
+                        nearestRunnerIndex = 0;
+                    } else {
+                        nearestRunnerIndex = 1;
+                    }
+                    break;
+                    
+                case 'y':
+                    if (e.clientY < this.state.runners[1].runnerEl.getBoundingClientRect().top) {
+                        nearestRunnerIndex = 1;
+                    } else if (e.clientY > this.state.runners[0].runnerEl.getBoundingClientRect().bottom) {
+                        nearestRunnerIndex = 0;
+                    } else if (
+                        e.clientY - (this.state.runners[0].runnerEl.getBoundingClientRect().top + parseFloat(getComputedStyle(this.state.runners[0].runnerEl).height) / 2) > (this.state.runners[1].runnerEl.getBoundingClientRect().bottom + parseFloat(getComputedStyle(this.state.runners[1].runnerEl).height) / 2) - e.clientY) {
+                        nearestRunnerIndex = 0;
+                    } else {
+                        nearestRunnerIndex = 1;
+                    }
+                    break;
+
+            }
+            
+        }
+        return nearestRunnerIndex;
+    }
+    
     updateSliderOnPointerDown(e: PointerEvent): boolean {
-        let n: number;
+        let n: number = 0;
         let current: number | number[];
         
         for (var i = 0; i < this.state.runners.length; i++) {
@@ -105,20 +170,8 @@ class ToxinSliderView implements SliderView {
         if (i == 1) {
             i -= 1;
         } else {
-            if (e.clientX > this.state.runners[1].runnerEl.getBoundingClientRect().left) {
-                i = 1;
-                n = 0;
-            } else if (e.clientX < this.state.runners[0].runnerEl.getBoundingClientRect().left) {
-                i = 0;
-                n = 1;
-            } else if (
-                e.clientX - (this.state.runners[0].runnerEl.getBoundingClientRect().left + parseFloat(getComputedStyle(this.state.runners[0].runnerEl).width) / 2) < (this.state.runners[1].runnerEl.getBoundingClientRect().left + parseFloat(getComputedStyle(this.state.runners[1].runnerEl).width) / 2) - e.clientX) {
-                i = 0;
-                n = 1;
-            } else {
-                i = 1;
-                n = 0;
-            }
+            i = this.returnNearestRunnerIndex(e);
+            n = (i == 0) ? 1 : 0;
         }
         
         const mousePosOnRunner: number = parseFloat(getComputedStyle(this.state.runners[i].runnerEl).width) / 2;
@@ -128,25 +181,16 @@ class ToxinSliderView implements SliderView {
             this.state.scale.returnScaleStep(this.state.runners[i].runnerEl, this.state.stepsCoefficient, this.state.stepsAmount),
             mousePosOnRunner
         );
-        if (n ==0 || n ==1) {
-            current = this.state.output.countOutputValue(
-                this.state.progressBars[i].progressBarEl,
-                this.state.stepsAmount,
-                this.sliderSettings.start,
-                this.sliderSettings.end,
-                this.sliderSettings.step,
-                this.state.progressBars[n].progressBarEl,
-                this.sliderSettings.separator
-            );
-        } else {
-            current = this.state.output.countOutputValue(
-                this.state.progressBars[i].progressBarEl,
-                this.state.stepsAmount,
-                this.sliderSettings.start,
-                this.sliderSettings.end,
-                this.sliderSettings.step
-            );
-        }
+        current = this.state.output.countOutputValue(
+            this.state.progressBars[i].progressBarEl,
+            this.state.stepsAmount,
+            this.sliderSettings.start,
+            this.sliderSettings.end,
+            this.sliderSettings.step,
+            this.state.decimalPlaces,
+            this.state.progressBars[n].progressBarEl,
+            this.sliderSettings.separator
+        );
         
         this.state.tips.forEach((tip, j) => {
             tip.showTip(
@@ -154,20 +198,22 @@ class ToxinSliderView implements SliderView {
                 this.state.stepsAmount,
                 this.sliderSettings.start,
                 this.sliderSettings.end,
-                this.sliderSettings.step
+                this.sliderSettings.step,
+                this.state.decimalPlaces
             );
         });
         
         this.subjectViewChangeCurrent.notifyObservers(current);
+        this.state.output.dispatchEvent();
         
         return false;
         
     }  
     
-    updateSliderOnDragging(pointerDownEvent: PointerEvent, i): boolean {
+    updateSliderOnDragging(pointerDownEvent: PointerEvent, runnerIndex): boolean {
         
         const that = this;
-        const mousePosOnRunner: number = that.state.runners[i].returnMousePosOnRunner(pointerDownEvent);
+        const mousePosOnRunner: number = that.state.runners[runnerIndex].returnMousePosOnRunner(pointerDownEvent);
         const removeListenersFromDocument = function() {
             document.removeEventListener('pointermove', changeProgressBar);
             document.removeEventListener('pointermove', changeOutput);
@@ -179,14 +225,14 @@ class ToxinSliderView implements SliderView {
             let size: number;
             
             if (that.state.progressBars.length > 1) {
-                const n = (i == 0) ? 1 : 0;
+                const n = (runnerIndex == 0) ? 1 : 0;
                 secondBarEl = that.state.progressBars[n].progressBarEl;
             }
             
-            size = that.state.progressBars[i].countProgressBarSize(
+            size = that.state.progressBars[runnerIndex].countProgressBarSize(
                 moveEvent,
                 that.state.scale.returnScaleStart(),
-                that.state.scale.returnScaleStep(that.state.runners[i].runnerEl, that.state.stepsCoefficient, that.state.stepsAmount),
+                that.state.scale.returnScaleStep(that.state.runners[runnerIndex].runnerEl, that.state.stepsCoefficient, that.state.stepsAmount),
                 mousePosOnRunner,
                 secondBarEl
             );
@@ -195,20 +241,22 @@ class ToxinSliderView implements SliderView {
         const changeOutput: voidFunction = function() {
             let secondBarEl: boolean | HTMLElement = false;
             if (that.state.progressBars.length > 1) {
-                const n = (i == 0) ? 1 : 0;
+                const n = (runnerIndex == 0) ? 1 : 0;
                 secondBarEl = that.state.progressBars[n].progressBarEl;
             }
             
             let current: number | number[] = that.state.output.countOutputValue(
-                that.state.progressBars[i].progressBarEl,
+                that.state.progressBars[runnerIndex].progressBarEl,
                 that.state.stepsAmount,
                 that.sliderSettings.start,
                 that.sliderSettings.end,
                 that.sliderSettings.step,
+                that.state.decimalPlaces,
                 secondBarEl,
                 that.sliderSettings.separator
             );
             that.subjectViewChangeCurrent.notifyObservers(current);
+            that.state.output.dispatchEvent();
         };
         const changeTip: voidFunction = function() {
             that.state.tips.forEach((tip, j) => {
@@ -217,7 +265,8 @@ class ToxinSliderView implements SliderView {
                     that.state.stepsAmount,
                     that.sliderSettings.start,
                     that.sliderSettings.end,
-                    that.sliderSettings.step
+                    that.sliderSettings.step,
+                    that.state.decimalPlaces
                 );
             });
         };
@@ -233,22 +282,13 @@ class ToxinSliderView implements SliderView {
     
     setState(): void {
         
-        if (this.sliderSettings.range == true && !(this.sliderSettings.current instanceof Array)) {
-            this.sliderSettings.current = [this.sliderSettings.current, this.sliderSettings.current];
-        }
-        
-        if(this.sliderSettings.current instanceof Array) {
-            this.sliderSettings.range = true;
-        } else {
-            this.sliderSettings.range = false;
-        }
-        
         this.state.diapasones = [];
         this.state.runners = [];
         this.state.tips = [];
         this.state.progressBars = [];
         this.state.stepsAmount = Math.round((this.sliderSettings.end - this.sliderSettings.start) / this.sliderSettings.step);
         this.state.stepsCoefficient = ((this.sliderSettings.step * this.state.stepsAmount) / ((this.sliderSettings.end - this.sliderSettings.start) / 100)) / 100;
+        this.state.decimalPlaces = this.sliderSettings.step.toString().includes('.') ? this.sliderSettings.step.toString().split('.')[1].length : 0;
         
         switch (this.sliderSettings.direction) {
                 
@@ -316,7 +356,7 @@ class ToxinSliderView implements SliderView {
     }
     
     setElementsValues(): void {
-        this.state.scaleValues.setScaleValues(this.sliderSettings.scaleValuesAmount, this.sliderSettings.start, this.sliderSettings.end);
+        this.state.scaleValues.setScaleValues(this.sliderSettings.scaleValuesAmount, this.sliderSettings.start, this.sliderSettings.end, this.sliderSettings.step, this.state.decimalPlaces);
         if (this.state.diapasones.length > 1) {
             this.state.diapasones[0].diapasonEl.style.zIndex = +getComputedStyle(this.state.diapasones[0].diapasonEl).zIndex + 1;
             this.state.diapasones[0].diapasonEl.style.background = getComputedStyle(this.state.scale.scaleEl).background;     
@@ -324,7 +364,7 @@ class ToxinSliderView implements SliderView {
         
         this.state.progressBars.forEach((bar, i) => {
             bar.setFontSize(this.state.scale.returnScaleStep(this.state.runners[i].runnerEl, this.state.stepsCoefficient, this.state.stepsAmount));
-            bar.setCurrent(this.sliderSettings.current, this.sliderSettings.start, this.sliderSettings.step, i);
+            bar.setCurrent(this.sliderSettings.current, this.sliderSettings.start, this.sliderSettings.end, this.sliderSettings.step, i);
         });
         this.state.output.setCurrent(this.sliderSettings.current, this.sliderSettings.start, this.sliderSettings.end, this.sliderSettings.separator);
         this.state.tips.forEach((tip, i) => {
@@ -335,7 +375,15 @@ class ToxinSliderView implements SliderView {
     render(): void {
         
         this.sliderEl = document.createElement('div');
-        this.sliderEl.className = 'toxin-slider';
+        if (this.sliderSettings.direction == 'x' && !this.sliderSettings.range) {
+            this.sliderEl.className = 'x-toxin-slider';      
+        } else if (this.sliderSettings.direction == 'x' && this.sliderSettings.range) {
+            this.sliderEl.className = 'x-range-toxin-slider';
+        } else if (this.sliderSettings.direction == 'y' && !this.sliderSettings.range) {
+            this.sliderEl.className = 'y-toxin-slider';      
+        } else if (this.sliderSettings.direction == 'y' && this.sliderSettings.range) {
+            this.sliderEl.className = 'y-range-toxin-slider';
+        }
         this.input.after(this.sliderEl);
         this.state.scale.render(this.sliderEl);
         this.state.scaleValues.render(this.state.scale.scaleEl);
@@ -355,17 +403,17 @@ class ToxinSliderView implements SliderView {
     update(settings: Object): void {
         
         this.sliderEl.remove();
-        this.sliderSettings = {
-            start: 23,
-            end: 133,
-            step: 3,
-            current: 33,
-            scaleValuesAmount: 3,
-            direction: 'x',
-            range: false,
-            tip: true,
-            separator: ' - '
-        }
+//        this.sliderSettings = {
+//            start: 23,
+//            end: 133,
+//            step: 3,
+//            current: 33,
+//            scaleValuesAmount: 3,
+//            direction: 'x',
+//            range: false,
+//            tip: true,
+//            separator: ' - '
+//        }
         for (let key in settings) {
             if (key in this.sliderSettings) {
                 this.sliderSettings[key] = settings[key]; 
@@ -375,5 +423,6 @@ class ToxinSliderView implements SliderView {
     }
 
 }
+
 
 export default ToxinSliderView;

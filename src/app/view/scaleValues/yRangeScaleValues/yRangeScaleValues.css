@@ -1,22 +1,15 @@
 .y-range-scale-values {
-    font-size: 2em;
+    font-size: 1.5em;
+    margin-right: 0.5em;
     user-select: none;
-    display: flex;
+    display: inline-flex;
+    flex-direction: column-reverse;
+    height: 100%;
+    vertical-align: top;
     justify-content: space-between;
-    margin-top: 0.3em;
-}
-
-.scale-value {
-    width: 2em;
-    text-align: center;
-}
-
-.scale-first-value {
-    width: 2em;
-    text-align: left;
-}
-
-.scale-last-value {
-    width: 2em;
-    text-align: right;
+    cursor: pointer;
+    
+    .medium-value, .first-value, .last-value {
+        text-align: right;
+    }
 }

@@ -1,20 +1,22 @@
 .x-scale-values {
-    font-size: 2em;
+    font-size: 1.5em;
     user-select: none;
     display: flex;
     justify-content: space-between;
     margin-top: 0.3em;
-    .scale-value {
+    cursor: pointer;
+    
+    .medium-value {
         width: 2em;
         text-align: center;
     }
 
-    .scale-first-value {
+    .first-value {
         width: 2em;
         text-align: left;
     }
 
-    .scale-last-value {
+    .last-value {
         width: 2em;
         text-align: right;
     }

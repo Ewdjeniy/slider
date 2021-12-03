@@ -1,9 +1,15 @@
 .y-scale-values {
-    font-size: 2em;
+    font-size: 1.5em;
+    margin-right: 0.5em;
     user-select: none;
     display: inline-flex;
     flex-direction: column-reverse;
-    height: 500px;
+    height: 100%;
     vertical-align: top;
     justify-content: space-between;
+    cursor: pointer;
+    
+    .medium-value, .first-value, .last-value {
+        text-align: right;
+    }
 }

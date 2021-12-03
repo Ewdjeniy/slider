@@ -1,0 +1,7 @@
+.checkbox_checked .checkbox__box {
+    border-color: #BC9CFF !important;
+}
+
+.checkbox_checked .checkbox__checker {
+    display: block;
+}

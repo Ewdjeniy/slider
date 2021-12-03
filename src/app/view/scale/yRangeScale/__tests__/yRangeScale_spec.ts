@@ -54,8 +54,26 @@ const testYRangeScale = function(sliderSettings) {
             view.state.scale.scaleEl.remove();
             view.state.scale.render(view.sliderEl);
 
-            expect(view.state.scale.scaleEl.className).toBe('scale x-range-scale');
+            expect(view.state.scale.scaleEl.className).toBe('scale y-range-scale');
             expect(view.state.scale.scaleEl.parentElement).toBe(view.sliderEl);
+
+        });
+        
+        it('Метод returnScaleStart возвращает координату начала шкалы сложенную с шириной нижней границы и нижнего внутреннего отступа по оси Y', function() {
+            
+            const startScaleBottomPosition = view.state.scale.scaleEl.getBoundingClientRect().bottom + parseFloat(getComputedStyle(view.state.scale.scaleEl).borderBottom) + parseFloat(getComputedStyle(view.state.scale.scaleEl).paddingBottom);
+            
+            expect(view.state.scale.returnScaleStart()).toEqual(startScaleBottomPosition);
+            
+        });
+
+        it('Метод returnScaleStep возвращает длинну одного шага бегунка (1em для прогресс бара)', function() {
+            
+            view.state.progressBars.forEach((bar, i) => {
+                const scaleStep = view.state.scale.returnScaleStep(view.state.runners[i].runnerEl, view.state.stepsCoefficient, view.state.stepsAmount);
+
+                expect(scaleStep.toFixed(3)).toEqual(parseFloat(bar.progressBarEl.style.fontSize).toFixed(3));
+            });
 
         });
         

@@ -1,0 +1,11 @@
+.radio_checked {
+    .radio__circle {
+        border-color: #BC9CFF !important;
+    }
+    .radio__checker {
+        display: block;
+    }
+    .radio__label {
+        color: rgba(31, 32, 65, 0.75) !important;
+    }
+}

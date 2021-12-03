@@ -1,0 +1,15 @@
+mixin radio(label, checked, name)
+    if checked
+        div(class="radio radio_checked")
+            div(class="radio__wrapper")
+                .radio__circle
+                    input(type="radio" class="radio__inpt" name=name checked)&attributes(attributes)
+                    .radio__checker
+                span(class="radio__label")=label
+    else
+        .radio
+            div(class="radio__wrapper")
+                .radio__circle
+                    input(type="radio" class="radio__inpt" name=name)&attributes(attributes)
+                    .radio__checker
+                span(class="radio__label")=label

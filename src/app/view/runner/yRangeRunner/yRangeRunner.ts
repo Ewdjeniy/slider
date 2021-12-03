@@ -8,7 +8,7 @@ class YRangeRunner extends Runner implements SliderRunner {
     }
     
     returnMousePosOnRunner(pointerDownEvent: PointerEvent): number {
-        return pointerDownEvent.clientX - this.runnerEl.getBoundingClientRect().left;
+        return this.runnerEl.getBoundingClientRect().bottom - pointerDownEvent.clientY;
     }
     
     render(diapasoneEl): void {

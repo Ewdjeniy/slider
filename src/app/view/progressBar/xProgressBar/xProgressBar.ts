@@ -19,8 +19,11 @@ class XProgressBar extends ProgressBar implements SliderProgressBar {
         return size;
     }
     
-    setCurrent(current, start, step): void {
+    setCurrent(current, start, end, step): void {
         this.progressBarEl.style.width = Math.round((current - start) / step) + 'em';
+        if (current == end) {
+            this.progressBarEl.style.width = (end - start) / step + 'em'; 
+        }
     }
     
     render(el): void {

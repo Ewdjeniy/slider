@@ -49,6 +49,28 @@ const testYRangeOutput = function(sliderSettings) {
             expect(YRangeOutput).toBeDefined();
         });
         
+        it('метод setCurrent записывает значение, переданное в параметрах, в инпут', function() {
+            
+            let expectedArr = view.sliderSettings.current;
+            expectedArr[0] = (view.sliderSettings.current[0] >= view.sliderSettings.start) ? expectedArr[0] : view.sliderSettings.start;
+            expectedArr[0] = (view.sliderSettings.current[0] <= view.sliderSettings.end) ? expectedArr[0] : view.sliderSettings.end;
+            expectedArr[1] = (view.sliderSettings.current[1] >= view.sliderSettings.start) ? expectedArr[1] : view.sliderSettings.start;
+            expectedArr[1] = (view.sliderSettings.current[1] <= view.sliderSettings.end) ? expectedArr[1] : view.sliderSettings.end;
+
+            view.state.output.setCurrent(expectedArr, view.sliderSettings.start, view.sliderSettings.end, view.sliderSettings.separator);
+
+            expect(view.state.output.outputEl.value).toEqual(expectedArr[0] + view.sliderSettings.separator + expectedArr[1]);
+
+        });
+        
+        it('countOutputValue переписывает значение инпута в зависимости от высот прогресс баров и возвращает это значение', function() {
+
+            const outputValue: number[] = view.state.output.countOutputValue(view.state.progressBars[0].progressBarEl, view.state.stepsAmount, view.sliderSettings.start, view.sliderSettings.end, view.sliderSettings.step, view.state.progressBars[1].progressBarEl, view.sliderSettings.separator);
+
+            expect(outputValue[0] + view.sliderSettings.separator + outputValue[1]).toEqual(inpt.value);
+
+        });
+        
     });
 
 }

@@ -1,0 +1,46 @@
+/*блок элемента*/
+.radio {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    cursor: pointer;
+}
+
+/*оболочки радио инпутов*/
+.radio__wrapper {
+    display: flex;
+}
+
+/*радио инпут*/
+.radio__circle {
+    width: 1.43em;
+    height: 1.43em;
+    border: 1px solid rgba(31, 32, 65, 0.25);
+    border-radius: 50%;
+    margin: 0.2em 0.7em 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/*чекер радио инпута*/
+.radio__checker {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-image: linear-gradient(180deg, #BC9CFF 0%, #8BA4F9 100%);
+    width: 0.86em;
+    height: 0.86em;
+    display: none;
+}
+
+/*лейбл радио инпута*/
+.radio__label {
+    color: rgba(31, 32, 65, 0.5);
+    user-select: none;
+}
+
+.radio__inpt {
+    display: none;
+}

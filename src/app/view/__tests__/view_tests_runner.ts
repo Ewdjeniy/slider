@@ -183,10 +183,6 @@ const testsRunner: any = {
                 that.testRunner(sliderSettings).testItselfWithSubClass(testXRunner);
                 that.testScale(sliderSettings).testItselfWithSubClass(testXScale);
                 that.testScaleValues(sliderSettings).testItselfWithSubClass(testXScaleValues);
-                that.testProgressBar('XProgressBar', that.testXProgressBar);
-                that.testRunner('XRunner', that.testXRunner);
-                that.testScale('XScale', that.testXScale);
-                that.testScaleValues('XScaleValues', that.testXScaleValues);
                 if (that.settings.tip) {
                     that.testTip(sliderSettings).testItselfWithSubClass(testXTip);
                 }
@@ -197,10 +193,6 @@ const testsRunner: any = {
                 that.testRunner(sliderSettings).testItselfWithSubClass(testXRangeRunner);
                 that.testScale(sliderSettings).testItselfWithSubClass(testXRangeScale);
                 that.testScaleValues(sliderSettings).testItselfWithSubClass(testXRangeScaleValues);
-                that.testProgressBar('XProgressBar', that.testXRangeProgressBar);
-                that.testRunner('XRunner', that.testXRangeRunner);
-                that.testScale('XScale', that.testXRangeScale);
-                that.testScaleValues('XScaleValues', that.testXRangeScaleValues);
                 if (that.settings.tip) {
                     that.testTip(sliderSettings).testItselfWithSubClass(testXRangeTip);
                 }
@@ -213,6 +205,16 @@ const testsRunner: any = {
                 that.testScaleValues(sliderSettings).testItselfWithSubClass(testYScaleValues);
                 if (that.settings.tip) {
                     that.testTip(sliderSettings).testItselfWithSubClass(testYTip);
+                }
+            }  else if (that.settings.direction == 'y' && that.settings.range) {
+                that.testDiapason(sliderSettings).testItselfWithSubClass(testYRangeDiapason);
+                that.testOutput(sliderSettings).testItselfWithSubClass(testYRangeOutput);
+                that.testProgressBar(sliderSettings).testItselfWithSubClass(testYRangeProgressBar);
+                that.testRunner(sliderSettings).testItselfWithSubClass(testYRangeRunner);
+                that.testScale(sliderSettings).testItselfWithSubClass(testYRangeScale);
+                that.testScaleValues(sliderSettings).testItselfWithSubClass(testYRangeScaleValues);
+                if (that.settings.tip) {
+                    that.testTip(sliderSettings).testItselfWithSubClass(testYRangeTip);
                 }
             }
         }
@@ -229,7 +231,11 @@ const testsRunner: any = {
 testsRunner.startArr = [testsRunner.settings.start, testsRunner.settings.start + 1, 1];
 testsRunner.endArr = [testsRunner.settings.end, testsRunner.settings.end + 1, 1];
 testsRunner.stepArr = [testsRunner.settings.step, testsRunner.settings.step + 1, 1];
-testsRunner.currentArr = [testsRunner.settings.current, testsRunner.settings.current + 1, 1];
+if (testsRunner.currentArr instanceof Array) {
+    testsRunner.currentArr = [[testsRunner.settings.current[0], testsRunner.settings.current[0] + 1, 1], [testsRunner.settings.current[1], testsRunner.settings.current[1] + 1, 1]];
+} else {
+    testsRunner.currentArr = [testsRunner.settings.current, testsRunner.settings.current + 1, 1];
+}
 testsRunner.scaleValuesAmountArr = [testsRunner.settings.scaleValuesAmount, testsRunner.settings.scaleValuesAmount + 1, 1];
 
 //testsRunner.settings.direction = 'x';

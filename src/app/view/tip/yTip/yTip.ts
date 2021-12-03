@@ -8,25 +8,19 @@ class YTip extends Tip implements SliderTip {
     }
     
     setCurrent(current, start, end): void {
-        if (current > end) {
-            this.tipEl.innerHTML = end.toString();
-        } else if (current < start) {
-            this.tipEl.innerHTML = start.toString();      
-        } else {
-            this.tipEl.innerHTML = current.toString();        
-        }
+        this.tipEl.innerHTML = current;        
     }
     
-    showTip(barEl, stepsAmount, start, end, step): number {
+    showTip(barEl, stepsAmount, start, end, step, decimalPlaces): number {
         let outputValue: number;
         
-        if (parseInt(barEl.style.height) <= stepsAmount) {
+        if (parseInt(barEl.style.height) < stepsAmount) {
             outputValue = +start + parseInt(barEl.style.height) * step;
         } else {
             outputValue = +end;
         }
         
-        this.tipEl.innerHTML = outputValue.toString(); 
+        this.tipEl.innerHTML = outputValue.toFixed(decimalPlaces); 
         return outputValue;
     }
     

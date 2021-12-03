@@ -36,16 +36,42 @@ const testYRangeTip = function(sliderSettings) {
             expect(YRangeTip).toBeDefined();
         });
 
-        it('Метод render вставляет div с классом "tip x-range-tip" в элемент, переданный в параметрах', function() {
+        it('Метод render вставляет div с классом "tip y-range-tip" в элемент, переданный в параметрах', function() {
 
             view.state.tips.forEach((tip, i) => {
 
                 tip.tipEl.remove();
                 tip.render(view.state.runners[i].runnerEl);
 
-                expect(tip.tipEl.className).toBe('tip x-range-tip');
+                expect(tip.tipEl.className).toBe('tip y-range-tip');
                 expect(tip.tipEl.parentElement).toBe(view.state.runners[i].runnerEl);
 
+            });
+
+        });
+        
+        it('Метод setCurrent устанавливает значение элемента', function() {
+
+            view.state.tips.forEach((tip, i) => {
+                let expectedValue = view.sliderSettings.current[i];
+                expectedValue = (view.sliderSettings.current[i] >= view.sliderSettings.start) ? expectedValue : view.sliderSettings.start;
+                expectedValue = (view.sliderSettings.current[i] <= view.sliderSettings.end) ? expectedValue : view.sliderSettings.end;
+
+                
+                view.state.tips[i].setCurrent(view.sliderSettings.current, view.sliderSettings.start, view.sliderSettings.end, i);
+                
+                expect(expectedValue.toString()).toEqual(view.state.tips[i].tipEl.innerHTML);
+            });
+
+        });
+        
+        it('Метод showTip переписывает значения элементов в зависимости от длин прогресс баров и возвращает эти значения', function() {
+
+            view.state.tips.forEach((tip, i) => {
+
+                const tipValue = view.state.tips[i].showTip(view.state.progressBars[i].progressBarEl, view.state.stepsAmount, view.sliderSettings.start, view.sliderSettings.end, view.sliderSettings.step)
+
+                expect(tipValue.toString()).toEqual(view.state.tips[i].tipEl.innerHTML);
             });
 
         });

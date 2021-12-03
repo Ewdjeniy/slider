@@ -1,22 +1,23 @@
 .x-range-scale-values {
-    font-size: 2em;
+    font-size: 1.5em;
     user-select: none;
     display: flex;
     justify-content: space-between;
     margin-top: 0.3em;
-}
+    cursor: pointer;
+    
+    .medium-value {
+        width: 2em;
+        text-align: center;
+    }
 
-.scale-value {
-    width: 2em;
-    text-align: center;
-}
+    .first-value {
+        width: 2em;
+        text-align: left;
+    }
 
-.scale-first-value {
-    width: 2em;
-    text-align: left;
-}
-
-.scale-last-value {
-    width: 2em;
-    text-align: right;
+    .last-value {
+        width: 2em;
+        text-align: right;
+    }
 }

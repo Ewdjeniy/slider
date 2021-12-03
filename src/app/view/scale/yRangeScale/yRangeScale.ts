@@ -8,11 +8,11 @@ class YRangeScale extends Scale implements SliderScale {
     }
     
     returnScaleStart(): number {
-        return 0;
+        return this.scaleEl.getBoundingClientRect().bottom + parseInt(getComputedStyle(this.scaleEl).borderBottomWidth) + parseInt(getComputedStyle(this.scaleEl).paddingBottom);
     }
     
     returnScaleStep(runnerEl, stepsCoefficient, stepsAmount): number {
-        return 0; 
+        return (parseInt(getComputedStyle(this.scaleEl).height) * stepsCoefficient - parseInt(getComputedStyle(runnerEl).height)) / stepsAmount; 
     }
     
     render(sliderEl): void {

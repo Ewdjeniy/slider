@@ -8,25 +8,19 @@ class XRangeTip extends Tip implements SliderTip {
     }
     
     setCurrent(current, start, end, i): void {
-        if (current > end) {
-            this.tipEl.innerHTML = end.toString();
-        } else if (current < start) {
-            this.tipEl.innerHTML = start.toString();      
-        } else {
-            this.tipEl.innerHTML = current[i].toString();        
-        }
+        this.tipEl.innerHTML = current[i];        
     }
     
-    showTip(barEl, stepsAmount, start, end, step): number {
+    showTip(barEl, stepsAmount, start, end, step, decimalPlaces): number {
         let outputValue: number;
         
-        if (parseInt(barEl.style.width) <= stepsAmount) {
+        if (parseInt(barEl.style.width) < stepsAmount) {
             outputValue = +start + parseInt(barEl.style.width) * step;
         } else {
             outputValue = +end;
         }
         
-        this.tipEl.innerHTML = outputValue.toString(); 
+        this.tipEl.innerHTML = outputValue.toFixed(decimalPlaces); 
         return outputValue;
     }
     

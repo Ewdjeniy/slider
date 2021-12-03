@@ -6,26 +6,19 @@ class XRangeOutput extends Output implements SliderOutput {
     }
     
     setCurrent(current, start, end, separator): void {
-        current.forEach((value) => {
-            if (value > end) {
-                value = end;
-            } else if (value < start) {
-                value = start;      
-            }
-        })
         this.outputEl.value = current[0] + separator + current[1];
     }
     
-    countOutputValue(elBar, stepsAmount, start, end, step, secondElBar, separator): [number, number] {
+    countOutputValue(elBar, stepsAmount, start, end, step, decimalPlaces, secondElBar, separator): [number, number] {
         let outputValue: [number, number] = [0, 0];
         
-        if (parseFloat(elBar.style.width) <= stepsAmount) {
+        if (parseFloat(elBar.style.width) < stepsAmount) {
             outputValue[0] = start + parseInt(elBar.style.width) * step;
         } else {
             outputValue[0] = end;
         }
         
-        if (parseFloat(secondElBar.style.width) <= stepsAmount) {
+        if (parseFloat(secondElBar.style.width) < stepsAmount) {
             outputValue[1] = start + parseInt(secondElBar.style.width) * step;
         } else {
             outputValue[1] = end;
@@ -35,6 +28,7 @@ class XRangeOutput extends Output implements SliderOutput {
             outputValue = [outputValue[1], outputValue[0]];         
         }
         
+        outputValue = [parseFloat(outputValue[0].toFixed(decimalPlaces)), parseFloat(outputValue[1].toFixed(decimalPlaces))];
         this.outputEl.value = outputValue[0].toString() + separator + outputValue[1].toString();
         return outputValue;
     }

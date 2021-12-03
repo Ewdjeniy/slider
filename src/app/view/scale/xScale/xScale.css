@@ -1,8 +1,7 @@
 .x-scale {
-    margin-top: 15px;
-    font-size: 0.625rem;
+    margin-top: 4em;
     width: 100%;
-    height: 4em;
+    height: 0.5em;
     border: 1px solid rgba(31, 32, 65, 0.25);
     border-radius: 3em;
     display: flex;
@@ -10,45 +9,3 @@
     position: relative;
     background-color: white;
 }
-
-
-
-
-/*
-.x-scale {
-    margin-top: 15px;
-    .scale {
-        font-size: 0.625rem;
-        width: 100%;
-        height: 4em;
-        border: 1px solid rgba(31, 32, 65, 0.25);
-        border-radius: 3em;
-        display: flex;
-        align-items: center;
-        position: relative;
-        background-color: white;
-    }
-
-    .scale-values {
-        font-size: 2em;
-        user-select: none;
-        display: flex;
-        justify-content: space-between;
-        margin-top: 0.3em;
-    }
-    
-    .scale-value {
-        width: 2em;
-        text-align: center;
-    }
-    
-    .scale-first-value {
-        width: 2em;
-        text-align: left;
-    }
-    
-    .scale-last-value {
-        width: 2em;
-        text-align: right;
-    }
-}*/

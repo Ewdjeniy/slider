@@ -1,9 +1,12 @@
+include ../../components/inptNumber/inptNumber
+include ../../components/sliderWithPanel/sliderWithPanel
+
 doctype html
 html
     head
         meta(charset="utf-8")
         title Slider
     body
-        div(style="width: 1000px; padding: 0 20px 0 20px; height: 35em; margin-left: 5em;")
-            input(type="text" class="slider")
+        div(class="container")
+            +sliderWithPanel(class="first-slider")               
     

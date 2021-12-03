@@ -30,13 +30,13 @@ const testYRangeScaleValues = function(sliderSettings) {
             expect(YRangeScaleValues).toBeDefined();
         });
 
-        it('Отрисовывает шкалу значений с классом "sсale-values x-range-scale-values" за элементом, переданном в параметрах', function() {
+        it('Отрисовывает шкалу значений с классом "sсale-values y-range-scale-values" перед элементом, переданном в параметрах', function() {
 
             view.state.scaleValues.scaleValuesEl.remove();
             view.state.scaleValues.render(view.state.scale.scaleEl);
 
-            expect(view.state.scaleValues.scaleValuesEl.className).toBe('sсale-values x-range-scale-values');
-            expect(view.state.scaleValues.scaleValuesEl.previousElementSibling).toBe(view.state.scale.scaleEl);
+            expect(view.state.scaleValues.scaleValuesEl.className).toBe('sсale-values y-range-scale-values');
+            expect(view.state.scaleValues.scaleValuesEl.nextElementSibling).toBe(view.state.scale.scaleEl);
          });
         
     });

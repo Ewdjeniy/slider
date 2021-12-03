@@ -1,0 +1,35 @@
+include ../inptNumber/inptNumber
+include ../radio/radio
+include ../checkbox/checkbox
+
+mixin sliderWithPanel
+    form(class="slider-with-panel")
+        .slider-with-panel__panel
+            .slider-with-panel__tip-div
+                +checkbox('Элемент', false, 'tip')(class="slider-with-panel__tip-inpt")
+            .slider-with-panel__current-div
+                .slider-with-panel__from-div
+                    h3 От
+                    +inptNumber()(class="slider-with-panel__from-inpt")
+                .slider-with-panel__to-div
+                    h3 До
+                    +inptNumber()(class="slider-with-panel__to-inpt")
+            .slider-with-panel__min-div
+                h3 Минимальное
+                +inptNumber()(class="slider-with-panel__min-inpt")
+            .slider-with-panel__max-div
+                h3 Максимальное
+                +inptNumber()(class="slider-with-panel__max-inpt")
+            .slider-with-panel__step-div
+                h3 Шаг
+                +inptNumber()(class="slider-with-panel__step-inpt" min="0")
+            .slider-with-panel__scale-values-div
+                h3 Значения шкалы
+                +inptNumber()(class="slider-with-panel__scale-values-inpt")
+            .slider-with-panel__direction-div
+                +radio('Горизонтальный', false, 'direction')(class="slider-with-panel__direction-inpt")
+                +radio('Вертикальный', false, 'direction')(class="slider-with-panel__direction-inpt")
+            .slider-with-panel__range-div
+                +radio('Одиночный', false, 'range')(class="slider-with-panel__range-inpt")
+                +radio('Интервал', false, 'range')(class="slider-with-panel__range-inpt")
+        input(type="text" class="slider-with-panel__slider")&attributes(attributes)

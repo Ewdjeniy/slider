@@ -7,8 +7,11 @@ class XRangeProgressBar extends ProgressBar implements SliderProgressBar {
         super();
     }
     
-    setCurrent(current, start, step, i): void {
+    setCurrent(current, start, end, step, i): void {
         this.progressBarEl.style.width = Math.round((current[i] - start) / step) + 'em';
+        if (current[i] == end) {
+            this.progressBarEl.style.width = (end - start) / step + 'em'; 
+        }
     }
     
     countProgressBarSize(event: PointerEvent, scaleStartX, scaleStep, mousePosOnRunner, el): number {

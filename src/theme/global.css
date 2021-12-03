@@ -1,0 +1,34 @@
+@import "./variables.css";
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    @media screen and (max-width: 767px) {
+        font-size: 18px;
+    }
+    @media screen and (min-width: 768px) and (max-width: 991px) {
+        font-size: 14px;
+    }
+}
+
+h1 {
+    @extend %H1;
+}
+
+h2 {
+    @extend %H2;
+}
+
+h3 {
+    @extend %H3;
+}
+
+body {
+    @extend %Body;
+    overflow-x: hidden;
+    padding-top: 5em;
+}

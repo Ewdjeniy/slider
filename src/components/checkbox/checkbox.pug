@@ -1,0 +1,13 @@
+mixin checkbox(label, checked, name)
+    if checked
+        div(class="checkbox checkbox_checked")
+            input(class="checkbox__inpt" type="checkbox" name=name checked)&attributes(attributes)
+            div(class="checkbox__box")
+                div(class="checkbox__checker")
+            span(class="checkbox__label")=label
+    else
+        div(class="checkbox")
+            input(class="checkbox__inpt" type="checkbox" name=name)&attributes(attributes)
+            div(class="checkbox__box")
+                div(class="checkbox__checker")
+            span(class="checkbox__label")=label

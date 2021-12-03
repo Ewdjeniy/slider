@@ -49,16 +49,37 @@ const testYRangeRunner = function(sliderSettings) {
             expect(YRangeRunner).toBeDefined();
         });
 
-        it('Метод render вставляет бегунок с классом "runner x-range-runner" в элемент, переданный в параметрах', function() {
+        it('Метод render вставляет бегунок с классом "runner y-range-runner" в элемент, переданный в параметрах', function() {
 
             view.state.runners.forEach((runner, i) => {
 
                 view.state.runners[i].runnerEl.remove();
                 view.state.runners[i].render(view.state.diapasones[i].diapasonEl);
 
-                expect(view.state.runners[i].runnerEl.className).toBe('runner x-range-runner');
+                expect(view.state.runners[i].runnerEl.className).toBe('runner y-range-runner');
                 expect(view.state.runners[i].runnerEl.parentElement).toBe(view.state.diapasones[i].diapasonEl); 
 
+            });
+
+        });
+        
+        it('Метод returnMousePosOnRunner возвращает разницу координат срабатывания события pointerdown и начала бегунка по оси Y', function() {
+
+            view.state.runners.forEach((runner, j) => {
+                
+                const runnerStart = view.state.runners[j].runnerEl.getBoundingClientRect().bottom;
+                const runnerEnd = view.state.runners[j].runnerEl.getBoundingClientRect().top;
+                
+                
+                for (let i = runnerStart; i >= runnerEnd; i--) {
+                    const downEvent = new PointerEvent("pointerdown", {
+                        clientY: i
+                    });
+                    const upEvent = new PointerEvent("pointerup", {});
+                    view.state.runners[j].runnerEl.dispatchEvent(downEvent);
+                    expect(view.state.runners[j].returnMousePosOnRunner(downEvent)).toEqual(runnerStart - i);
+                    document.dispatchEvent(upEvent);
+                } 
             });
 
         });
