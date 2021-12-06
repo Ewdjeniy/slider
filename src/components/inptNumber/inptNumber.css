@@ -30,14 +30,6 @@
     user-select: none;
 }
 
-/*
-.inpt-number__value {
-    min-width: 3em;
-    @extend %H3;
-    text-align: center;
-}
-*/
-
 .inpt-number__value {
     width: 3em;
     min-width: 3em;

@@ -6,13 +6,17 @@ class ToxinSliderModel implements SliderModel {
     
     subjectModelUpdateState: ObservableSubject = new ObservableSubject();
     subjectModelChangeCurrent: ObservableSubject = new ObservableSubject();
-    state: ToxinSliderOptions = defaultSliderSettingsModel;
+    state: ToxinSliderOptions = {};
     
     constructor(options?: ToxinSliderOptions) {
-        this.setState(options);
+        for (let key in defaultSliderSettingsModel) {
+            this.state[key] = defaultSliderSettingsModel[key];
+        }
+        
         for (let key in this.get) {
             this.get[key] = this.get[key].bind(this);
         }
+        this.setState(options);
     }
     
     public executeMethod(method: string, args: any): void {
@@ -81,7 +85,6 @@ class ToxinSliderModel implements SliderModel {
     
     protected update(options: ToxinSliderOptions): void {
         this.setState(options);
-        this.synchronizeSettings();
         this.subjectModelUpdateState.notifyObservers();
     }
     

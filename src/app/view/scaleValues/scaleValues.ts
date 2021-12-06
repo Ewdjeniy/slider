@@ -10,7 +10,7 @@ class ScaleValues {
         if (scaleValuesAmount == 1) {
             this.scaleValuesEl.innerHTML = '<span class="scale-value first-value">' + start + '</span>'; 
         } else if (scaleValuesAmount == 2) {
-            this.scaleValuesEl.innerHTML = '<span class="scale-value first-value">' + start + '</span>' + '<span class="scale-last-value">' + end + '</span>';      
+            this.scaleValuesEl.innerHTML = '<span class="scale-value first-value">' + start + '</span>' + '<span class="scale-value last-value">' + end + '</span>';      
         } else if (scaleValuesAmount > 2) {
             let result: string = '<span class="scale-value first-value">' + start + '</span>';
             for (let i = 1; i < scaleValuesAmount - 1; i++) {

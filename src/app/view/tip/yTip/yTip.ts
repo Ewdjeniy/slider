@@ -20,7 +20,7 @@ class YTip extends Tip implements SliderTip {
             outputValue = +end;
         }
         
-        this.tipEl.innerHTML = outputValue.toFixed(decimalPlaces); 
+        this.tipEl.innerHTML = parseFloat(outputValue.toFixed(decimalPlaces)).toString(); 
         return outputValue;
     }
     

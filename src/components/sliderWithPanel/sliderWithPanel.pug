@@ -4,32 +4,31 @@ include ../checkbox/checkbox
 
 mixin sliderWithPanel
     form(class="slider-with-panel")
+        input(type="text" class="slider-with-panel__slider")&attributes(attributes)
         .slider-with-panel__panel
             .slider-with-panel__tip-div
                 +checkbox('Элемент', false, 'tip')(class="slider-with-panel__tip-inpt")
-            .slider-with-panel__current-div
-                .slider-with-panel__from-div
-                    h3 От
-                    +inptNumber()(class="slider-with-panel__from-inpt")
-                .slider-with-panel__to-div
-                    h3 До
-                    +inptNumber()(class="slider-with-panel__to-inpt")
+            .slider-with-panel__from-div
+                h3 От
+                +inptNumber()(class="slider-with-panel__from-inpt")
+            .slider-with-panel__to-div
+                h3 До
+                +inptNumber()(class="slider-with-panel__to-inpt")
             .slider-with-panel__min-div
-                h3 Минимальное
+                h3 Мин
                 +inptNumber()(class="slider-with-panel__min-inpt")
             .slider-with-panel__max-div
-                h3 Максимальное
+                h3 Макс
                 +inptNumber()(class="slider-with-panel__max-inpt")
             .slider-with-panel__step-div
                 h3 Шаг
                 +inptNumber()(class="slider-with-panel__step-inpt" min="0")
             .slider-with-panel__scale-values-div
-                h3 Значения шкалы
+                h3 Шкала
                 +inptNumber()(class="slider-with-panel__scale-values-inpt")
             .slider-with-panel__direction-div
-                +radio('Горизонтальный', false, 'direction')(class="slider-with-panel__direction-inpt")
-                +radio('Вертикальный', false, 'direction')(class="slider-with-panel__direction-inpt")
+                +radio('Гор-ль', false, 'direction')(class="slider-with-panel__direction-inpt")
+                +radio('Вер-ль', false, 'direction')(class="slider-with-panel__direction-inpt")
             .slider-with-panel__range-div
-                +radio('Одиночный', false, 'range')(class="slider-with-panel__range-inpt")
-                +radio('Интервал', false, 'range')(class="slider-with-panel__range-inpt")
-        input(type="text" class="slider-with-panel__slider")&attributes(attributes)
+                +radio('Один', false, 'range')(class="slider-with-panel__range-inpt")
+                +radio('Диапазон', false, 'range')(class="slider-with-panel__range-inpt")

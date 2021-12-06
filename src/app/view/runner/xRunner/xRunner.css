@@ -8,4 +8,5 @@
     flex-shrink: 0;
     display: flex;
     justify-content: center;
+    touch-action: none;
 }

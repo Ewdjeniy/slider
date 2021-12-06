@@ -12,7 +12,7 @@ for (let i = 0; i < inptNumbers.length; i++) {
     
     inpt.addEventListener('input', function() {
         value.value = inpt.value;
-        value.style.width = ((value.value.length + 1) * 8) + 'px';
+        value.style.width = ((value.value.length + 1) * 0.5) + 'rem';
     });
     
     value.oninput = function() {
@@ -36,10 +36,6 @@ for (let i = 0; i < inptNumbers.length; i++) {
         }, 120);
     }
     
-    plus.onpointerup = function() {
-        clearInterval(stepIntervalId);
-    }
-    
     minus.onclick = function() {
         inpt.stepDown();
         value.value = inpt.value;
@@ -54,8 +50,8 @@ for (let i = 0; i < inptNumbers.length; i++) {
         }, 120);
     }
     
-    minus.onpointerup = function() {
+    document.addEventListener('pointerup', function() {
         clearInterval(stepIntervalId);
-    }
+    });
     
 }

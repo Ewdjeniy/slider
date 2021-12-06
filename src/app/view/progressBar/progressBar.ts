@@ -6,7 +6,7 @@ class ProgressBar {
     progressBarEl: HTMLElement = document.createElement('div');
     
     constructor() {
-
+        
     }
     
     setFontSize(scaleStepVal): void {

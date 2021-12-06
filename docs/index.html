@@ -3,10 +3,11 @@
   <head>
     <meta charset="utf-8">
     <title>Slider</title>
-  <link href="slider.css?b3fb2fac76255dcc07a4" rel="stylesheet"></head>
+  <link href="slider.css?b1eefc6244acdaa3a2ba" rel="stylesheet"></head>
   <body>
     <div class="container">
       <form class="slider-with-panel">
+        <input class="slider-with-panel__slider first-slider" type="text">
         <div class="slider-with-panel__panel">
           <div class="slider-with-panel__tip-div">
             <div class="checkbox">
@@ -16,28 +17,26 @@
               </div><span class="checkbox__label">Элемент</span>
             </div>
           </div>
-          <div class="slider-with-panel__current-div">
-            <div class="slider-with-panel__from-div">
-              <h3>От</h3>
-              <div class="inpt-number">
-                <div class="inpt-number__minus">-</div>
-                <input class="inpt-number__inpt slider-with-panel__from-inpt" type="number">
-                <input class="inpt-number__value" type="text" value="0">
-                <div class="inpt-number__plus">+</div>
-              </div>
+          <div class="slider-with-panel__from-div">
+            <h3>От</h3>
+            <div class="inpt-number">
+              <div class="inpt-number__minus">-</div>
+              <input class="inpt-number__inpt slider-with-panel__from-inpt" type="number">
+              <input class="inpt-number__value" type="text" value="0">
+              <div class="inpt-number__plus">+</div>
             </div>
-            <div class="slider-with-panel__to-div">
-              <h3>До</h3>
-              <div class="inpt-number">
-                <div class="inpt-number__minus">-</div>
-                <input class="inpt-number__inpt slider-with-panel__to-inpt" type="number">
-                <input class="inpt-number__value" type="text" value="0">
-                <div class="inpt-number__plus">+</div>
-              </div>
+          </div>
+          <div class="slider-with-panel__to-div">
+            <h3>До</h3>
+            <div class="inpt-number">
+              <div class="inpt-number__minus">-</div>
+              <input class="inpt-number__inpt slider-with-panel__to-inpt" type="number">
+              <input class="inpt-number__value" type="text" value="0">
+              <div class="inpt-number__plus">+</div>
             </div>
           </div>
           <div class="slider-with-panel__min-div">
-            <h3>Минимальное</h3>
+            <h3>Мин</h3>
             <div class="inpt-number">
               <div class="inpt-number__minus">-</div>
               <input class="inpt-number__inpt slider-with-panel__min-inpt" type="number">
@@ -46,7 +45,7 @@
             </div>
           </div>
           <div class="slider-with-panel__max-div">
-            <h3>Максимальное</h3>
+            <h3>Макс</h3>
             <div class="inpt-number">
               <div class="inpt-number__minus">-</div>
               <input class="inpt-number__inpt slider-with-panel__max-inpt" type="number">
@@ -64,7 +63,7 @@
             </div>
           </div>
           <div class="slider-with-panel__scale-values-div">
-            <h3>Значения шкалы</h3>
+            <h3>Шкала</h3>
             <div class="inpt-number">
               <div class="inpt-number__minus">-</div>
               <input class="inpt-number__inpt slider-with-panel__scale-values-inpt" type="number">
@@ -78,7 +77,7 @@
                 <div class="radio__circle">
                   <input class="radio__inpt slider-with-panel__direction-inpt" type="radio" name="direction">
                   <div class="radio__checker"></div>
-                </div><span class="radio__label">Горизонтальный</span>
+                </div><span class="radio__label">Гор-ль</span>
               </div>
             </div>
             <div class="radio">
@@ -86,7 +85,7 @@
                 <div class="radio__circle">
                   <input class="radio__inpt slider-with-panel__direction-inpt" type="radio" name="direction">
                   <div class="radio__checker"></div>
-                </div><span class="radio__label">Вертикальный</span>
+                </div><span class="radio__label">Вер-ль</span>
               </div>
             </div>
           </div>
@@ -96,7 +95,7 @@
                 <div class="radio__circle">
                   <input class="radio__inpt slider-with-panel__range-inpt" type="radio" name="range">
                   <div class="radio__checker"></div>
-                </div><span class="radio__label">Одиночный</span>
+                </div><span class="radio__label">Один</span>
               </div>
             </div>
             <div class="radio">
@@ -104,13 +103,321 @@
                 <div class="radio__circle">
                   <input class="radio__inpt slider-with-panel__range-inpt" type="radio" name="range">
                   <div class="radio__checker"></div>
-                </div><span class="radio__label">Интервал</span>
+                </div><span class="radio__label">Диапазон</span>
               </div>
             </div>
           </div>
         </div>
-        <input class="slider-with-panel__slider first-slider" type="text">
+      </form>
+      <form class="slider-with-panel">
+        <input class="slider-with-panel__slider second-slider" type="text">
+        <div class="slider-with-panel__panel">
+          <div class="slider-with-panel__tip-div">
+            <div class="checkbox">
+              <input class="checkbox__inpt slider-with-panel__tip-inpt" type="checkbox" name="tip">
+              <div class="checkbox__box">
+                <div class="checkbox__checker"></div>
+              </div><span class="checkbox__label">Элемент</span>
+            </div>
+          </div>
+          <div class="slider-with-panel__from-div">
+            <h3>От</h3>
+            <div class="inpt-number">
+              <div class="inpt-number__minus">-</div>
+              <input class="inpt-number__inpt slider-with-panel__from-inpt" type="number">
+              <input class="inpt-number__value" type="text" value="0">
+              <div class="inpt-number__plus">+</div>
+            </div>
+          </div>
+          <div class="slider-with-panel__to-div">
+            <h3>До</h3>
+            <div class="inpt-number">
+              <div class="inpt-number__minus">-</div>
+              <input class="inpt-number__inpt slider-with-panel__to-inpt" type="number">
+              <input class="inpt-number__value" type="text" value="0">
+              <div class="inpt-number__plus">+</div>
+            </div>
+          </div>
+          <div class="slider-with-panel__min-div">
+            <h3>Мин</h3>
+            <div class="inpt-number">
+              <div class="inpt-number__minus">-</div>
+              <input class="inpt-number__inpt slider-with-panel__min-inpt" type="number">
+              <input class="inpt-number__value" type="text" value="0">
+              <div class="inpt-number__plus">+</div>
+            </div>
+          </div>
+          <div class="slider-with-panel__max-div">
+            <h3>Макс</h3>
+            <div class="inpt-number">
+              <div class="inpt-number__minus">-</div>
+              <input class="inpt-number__inpt slider-with-panel__max-inpt" type="number">
+              <input class="inpt-number__value" type="text" value="0">
+              <div class="inpt-number__plus">+</div>
+            </div>
+          </div>
+          <div class="slider-with-panel__step-div">
+            <h3>Шаг</h3>
+            <div class="inpt-number">
+              <div class="inpt-number__minus">-</div>
+              <input class="inpt-number__inpt slider-with-panel__step-inpt" type="number" min="0">
+              <input class="inpt-number__value" type="text" value="0">
+              <div class="inpt-number__plus">+</div>
+            </div>
+          </div>
+          <div class="slider-with-panel__scale-values-div">
+            <h3>Шкала</h3>
+            <div class="inpt-number">
+              <div class="inpt-number__minus">-</div>
+              <input class="inpt-number__inpt slider-with-panel__scale-values-inpt" type="number">
+              <input class="inpt-number__value" type="text" value="0">
+              <div class="inpt-number__plus">+</div>
+            </div>
+          </div>
+          <div class="slider-with-panel__direction-div">
+            <div class="radio">
+              <div class="radio__wrapper">
+                <div class="radio__circle">
+                  <input class="radio__inpt slider-with-panel__direction-inpt" type="radio" name="direction">
+                  <div class="radio__checker"></div>
+                </div><span class="radio__label">Гор-ль</span>
+              </div>
+            </div>
+            <div class="radio">
+              <div class="radio__wrapper">
+                <div class="radio__circle">
+                  <input class="radio__inpt slider-with-panel__direction-inpt" type="radio" name="direction">
+                  <div class="radio__checker"></div>
+                </div><span class="radio__label">Вер-ль</span>
+              </div>
+            </div>
+          </div>
+          <div class="slider-with-panel__range-div">
+            <div class="radio">
+              <div class="radio__wrapper">
+                <div class="radio__circle">
+                  <input class="radio__inpt slider-with-panel__range-inpt" type="radio" name="range">
+                  <div class="radio__checker"></div>
+                </div><span class="radio__label">Один</span>
+              </div>
+            </div>
+            <div class="radio">
+              <div class="radio__wrapper">
+                <div class="radio__circle">
+                  <input class="radio__inpt slider-with-panel__range-inpt" type="radio" name="range">
+                  <div class="radio__checker"></div>
+                </div><span class="radio__label">Диапазон</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      <form class="slider-with-panel">
+        <input class="slider-with-panel__slider third-slider" type="text">
+        <div class="slider-with-panel__panel">
+          <div class="slider-with-panel__tip-div">
+            <div class="checkbox">
+              <input class="checkbox__inpt slider-with-panel__tip-inpt" type="checkbox" name="tip">
+              <div class="checkbox__box">
+                <div class="checkbox__checker"></div>
+              </div><span class="checkbox__label">Элемент</span>
+            </div>
+          </div>
+          <div class="slider-with-panel__from-div">
+            <h3>От</h3>
+            <div class="inpt-number">
+              <div class="inpt-number__minus">-</div>
+              <input class="inpt-number__inpt slider-with-panel__from-inpt" type="number">
+              <input class="inpt-number__value" type="text" value="0">
+              <div class="inpt-number__plus">+</div>
+            </div>
+          </div>
+          <div class="slider-with-panel__to-div">
+            <h3>До</h3>
+            <div class="inpt-number">
+              <div class="inpt-number__minus">-</div>
+              <input class="inpt-number__inpt slider-with-panel__to-inpt" type="number">
+              <input class="inpt-number__value" type="text" value="0">
+              <div class="inpt-number__plus">+</div>
+            </div>
+          </div>
+          <div class="slider-with-panel__min-div">
+            <h3>Мин</h3>
+            <div class="inpt-number">
+              <div class="inpt-number__minus">-</div>
+              <input class="inpt-number__inpt slider-with-panel__min-inpt" type="number">
+              <input class="inpt-number__value" type="text" value="0">
+              <div class="inpt-number__plus">+</div>
+            </div>
+          </div>
+          <div class="slider-with-panel__max-div">
+            <h3>Макс</h3>
+            <div class="inpt-number">
+              <div class="inpt-number__minus">-</div>
+              <input class="inpt-number__inpt slider-with-panel__max-inpt" type="number">
+              <input class="inpt-number__value" type="text" value="0">
+              <div class="inpt-number__plus">+</div>
+            </div>
+          </div>
+          <div class="slider-with-panel__step-div">
+            <h3>Шаг</h3>
+            <div class="inpt-number">
+              <div class="inpt-number__minus">-</div>
+              <input class="inpt-number__inpt slider-with-panel__step-inpt" type="number" min="0">
+              <input class="inpt-number__value" type="text" value="0">
+              <div class="inpt-number__plus">+</div>
+            </div>
+          </div>
+          <div class="slider-with-panel__scale-values-div">
+            <h3>Шкала</h3>
+            <div class="inpt-number">
+              <div class="inpt-number__minus">-</div>
+              <input class="inpt-number__inpt slider-with-panel__scale-values-inpt" type="number">
+              <input class="inpt-number__value" type="text" value="0">
+              <div class="inpt-number__plus">+</div>
+            </div>
+          </div>
+          <div class="slider-with-panel__direction-div">
+            <div class="radio">
+              <div class="radio__wrapper">
+                <div class="radio__circle">
+                  <input class="radio__inpt slider-with-panel__direction-inpt" type="radio" name="direction">
+                  <div class="radio__checker"></div>
+                </div><span class="radio__label">Гор-ль</span>
+              </div>
+            </div>
+            <div class="radio">
+              <div class="radio__wrapper">
+                <div class="radio__circle">
+                  <input class="radio__inpt slider-with-panel__direction-inpt" type="radio" name="direction">
+                  <div class="radio__checker"></div>
+                </div><span class="radio__label">Вер-ль</span>
+              </div>
+            </div>
+          </div>
+          <div class="slider-with-panel__range-div">
+            <div class="radio">
+              <div class="radio__wrapper">
+                <div class="radio__circle">
+                  <input class="radio__inpt slider-with-panel__range-inpt" type="radio" name="range">
+                  <div class="radio__checker"></div>
+                </div><span class="radio__label">Один</span>
+              </div>
+            </div>
+            <div class="radio">
+              <div class="radio__wrapper">
+                <div class="radio__circle">
+                  <input class="radio__inpt slider-with-panel__range-inpt" type="radio" name="range">
+                  <div class="radio__checker"></div>
+                </div><span class="radio__label">Диапазон</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      <form class="slider-with-panel">
+        <input class="slider-with-panel__slider fourth-slider" type="text">
+        <div class="slider-with-panel__panel">
+          <div class="slider-with-panel__tip-div">
+            <div class="checkbox">
+              <input class="checkbox__inpt slider-with-panel__tip-inpt" type="checkbox" name="tip">
+              <div class="checkbox__box">
+                <div class="checkbox__checker"></div>
+              </div><span class="checkbox__label">Элемент</span>
+            </div>
+          </div>
+          <div class="slider-with-panel__from-div">
+            <h3>От</h3>
+            <div class="inpt-number">
+              <div class="inpt-number__minus">-</div>
+              <input class="inpt-number__inpt slider-with-panel__from-inpt" type="number">
+              <input class="inpt-number__value" type="text" value="0">
+              <div class="inpt-number__plus">+</div>
+            </div>
+          </div>
+          <div class="slider-with-panel__to-div">
+            <h3>До</h3>
+            <div class="inpt-number">
+              <div class="inpt-number__minus">-</div>
+              <input class="inpt-number__inpt slider-with-panel__to-inpt" type="number">
+              <input class="inpt-number__value" type="text" value="0">
+              <div class="inpt-number__plus">+</div>
+            </div>
+          </div>
+          <div class="slider-with-panel__min-div">
+            <h3>Мин</h3>
+            <div class="inpt-number">
+              <div class="inpt-number__minus">-</div>
+              <input class="inpt-number__inpt slider-with-panel__min-inpt" type="number">
+              <input class="inpt-number__value" type="text" value="0">
+              <div class="inpt-number__plus">+</div>
+            </div>
+          </div>
+          <div class="slider-with-panel__max-div">
+            <h3>Макс</h3>
+            <div class="inpt-number">
+              <div class="inpt-number__minus">-</div>
+              <input class="inpt-number__inpt slider-with-panel__max-inpt" type="number">
+              <input class="inpt-number__value" type="text" value="0">
+              <div class="inpt-number__plus">+</div>
+            </div>
+          </div>
+          <div class="slider-with-panel__step-div">
+            <h3>Шаг</h3>
+            <div class="inpt-number">
+              <div class="inpt-number__minus">-</div>
+              <input class="inpt-number__inpt slider-with-panel__step-inpt" type="number" min="0">
+              <input class="inpt-number__value" type="text" value="0">
+              <div class="inpt-number__plus">+</div>
+            </div>
+          </div>
+          <div class="slider-with-panel__scale-values-div">
+            <h3>Шкала</h3>
+            <div class="inpt-number">
+              <div class="inpt-number__minus">-</div>
+              <input class="inpt-number__inpt slider-with-panel__scale-values-inpt" type="number">
+              <input class="inpt-number__value" type="text" value="0">
+              <div class="inpt-number__plus">+</div>
+            </div>
+          </div>
+          <div class="slider-with-panel__direction-div">
+            <div class="radio">
+              <div class="radio__wrapper">
+                <div class="radio__circle">
+                  <input class="radio__inpt slider-with-panel__direction-inpt" type="radio" name="direction">
+                  <div class="radio__checker"></div>
+                </div><span class="radio__label">Гор-ль</span>
+              </div>
+            </div>
+            <div class="radio">
+              <div class="radio__wrapper">
+                <div class="radio__circle">
+                  <input class="radio__inpt slider-with-panel__direction-inpt" type="radio" name="direction">
+                  <div class="radio__checker"></div>
+                </div><span class="radio__label">Вер-ль</span>
+              </div>
+            </div>
+          </div>
+          <div class="slider-with-panel__range-div">
+            <div class="radio">
+              <div class="radio__wrapper">
+                <div class="radio__circle">
+                  <input class="radio__inpt slider-with-panel__range-inpt" type="radio" name="range">
+                  <div class="radio__checker"></div>
+                </div><span class="radio__label">Один</span>
+              </div>
+            </div>
+            <div class="radio">
+              <div class="radio__wrapper">
+                <div class="radio__circle">
+                  <input class="radio__inpt slider-with-panel__range-inpt" type="radio" name="range">
+                  <div class="radio__checker"></div>
+                </div><span class="radio__label">Диапазон</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </form>
     </div>
-  <script type="text/javascript" src="slider.bundle.js?b3fb2fac76255dcc07a4"></script></body>
+  <script type="text/javascript" src="slider.bundle.js?b1eefc6244acdaa3a2ba"></script></body>
 </html>

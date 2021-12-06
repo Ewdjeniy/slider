@@ -143,6 +143,7 @@ function synchronizePanelWithSlider(sliderInpt, el, min, max, step, scaleValues,
     
     //to    
     toInpt.oninput = function () {
+        
         if (+toInpt.value > +maxInpt.value) {
             toInpt.value = maxInpt.value;
         } else if (+toInpt.value < +minInpt.value) {
@@ -204,11 +205,14 @@ function synchronizePanelWithSlider(sliderInpt, el, min, max, step, scaleValues,
         if (!($(sliderInpt).toxinSlider('get', 'current') instanceof Array)) {
             toInpt.value = $(sliderInpt).toxinSlider('get', 'current');
             toInpt.nextElementSibling.value = toInpt.value;
+            toInpt.nextElementSibling.style.width = ((toInpt.nextElementSibling.value.length + 1) * 8) + 'px';
         } else {
             fromInpt.value = $(sliderInpt).toxinSlider('get', 'current')[0];
             fromInpt.nextElementSibling.value = fromInpt.value;
+            fromInpt.nextElementSibling.style.width = ((fromInpt.nextElementSibling.value.length + 1) * 8) + 'px';
             toInpt.value = $(sliderInpt).toxinSlider('get', 'current')[1];
             toInpt.nextElementSibling.value = toInpt.value;
+            toInpt.nextElementSibling.style.width = ((toInpt.nextElementSibling.value.length + 1) * 8) + 'px';
         }
     }
 }

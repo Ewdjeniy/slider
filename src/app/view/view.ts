@@ -36,7 +36,17 @@ class ToxinSliderView implements SliderView {
     subjectViewChangeCurrent: ObservableSubject = new ObservableSubject();
     input: HTMLInputElement;
     sliderEl: HTMLElement;
-    sliderSettings: SliderSettings = defaultSliderSettingsView;
+    sliderSettings: SliderSettings = {
+        start: 1,
+        end: 2,
+        step: 3,
+        current: 4,
+        scaleValuesAmount: 5,
+        direction: 'x',
+        range: false,
+        tip: false,
+        separator: 'q'
+    };
     state: ViewState = {
         output: null,
         scale: null,
@@ -52,9 +62,24 @@ class ToxinSliderView implements SliderView {
     
     constructor(input: HTMLInputElement) {
         
+        for (let key in defaultSliderSettingsView) {
+            this.sliderSettings[key] = defaultSliderSettingsView[key];
+        }
+        
         this.input = input;
         this.init();
         
+        this.changeProgressBarsFontSizeOnResize = this.changeProgressBarsFontSizeOnResize.bind(this);
+        
+        window.addEventListener('resize', this.changeProgressBarsFontSizeOnResize);
+        
+    }
+    
+    changeProgressBarsFontSizeOnResize(): void {
+        
+        this.state.progressBars.forEach((bar, i) => {
+            bar.setFontSize(this.state.scale.returnScaleStep(this.state.runners[i].runnerEl, this.state.stepsCoefficient, this.state.stepsAmount));
+        });
     }
     
     init(): void {
@@ -93,7 +118,7 @@ class ToxinSliderView implements SliderView {
         let current: any;
         
         for (let i = 0; i < scaleValueElements.length; i++) {
-            if (scaleValueElements[i] == e.target) { 
+            if (scaleValueElements[i] == e.target) {
                 if (this.sliderSettings.range) {
                     current = this.state.output.outputEl.value.split(this.sliderSettings.separator);
                     current[runnerIndex] = scaleValueElements[i].innerHTML;
@@ -118,7 +143,7 @@ class ToxinSliderView implements SliderView {
     returnNearestRunnerIndex(e: PointerEvent): number {
         
         let nearestRunnerIndex;
-    
+        
         if (!this.sliderSettings.range) {
             nearestRunnerIndex = 0;
         } else {
@@ -220,6 +245,7 @@ class ToxinSliderView implements SliderView {
             document.removeEventListener('pointermove', changeTip);
             document.removeEventListener('pointerup', removeListenersFromDocument);
         }
+        
         const changeProgressBar: voidFunction = function(moveEvent) {
             let secondBarEl: boolean | HTMLElement = false;
             let size: number;
@@ -359,7 +385,7 @@ class ToxinSliderView implements SliderView {
         this.state.scaleValues.setScaleValues(this.sliderSettings.scaleValuesAmount, this.sliderSettings.start, this.sliderSettings.end, this.sliderSettings.step, this.state.decimalPlaces);
         if (this.state.diapasones.length > 1) {
             this.state.diapasones[0].diapasonEl.style.zIndex = +getComputedStyle(this.state.diapasones[0].diapasonEl).zIndex + 1;
-            this.state.diapasones[0].diapasonEl.style.background = getComputedStyle(this.state.scale.scaleEl).background;     
+            this.state.diapasones[0].diapasonEl.style.background = getComputedStyle(this.state.scale.scaleEl).backgroundColor;
         }
         
         this.state.progressBars.forEach((bar, i) => {
@@ -403,17 +429,6 @@ class ToxinSliderView implements SliderView {
     update(settings: Object): void {
         
         this.sliderEl.remove();
-//        this.sliderSettings = {
-//            start: 23,
-//            end: 133,
-//            step: 3,
-//            current: 33,
-//            scaleValuesAmount: 3,
-//            direction: 'x',
-//            range: false,
-//            tip: true,
-//            separator: ' - '
-//        }
         for (let key in settings) {
             if (key in this.sliderSettings) {
                 this.sliderSettings[key] = settings[key]; 
