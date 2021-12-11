@@ -14,7 +14,7 @@ class YTip extends Tip implements SliderTip {
     showTip(barEl, stepsAmount, start, end, step, decimalPlaces): number {
         let outputValue: number;
         
-        if (parseInt(barEl.style.height) < stepsAmount) {
+        if (parseInt(barEl.style.height) <= stepsAmount) {
             outputValue = +start + parseInt(barEl.style.height) * step;
         } else {
             outputValue = +end;

@@ -14,7 +14,7 @@ class XTip extends Tip implements SliderTip {
     showTip(barEl, stepsAmount, start, end, step, decimalPlaces): number {
         let outputValue: number;
         
-        if (parseInt(barEl.style.width) < stepsAmount) {
+        if (parseInt(barEl.style.width) <= stepsAmount) {
             outputValue = +start + parseInt(barEl.style.width) * step;
         } else {
             outputValue = +end;

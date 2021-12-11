@@ -37,10 +37,12 @@ class ToxinSliderView implements SliderView {
     input: HTMLInputElement;
     sliderEl: HTMLElement;
     sliderSettings: SliderSettings = {
+        extraClass: '',
         start: 1,
         end: 2,
         step: 3,
         current: 4,
+        scaleValues: true,
         scaleValuesAmount: 5,
         direction: 'x',
         range: false,
@@ -382,7 +384,6 @@ class ToxinSliderView implements SliderView {
     }
     
     setElementsValues(): void {
-        this.state.scaleValues.setScaleValues(this.sliderSettings.scaleValuesAmount, this.sliderSettings.start, this.sliderSettings.end, this.sliderSettings.step, this.state.decimalPlaces);
         if (this.state.diapasones.length > 1) {
             this.state.diapasones[0].diapasonEl.style.zIndex = +getComputedStyle(this.state.diapasones[0].diapasonEl).zIndex + 1;
             this.state.diapasones[0].diapasonEl.style.background = getComputedStyle(this.state.scale.scaleEl).backgroundColor;
@@ -392,6 +393,7 @@ class ToxinSliderView implements SliderView {
             bar.setFontSize(this.state.scale.returnScaleStep(this.state.runners[i].runnerEl, this.state.stepsCoefficient, this.state.stepsAmount));
             bar.setCurrent(this.sliderSettings.current, this.sliderSettings.start, this.sliderSettings.end, this.sliderSettings.step, i);
         });
+        this.state.scaleValues.setScaleValues(this.sliderSettings.scaleValuesAmount, this.sliderSettings.start, this.sliderSettings.end, this.sliderSettings.step, this.state.decimalPlaces, parseFloat(this.state.progressBars[0].progressBarEl.style.fontSize));
         this.state.output.setCurrent(this.sliderSettings.current, this.sliderSettings.start, this.sliderSettings.end, this.sliderSettings.separator);
         this.state.tips.forEach((tip, i) => {
             tip.setCurrent(this.sliderSettings.current, this.sliderSettings.start, this.sliderSettings.end, i);
@@ -410,9 +412,11 @@ class ToxinSliderView implements SliderView {
         } else if (this.sliderSettings.direction == 'y' && this.sliderSettings.range) {
             this.sliderEl.className = 'y-range-toxin-slider';
         }
+        this.sliderEl.className = this.sliderSettings.extraClass === '' ? this.sliderEl.className : this.sliderEl.className + ' ' + this.sliderSettings.extraClass;
+        
         this.input.after(this.sliderEl);
         this.state.scale.render(this.sliderEl);
-        this.state.scaleValues.render(this.state.scale.scaleEl);
+        this.state.scaleValues.render(this.state.scale.scaleEl, this.sliderSettings.scaleValues);
         this.state.diapasones.forEach((diapasone, i) => {
             
             diapasone.render(this.state.scale.scaleEl)

@@ -2,7 +2,7 @@ import './sliderWithPanel.css';
 import * as $ from 'jquery';
 
 
-function synchronizePanelWithSlider(sliderInpt, el, min, max, step, scaleValues, direction, range, tip, separator, to, from) {
+function synchronizePanelWithSlider(sliderInpt, el, min, max, step, scaleValues, scaleValuesAmount, direction, range, tip, separator, to, from) {
     
     const minInpt = el.getElementsByClassName('slider-with-panel__min-inpt')[0];
     const maxInpt = el.getElementsByClassName('slider-with-panel__max-inpt')[0];
@@ -10,6 +10,7 @@ function synchronizePanelWithSlider(sliderInpt, el, min, max, step, scaleValues,
     const toInpt = el.getElementsByClassName('slider-with-panel__to-inpt')[0];
     const stepInpt = el.getElementsByClassName('slider-with-panel__step-inpt')[0];
     const scaleValuesInpt = el.getElementsByClassName('slider-with-panel__scale-values-inpt')[0];
+    const scaleValuesAmountInpt = el.getElementsByClassName('slider-with-panel__scale-values-amount-inpt')[0];
     const directionInpts = el.getElementsByClassName('slider-with-panel__direction-inpt');
     const rangeInpts = el.getElementsByClassName('slider-with-panel__range-inpt');
     const tipInpt = el.getElementsByClassName('slider-with-panel__tip-inpt')[0];
@@ -39,7 +40,8 @@ function synchronizePanelWithSlider(sliderInpt, el, min, max, step, scaleValues,
             direction: directionSetting,
             range: rangeSetting,
             tip: tipInpt.checked,
-            scaleValuesAmount: +scaleValuesInpt.value,
+            scaleValues: scaleValuesInpt.checked,
+            scaleValuesAmount: +scaleValuesAmountInpt.value,
         });
         
         
@@ -71,8 +73,8 @@ function synchronizePanelWithSlider(sliderInpt, el, min, max, step, scaleValues,
     toInpt.dispatchEvent(new Event('input'));
     fromInpt.step = step;
     fromInpt.dispatchEvent(new Event('input'));
-    scaleValuesInpt.value = scaleValues;
-    scaleValuesInpt.dispatchEvent(new Event('input'));
+    scaleValuesAmountInpt.value = scaleValuesAmount;
+    scaleValuesAmountInpt.dispatchEvent(new Event('input'));
     
     if (direction == 'x') {
         directionInpts[0].checked = true;
@@ -88,6 +90,11 @@ function synchronizePanelWithSlider(sliderInpt, el, min, max, step, scaleValues,
     } else {
         rangeInpts[0].checked = true;
         rangeInpts[0].dispatchEvent(new Event('change'));
+    }
+    
+    if (scaleValues) {
+        scaleValuesInpt.checked = true;
+        scaleValuesInpt.dispatchEvent(new Event('change'));
     }
     
     if (tip) {
@@ -108,7 +115,8 @@ function synchronizePanelWithSlider(sliderInpt, el, min, max, step, scaleValues,
         end: max,
         step: step,
         current: initialCurrent,
-        scaleValuesAmount: scaleValues,
+        scaleValues: scaleValues,
+        scaleValuesAmount: scaleValuesAmount,
         direction: direction,
         range: range,
         tip: tip,
@@ -119,6 +127,9 @@ function synchronizePanelWithSlider(sliderInpt, el, min, max, step, scaleValues,
     fromInpt.dispatchEvent(new Event('input'));
     toInpt.value = range ? $(sliderInpt).toxinSlider('get', 'current')[1] : $(sliderInpt).toxinSlider('get', 'current');
     toInpt.dispatchEvent(new Event('input'));
+    
+    //scaleValues    
+    scaleValuesInpt.onchange = updateSettingsOnInput;
     
     //tip    
     tipInpt.onchange = updateSettingsOnInput;
@@ -187,8 +198,8 @@ function synchronizePanelWithSlider(sliderInpt, el, min, max, step, scaleValues,
         updateSettingsOnInput();
     }
     
-    //scaleValues    
-    scaleValuesInpt.oninput = function () {
+    //scaleValuesAmount    
+    scaleValuesAmountInpt.oninput = function () {
         updateSettingsOnInput();
     }
     

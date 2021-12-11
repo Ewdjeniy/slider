@@ -1,9 +1,11 @@
 interface ToxinSliderOptions {
+    extraClass?: string; 
     start?: number;
     end?: number;
     step?: number;
     current?: any;
     scaleValuesAmount?: number;
+    scaleValues?: boolean;
     direction?: string;
     range?: boolean;
     tip?: boolean;
@@ -61,8 +63,8 @@ interface SliderScale {
 
 interface SliderScaleValues {
     scaleValuesEl: HTMLElement;
-    render(scaleEl: HTMLElement): void;
-    setScaleValues(scaleValuesAmount: number, start: number, end: number, step: number, decimalPlaces: number): void;
+    render(scaleEl: HTMLElement, scaleValues: boolean): void;
+    setScaleValues(scaleValuesAmount: number, start: number, end: number, step: number, decimalPlaces: number, progressBarFontSize: number): void;
 }
 
 interface SliderOutput {
@@ -73,10 +75,12 @@ interface SliderOutput {
 }
 
 interface SliderSettings {
+    extraClass: string;
     start: number;
     end: number;
     step: number;
     current: any;
+    scaleValues: boolean;
     scaleValuesAmount: number;
     direction: string;
     range: boolean;

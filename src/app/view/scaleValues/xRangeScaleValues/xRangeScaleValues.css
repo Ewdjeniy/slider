@@ -1,14 +1,18 @@
 .x-range-scale-values {
     font-size: 1.5em;
     user-select: none;
-    display: flex;
-    justify-content: space-between;
     margin-top: 0.3em;
     cursor: pointer;
+    color: rgba(31, 32, 65, 0.25);
+    position: relative;
+    display: flex;
+    justify-content: space-between;
     
     .medium-value {
-        width: 2em;
-        text-align: center;
+        width: 0;
+        height: 0.4em;
+        border-left: 2px solid rgba(31, 32, 65, 0.25);
+        overflow: hidden;
     }
 
     .first-value {
@@ -20,4 +24,17 @@
         width: 2em;
         text-align: right;
     }
+    
+}
+
+.x-sсale-values_on {
+    
+    .medium-value {
+        width: 2em;
+        height: auto;
+/*        border-left: 0;*/
+        text-align: center;
+        position: absolute;
+    }
+    
 }

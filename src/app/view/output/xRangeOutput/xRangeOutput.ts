@@ -12,13 +12,13 @@ class XRangeOutput extends Output implements SliderOutput {
     countOutputValue(elBar, stepsAmount, start, end, step, decimalPlaces, secondElBar, separator): [number, number] {
         let outputValue: [number, number] = [0, 0];
         
-        if (parseFloat(elBar.style.width) < stepsAmount) {
+        if (parseFloat(elBar.style.width) <= stepsAmount) {
             outputValue[0] = start + parseInt(elBar.style.width) * step;
         } else {
             outputValue[0] = end;
         }
         
-        if (parseFloat(secondElBar.style.width) < stepsAmount) {
+        if (parseFloat(secondElBar.style.width) <= stepsAmount) {
             outputValue[1] = start + parseInt(secondElBar.style.width) * step;
         } else {
             outputValue[1] = end;

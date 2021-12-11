@@ -34,18 +34,13 @@
 .slider-with-panel__direction-div,
 .slider-with-panel__range-div,
 .slider-with-panel__current-div,
-.slider-with-panel__scale-values-div,
-.slider-with-panel__to-div {
+.slider-with-panel__scale-values-amount-div,
+.slider-with-panel__to-div,
+.slider-with-panel__checkboxes-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
     padding: 0.3em 0 0.3em 0;
-}
-
-.slider-with-panel__tip-div {
-    display: flex;
-    justify-content: flex-end;
-    padding: 0 0 0.3em 0;
 }
 
 

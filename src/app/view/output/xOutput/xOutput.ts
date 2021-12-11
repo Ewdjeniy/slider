@@ -13,7 +13,7 @@ class XOutput extends Output implements SliderOutput {
     countOutputValue(elBar, stepsAmount, start, end, step, decimalPlaces): number {
         let outputValue: number;
         
-        if (parseInt(elBar.style.width) < stepsAmount) {
+        if (parseInt(elBar.style.width) <= stepsAmount) {
             outputValue = +start + parseInt(elBar.style.width) * step;
         } else {
             outputValue = +end;

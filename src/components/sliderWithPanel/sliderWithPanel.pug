@@ -6,8 +6,11 @@ mixin sliderWithPanel
     form(class="slider-with-panel")
         input(type="text" class="slider-with-panel__slider")&attributes(attributes)
         .slider-with-panel__panel
-            .slider-with-panel__tip-div
-                +checkbox('Элемент', false, 'tip')(class="slider-with-panel__tip-inpt")
+            .slider-with-panel__checkboxes-container
+                .slider-with-panel__tip-div
+                    +checkbox('Элемент', false, 'tip')(class="slider-with-panel__tip-inpt")
+                .slider-with-panel__scale-values-div
+                    +checkbox('Шкала', false, 'tip')(class="slider-with-panel__scale-values-inpt")
             .slider-with-panel__from-div
                 h3 От
                 +inptNumber()(class="slider-with-panel__from-inpt")
@@ -23,9 +26,9 @@ mixin sliderWithPanel
             .slider-with-panel__step-div
                 h3 Шаг
                 +inptNumber()(class="slider-with-panel__step-inpt" min="0")
-            .slider-with-panel__scale-values-div
+            .slider-with-panel__scale-values-amount-div
                 h3 Шкала
-                +inptNumber()(class="slider-with-panel__scale-values-inpt")
+                +inptNumber()(class="slider-with-panel__scale-values-amount-inpt")
             .slider-with-panel__direction-div
                 +radio('Гор-ль', false, 'direction')(class="slider-with-panel__direction-inpt")
                 +radio('Вер-ль', false, 'direction')(class="slider-with-panel__direction-inpt")

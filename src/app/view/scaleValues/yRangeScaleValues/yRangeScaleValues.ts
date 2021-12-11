@@ -7,8 +7,8 @@ class YRangeScaleValues extends ScaleValues implements SliderScaleValues {
         super();
     }
     
-    render(scaleEl): void {
-        this.scaleValuesEl.className = 'sсale-values y-range-scale-values'; 
+    render(scaleEl, scaleValues): void {
+        this.scaleValuesEl.className = scaleValues ? 'sсale-values y-range-scale-values y-sсale-values_on' : 'sсale-values y-range-scale-values'; 
         scaleEl.before(this.scaleValuesEl); 
     }
     
