@@ -6,8 +6,6 @@ class ScaleValues {
         
     }
     
-    setScaleValues(scaleValuesAmount, start, end, step, decimalPlaces, progressBarFontSize): void {}
-    
 };
 
 export default ScaleValues;

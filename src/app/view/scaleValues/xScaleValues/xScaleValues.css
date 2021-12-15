@@ -1,41 +1,34 @@
 .x-scale-values {
-    font-size: 2em;
+    font-size: 1.5em;
     user-select: none;
     margin-top: 0.3em;
     cursor: pointer;
-    color: rgba(31, 32, 65, 0.25);
     position: relative;
-    display: flex;
-    justify-content: space-between;
     
-    .medium-value {
+    .scale-value {
+        display: inline-block;
+        position: absolute;
         width: 0;
         height: 0.4em;
-        border-left: 2px solid rgba(31, 32, 65, 0.25);
+        border-left: 2px solid #6FCF97;
         overflow: hidden;
-    }
-
-    .first-value {
-        width: 2em;
-        text-align: left;
-    }
-
-    .last-value {
-        width: 2em;
-        text-align: right;
-    }
-    
+    }    
 }
 
 .x-sсale-values_on {
     
-    .medium-value {
-        width: 2em;
+    .scale-value {
+        border-left: 0;
+        width: auto;
+        display: inline-block;
+        position: absolute;
         height: auto;
-/*        border-left: 0;*/
         text-align: center;
         position: absolute;
-        border: 1px solid red;
+    }
+    
+    .end-value {
+        right: 0 !important;
     }
     
 }

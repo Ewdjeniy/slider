@@ -8,26 +8,35 @@ class YScaleValues extends ScaleValues implements SliderScaleValues {
 
     }
     
-    setScaleValues(scaleValuesAmount, start, end, step, decimalPlaces, progressBarFontSize): void {
-        if (scaleValuesAmount == 1) {
-            this.scaleValuesEl.innerHTML = '<span class="scale-value first-value">' + start + '</span>'; 
-        } else if (scaleValuesAmount == 2) {
-            this.scaleValuesEl.innerHTML = '<span class="scale-value first-value">' + start + '</span>' + '<span class="scale-value last-value">' + end + '</span>';      
-        } else if (scaleValuesAmount > 2) {
-            let result: string = '<span class="scale-value first-value">' + start + '</span>';
-            for (let i = 1; i < scaleValuesAmount - 1; i++) {
-                const stepsAmountInOneValue = Math.round(((end - start) / step) / (scaleValuesAmount - 1));
-                result += '<span class="scale-value medium-value" style="top: ' + stepsAmountInOneValue * i *  progressBarFontSize + 'px;">';
+    setScaleValues(scaleValuesAmount, start, end, step, decimalPlaces, progressBarFontSize, runnerEl): void {
+        
+        const runnerHeight = parseFloat(getComputedStyle(runnerEl).height);
+        
+        let result: string = '<div class="scale-value" style="bottom: 0">' + start + '</div>';
+        for (let i = 1; i < scaleValuesAmount - 1; i++) {
+            const stepsAmountInOneValue = Math.round(((end - start) / step) / (scaleValuesAmount - 1));
+            
+            if (parseFloat(start + stepsAmountInOneValue * i * step) <= end) {
+                result += '<div class="scale-value" style="bottom: ' + stepsAmountInOneValue * i * progressBarFontSize + 'px;">';
                 result += parseFloat((start + stepsAmountInOneValue * i * step).toFixed(decimalPlaces));
-                result += '</span>';
-            }
-            result += '<span class="scale-value last-value">' + end + '</span>';
-            this.scaleValuesEl.innerHTML = result;
-            const mediumValues = this.scaleValuesEl.getElementsByClassName('medium-value') as HTMLCollectionOf<HTMLElement>;;
-            for (let i = 0; i < mediumValues.length; i++) {
-                mediumValues[i].style.top = parseFloat(mediumValues[i].style.top) - parseFloat(getComputedStyle(mediumValues[i]).width) / 3 + 'px';
+                result += '</div>';  
             }
         }
+        result += '<div class="scale-value end-value" style="top: calc(0px + ' + runnerHeight + 'px)">' + end + '</div>';
+        this.scaleValuesEl.innerHTML = result;
+        this.scaleValuesEl.style.marginTop = -1 * runnerHeight / 2 + 'px';
+        
+        let longestScaleValue = this.scaleValuesEl.getElementsByClassName('scale-value')[0];
+        
+        const scaleValues = this.scaleValuesEl.getElementsByClassName('scale-value') as HTMLCollectionOf<HTMLElement>;;
+        for (let i = 0; i < scaleValues.length; i++) {
+            scaleValues[i].style.bottom = parseFloat(scaleValues[i].style.bottom) - parseFloat(getComputedStyle(scaleValues[i]).height) / 2 + 'px';
+            
+            if (parseFloat(getComputedStyle(scaleValues[i]).width) > parseFloat(getComputedStyle(longestScaleValue).width)) {
+                longestScaleValue = scaleValues[i];
+            }
+        }
+        this.scaleValuesEl.style.width = getComputedStyle(longestScaleValue).width;
     }
     
     render(scaleEl, scaleValues): void {

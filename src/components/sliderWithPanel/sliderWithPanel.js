@@ -4,6 +4,8 @@ import * as $ from 'jquery';
 
 function synchronizePanelWithSlider(sliderInpt, el, min, max, step, scaleValues, scaleValuesAmount, direction, range, tip, separator, to, from) {
     
+    console.log($(sliderInpt).data('min'));
+    
     const minInpt = el.getElementsByClassName('slider-with-panel__min-inpt')[0];
     const maxInpt = el.getElementsByClassName('slider-with-panel__max-inpt')[0];
     const fromInpt = el.getElementsByClassName('slider-with-panel__from-inpt')[0];

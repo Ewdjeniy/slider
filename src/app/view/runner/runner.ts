@@ -6,6 +6,8 @@ class Runner {
 
     }
     
+    setMarginLeft(progressBarEl): void {}
+    
 };
 
 export default Runner;

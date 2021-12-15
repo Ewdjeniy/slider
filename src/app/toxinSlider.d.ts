@@ -52,6 +52,7 @@ interface SliderRunner {
     runnerEl: HTMLElement;
     render(diapasoneEl: HTMLElement): void;
     returnMousePosOnRunner(pointerDownEvent: PointerEvent): number;
+    setMarginLeft(progressBarEl): void;
 }
 
 interface SliderScale {
@@ -64,7 +65,7 @@ interface SliderScale {
 interface SliderScaleValues {
     scaleValuesEl: HTMLElement;
     render(scaleEl: HTMLElement, scaleValues: boolean): void;
-    setScaleValues(scaleValuesAmount: number, start: number, end: number, step: number, decimalPlaces: number, progressBarFontSize: number): void;
+    setScaleValues(scaleValuesAmount: number, start: number, end: number, step: number, decimalPlaces: number, progressBarFontSize: number, runnerEl?: HTMLElement): void;
 }
 
 interface SliderOutput {

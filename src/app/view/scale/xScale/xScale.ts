@@ -12,7 +12,7 @@ class XScale extends Scale implements SliderScale {
     }
     
     returnScaleStep(runnerEl, stepsCoefficient, stepsAmount): number {
-        return (parseInt(getComputedStyle(this.scaleEl).width) * stepsCoefficient - parseInt(getComputedStyle(runnerEl).width)) / stepsAmount; 
+        return ((parseFloat(getComputedStyle(this.scaleEl).width)) * stepsCoefficient - parseFloat(getComputedStyle(runnerEl).width)) / stepsAmount; 
     }
      
     render(sliderEl): void {
