@@ -9,24 +9,27 @@ import ObservableSubject from './observers.ts';
     
     $.fn.toxinSlider = function( method?: string | Object, args?: any ): JQuery {
         
-        const model = $(this).data("test") ? $(this).data("test").model : null;
+        const modelData = $(this).data("toxinSliderModel") ? $(this).data("toxinSliderModel").model : null;
         
         const init = function(this: JQuery<HTMLInputElement>, options?: ToxinSliderOptions) {
             return this.each(function(index, el) {
+                
+                if (modelData) return;
+                
                 const model = new ToxinSliderModel(options);
                 const view = new ToxinSliderView(this);
                 const presenter = new ToxinSliderPresenter(model, view);
-                $(this).data("test", {model: model});
+                $(this).data("toxinSliderModel", {model: model});
             });
         }
         
         if ( typeof method === 'object' || !method ) {
             return init.apply( this, arguments );
         } else if (method === 'get') {
-            return model.get[args]();        
+            return modelData.get[args]();        
         } else {
             return this.each(function() {
-                model.executeMethod(method, args);
+                modelData.executeMethod(method, args);
             });
         }
     };
