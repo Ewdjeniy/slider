@@ -1,7 +1,7 @@
 export const defaultSliderSettingsView: SliderSettings = {
     extraClass: '',
-    start: 0,
-    end: 100,
+    min: 0,
+    max: 100,
     step: 1,
     current: 25,
     scaleValues: true,

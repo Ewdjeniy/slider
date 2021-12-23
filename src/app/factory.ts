@@ -12,7 +12,8 @@ import ObservableSubject from './observers.ts';
         const modelData = $(this).data("toxinSliderModel") ? $(this).data("toxinSliderModel").model : null;
         
         const init = function(this: JQuery<HTMLInputElement>, options?: ToxinSliderOptions) {
-            return this.each(function(index, el) {
+            
+            this.each(function() {
                 
                 if (modelData) return;
                 
@@ -21,13 +22,15 @@ import ObservableSubject from './observers.ts';
                 const presenter = new ToxinSliderPresenter(model, view);
                 $(this).data("toxinSliderModel", {model: model});
             });
+            
+            return this;
         }
         
         if ( typeof method === 'object' || !method ) {
             return init.apply( this, arguments );
         } else if (method === 'get') {
             return modelData.get[args]();        
-        } else {
+        } else {            
             return this.each(function() {
                 modelData.executeMethod(method, args);
             });

@@ -5,6 +5,7 @@ class XTip extends Tip implements SliderTip {
     
     constructor() {
         super();
+        this.tipEl.className = "tip x-tip";
     }
     
     setCurrent(current, start, end): void {
@@ -23,11 +24,7 @@ class XTip extends Tip implements SliderTip {
         this.tipEl.innerHTML = parseFloat(outputValue.toFixed(decimalPlaces)).toString(); 
         return outputValue;
     }
-    
-    render(runnerEl): void {
-        this.tipEl.className = "tip x-tip";
-        runnerEl.append(this.tipEl);
-    }
+
     
 };
 

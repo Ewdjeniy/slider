@@ -3,21 +3,17 @@ import Scale from '../scale.ts';
 
 class XScale extends Scale implements SliderScale {
     
-    constructor() {
-        super();
+    constructor(options) {
+        super(options);
+        this.scaleEl.className = 'scale x-scale';
     }
     
     returnScaleStart(): number {
         return this.scaleEl.getBoundingClientRect().left + parseInt(getComputedStyle(this.scaleEl).borderLeftWidth) + parseInt(getComputedStyle(this.scaleEl).paddingLeft);
     }
     
-    returnScaleStep(runnerEl, stepsCoefficient, stepsAmount): number {
-        return ((parseFloat(getComputedStyle(this.scaleEl).width)) * stepsCoefficient - parseFloat(getComputedStyle(runnerEl).width)) / stepsAmount; 
-    }
-     
-    render(sliderEl): void {
-        this.scaleEl.className = 'scale x-scale'; 
-        sliderEl.append(this.scaleEl);
+    returnScaleStep(runnerEl): number {
+        return (parseFloat(getComputedStyle(this.scaleEl).width) * this.stepsCoefficient - parseFloat(getComputedStyle(runnerEl).width)) / this.stepsAmount; 
     }
     
 };

@@ -2,8 +2,8 @@ class Output {
 
     outputEl: HTMLInputElement;
 
-    constructor(input: HTMLInputElement) {
-        this.outputEl = input;
+    constructor(options: Object) {
+        this.outputEl = options.input;
     }
     
     dispatchEvent(): void {

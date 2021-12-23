@@ -5,11 +5,7 @@ class XDiapason extends Diapason {
     
     constructor() {
         super();
-    }
-    
-    render(el): void {
         this.diapasonEl.className = 'diapason x-diapason';
-        el.append(this.diapasonEl);
     }
     
 };

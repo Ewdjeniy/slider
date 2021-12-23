@@ -6,6 +6,12 @@ class XScaleValues extends ScaleValues implements SliderScaleValues {
     constructor() {
         super();
 
+        this.setScaleValuesMod();
+        
+    }
+    
+    setScaleValuesMod(): void {
+        this.scaleValuesEl.className = this.scaleValuesModTurner == 'number' ? 'sсale-values x-scale-values x-sсale-values_numbers' : 'sсale-values x-scale-values x-sсale-values_lines';
     }
     
     setScaleValues(scaleValuesAmount, start, end, step, decimalPlaces, progressBarFontSize, runnerEl): void {

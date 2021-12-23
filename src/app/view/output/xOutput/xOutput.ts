@@ -2,12 +2,13 @@ import Output from '../output.ts';
 
 class XOutput extends Output implements SliderOutput {
 
-    constructor(input: HTMLInputElement) {
-        super(input);
+    constructor(options: Object) {
+        super(options);
+        this.setValue(options.current);
     }
     
-    setCurrent(current, start, end): void {
-        this.outputEl.value = current.toString();        
+    setValue(value): void {
+        this.outputEl.value = value.toString();        
     }
     
     countOutputValue(elBar, stepsAmount, start, end, step, decimalPlaces): number {

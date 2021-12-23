@@ -35,14 +35,14 @@ type voidFunction = (data?: any) => void;
 
 interface SliderTip {
     tipEl: HTMLElement;
-    render(el: HTMLElement): void;
+//    render(el: HTMLElement): void;
     setCurrent(current: number | number[], start: number, end: number, i?: number): void;
     showTip(barEl: HTMLElement, stepsAmount: number, start: number, end: number, step: number, decimalPlaces: number): number;
 }
 
 interface SliderProgressBar {
     progressBarEl: HTMLElement;
-    render(runnerEl: HTMLElement): void;
+//    render(runnerEl: HTMLElement): void;
     setFontSize(scaleStepVal: number): void;
     setCurrent(current: number | number[], start: number, end: number, step: number, i?: number): void;
     countProgressBarSize(event: PointerEvent, scaleStartX: number, mousePosOnRunner: number, scaleStep: number, secondBarEl?: HTMLElement | boolean): number;
@@ -50,35 +50,34 @@ interface SliderProgressBar {
 
 interface SliderRunner {
     runnerEl: HTMLElement;
-    render(diapasoneEl: HTMLElement): void;
+//    render(diapasoneEl: HTMLElement): void;
     returnMousePosOnRunner(pointerDownEvent: PointerEvent): number;
-    setMarginLeft(progressBarEl): void;
 }
 
 interface SliderScale {
     scaleEl: HTMLElement;
-    render(sliderEl: HTMLElement): void;
+//    render(sliderEl: HTMLElement): void;
     returnScaleStep(runnerEl: HTMLElement, stepsCoefficient: number, stepsAmount: number): number;
     returnScaleStart(): number;
 }
 
 interface SliderScaleValues {
     scaleValuesEl: HTMLElement;
-    render(scaleEl: HTMLElement, scaleValues: boolean): void;
+//    render(scaleEl: HTMLElement, scaleValues: boolean): void;
     setScaleValues(scaleValuesAmount: number, start: number, end: number, step: number, decimalPlaces: number, progressBarFontSize: number, runnerEl?: HTMLElement): void;
 }
 
 interface SliderOutput {
     outputEl: HTMLInputElement;
     dispatchEvent(): void;
-    setCurrent(current: number | number[], start: number, end: number, separator?: string): void;
+    setValue(value: number | number[]): void;
     countOutputValue(elBar: HTMLElement, stepsAmount: number, start: number, end: number, step: number, decimalPlaces: number, secondElBar?: HTMLElement | boolean, separator?: string): number | number[];
 }
 
 interface SliderSettings {
     extraClass: string;
-    start: number;
-    end: number;
+    min: number;
+    max: number;
     step: number;
     current: any;
     scaleValues: boolean;
@@ -100,8 +99,8 @@ interface SliderModel {
 interface SliderView {
     input: HTMLInputElement;
     subjectViewChangeCurrent: ObservableSubject;
-    update(settings: Object): void;
-    getCurrentValue(): number | number[];
+//    update(settings: Object): void;
+//    getCurrentValue(): number | number[];
 }
 
 interface ViewState {
