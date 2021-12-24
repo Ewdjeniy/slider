@@ -30,6 +30,8 @@ import XProgressBar from './progressBar/xProgressBar/xProgressBar.ts';
 //import YProgressBar from './progressBar/yProgressBar/yProgressBar.ts';
 //import YRangeProgressBar from './progressBar/yRangeProgressBar/yRangeProgressBar.ts';
 
+import Mediator from './mediator/mediator.ts';
+
 
 class ToxinSliderView implements SliderView {
     
@@ -60,7 +62,8 @@ class ToxinSliderView implements SliderView {
         stepsAmount: 0,
         stepsCoefficient: 0,
         decimalPlaces: 0
-    };   
+    };
+    subViewsMediator: any;
     
     constructor(input: HTMLInputElement) {
         
@@ -71,6 +74,7 @@ class ToxinSliderView implements SliderView {
         this.input = input;
         this.setState();
         this.render();
+        this.subViewsMediator = new Mediator(this.state);
         
     } 
     
@@ -80,83 +84,13 @@ class ToxinSliderView implements SliderView {
         this.state.runners = [];
         this.state.tips = [];
         this.state.progressBars = [];
-        this.state.stepsAmount = Math.round((this.sliderSettings.max - this.sliderSettings.min) / this.sliderSettings.step);        
-        this.state.stepsCoefficient = ((this.sliderSettings.step * this.state.stepsAmount) / ((this.sliderSettings.max - this.sliderSettings.min) / 100)) / 100;
-        this.state.decimalPlaces = this.sliderSettings.step.toString().includes('.') ? this.sliderSettings.step.toString().split('.')[1].length : 0;
-        
-        
-        
-        
         this.state.output = new XOutput({input: this.input, current: this.sliderSettings.current});
-        this.state.scale = new XScale({min: this.sliderSettings.min, max: this.sliderSettings.max, step: this.sliderSettings.step});
+        this.state.scale = new XScale();
         this.state.scaleValues = new XScaleValues();
         this.state.diapasones.push(new XDiapason());
         this.state.runners.push(new XRunner());
-        this.state.tips.push(new XTip());
+        this.state.tips.push(new XTip({current: this.sliderSettings.current}));
         this.state.progressBars.push(new XProgressBar({min: this.sliderSettings.min, max: this.sliderSettings.max, step: this.sliderSettings.step, current: this.sliderSettings.current}));
-        
-//        switch (this.sliderSettings.direction) {
-//                
-//            case 'x':
-//                
-//                this.state.output = this.sliderSettings.range ? new XRangeOutput(this.input) : new XOutput(this.input);
-//                this.state.scale = this.sliderSettings.range ? new XRangeScale() : new XScale();
-//                this.state.scaleValues = this.sliderSettings.range ? new XRangeScaleValues() : new XScaleValues();
-//                if(this.sliderSettings.range) {
-//                    this.state.diapasones.push(new XRangeDiapason());
-//                    this.state.diapasones.push(new XRangeDiapason()); 
-//                } else {
-//                    this.state.diapasones.push(new XDiapason());
-//                }
-//                
-//                for (let i = 0; i < this.state.diapasones.length; i++) {
-//                    if (this.state.diapasones.length > 1) {
-//                        this.state.runners.push(new XRangeRunner());
-//                        if(this.sliderSettings.tip) {
-//                            this.state.tips.push(new XRangeTip());
-//                        }
-//                        this.state.progressBars.push(new XRangeProgressBar());
-//                    } else {
-//                        this.state.runners.push(new XRunner());
-//                        if(this.sliderSettings.tip) {
-//                            this.state.tips.push(new XTip());
-//                        }
-//                        this.state.progressBars.push(new XProgressBar());
-//                    }
-//                }
-//                
-//                break;
-//                
-//            case 'y':
-//                
-//                this.state.output = this.sliderSettings.range ? new YRangeOutput(this.input) : new YOutput(this.input);
-//                this.state.scale = this.sliderSettings.range ? new YRangeScale() : new YScale();
-//                this.state.scaleValues = this.sliderSettings.range ? new YRangeScaleValues() : new YScaleValues();
-//                if(this.sliderSettings.range) {
-//                    this.state.diapasones.push(new YRangeDiapason());
-//                    this.state.diapasones.push(new YRangeDiapason()); 
-//                } else {
-//                    this.state.diapasones.push(new YDiapason());
-//                }
-//                
-//                for (let i = 0; i < this.state.diapasones.length; i++) {
-//                    if (this.state.diapasones.length > 1) {
-//                        this.state.runners.push(new YRangeRunner());
-//                        if(this.sliderSettings.tip) {
-//                            this.state.tips.push(new YRangeTip());
-//                        }
-//                        this.state.progressBars.push(new YRangeProgressBar());
-//                    } else {
-//                        this.state.runners.push(new YRunner());
-//                        if(this.sliderSettings.tip) {
-//                            this.state.tips.push(new YTip());
-//                        }
-//                        this.state.progressBars.push(new YProgressBar());
-//                    }
-//                }
-//                
-//                break;
-//        }
         
     }
     

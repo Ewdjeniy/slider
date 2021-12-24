@@ -1,6 +1,7 @@
 class Output {
 
     outputEl: HTMLInputElement;
+    mediator: any;
 
     constructor(options: Object) {
         this.outputEl = options.input;

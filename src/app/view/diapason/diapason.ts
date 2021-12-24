@@ -1,6 +1,7 @@
 class Diapason {   
     
     diapasonEl: HTMLElement = document.createElement('div');
+    mediator: any;
     
     constructor() {
 

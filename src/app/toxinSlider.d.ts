@@ -33,11 +33,16 @@ interface Object {
 type voidFunction = (data?: any) => void;
   
 
+interface SliderMediator {
+    
+}
+
 interface SliderTip {
     tipEl: HTMLElement;
 //    render(el: HTMLElement): void;
-    setCurrent(current: number | number[], start: number, end: number, i?: number): void;
+    setValue(value: number): void;
     showTip(barEl: HTMLElement, stepsAmount: number, start: number, end: number, step: number, decimalPlaces: number): number;
+    mediator: any;
 }
 
 interface SliderProgressBar {
@@ -45,26 +50,29 @@ interface SliderProgressBar {
 //    render(runnerEl: HTMLElement): void;
     setFontSize(scaleStepVal: number): void;
     setCurrent(current: number | number[], start: number, end: number, step: number, i?: number): void;
-    countProgressBarSize(event: PointerEvent, scaleStartX: number, mousePosOnRunner: number, scaleStep: number, secondBarEl?: HTMLElement | boolean): number;
+    returnProgressBarSize(e: PointerEvent): number;
+    mediator: any;
 }
 
 interface SliderRunner {
     runnerEl: HTMLElement;
 //    render(diapasoneEl: HTMLElement): void;
-    returnMousePosOnRunner(pointerDownEvent: PointerEvent): number;
+    returnMousePosOnRunner(pointerDownEvent: PointerEvent): PointerEvent;
+    mediator: any;
 }
 
 interface SliderScale {
     scaleEl: HTMLElement;
 //    render(sliderEl: HTMLElement): void;
-    returnScaleStep(runnerEl: HTMLElement, stepsCoefficient: number, stepsAmount: number): number;
     returnScaleStart(): number;
+    mediator: any;
 }
 
 interface SliderScaleValues {
     scaleValuesEl: HTMLElement;
 //    render(scaleEl: HTMLElement, scaleValues: boolean): void;
     setScaleValues(scaleValuesAmount: number, start: number, end: number, step: number, decimalPlaces: number, progressBarFontSize: number, runnerEl?: HTMLElement): void;
+    mediator: any;
 }
 
 interface SliderOutput {
@@ -72,6 +80,7 @@ interface SliderOutput {
     dispatchEvent(): void;
     setValue(value: number | number[]): void;
     countOutputValue(elBar: HTMLElement, stepsAmount: number, start: number, end: number, step: number, decimalPlaces: number, secondElBar?: HTMLElement | boolean, separator?: string): number | number[];
+    mediator: any;
 }
 
 interface SliderSettings {

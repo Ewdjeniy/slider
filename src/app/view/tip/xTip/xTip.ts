@@ -3,13 +3,14 @@ import Tip from '../tip.ts';
 
 class XTip extends Tip implements SliderTip {   
     
-    constructor() {
-        super();
+    constructor(options) {
+        super(options);
         this.tipEl.className = "tip x-tip";
+        this.setValue(options.current);
     }
     
-    setCurrent(current, start, end): void {
-        this.tipEl.innerHTML = current;        
+    setValue(value): void {
+        this.tipEl.innerHTML = value;        
     }
     
     showTip(barEl, stepsAmount, start, end, step, decimalPlaces): number {

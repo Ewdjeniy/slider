@@ -1,7 +1,8 @@
 class ScaleValues {
 
     scaleValuesEl:  HTMLElement = document.createElement('div');
-    scaleValuesModTurner = 'number';
+    scaleValuesModTurner: string = 'number';
+    mediator: any;
     
     constructor() {
         

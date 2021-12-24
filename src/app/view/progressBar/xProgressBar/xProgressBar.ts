@@ -8,32 +8,29 @@ class XProgressBar extends ProgressBar implements SliderProgressBar {
         this.progressBarEl.className = 'progress-bar x-progress-bar';
         this.setCurrent(options.current, options.min, options.max, options.step);
         
-        this.test = this.test.bind(this);
-        document.addEventListener("DOMContentLoaded", this.test);
+        this.setFontSize = this.setFontSize.bind(this);
+        document.addEventListener("DOMContentLoaded", this.setFontSize);
     }
     
-    test(): void {
-        this.setFontSize(this.returnProgressBarStep());
-    }
-    
-    setFontSize(scaleStepVal): void {
-        this.progressBarEl.style.fontSize = scaleStepVal + 'px';
+    setFontSize(): void {
+        this.progressBarEl.style.fontSize = this.returnProgressBarStep() + 'px';
     }
     
     returnProgressBarStep(): number {
-        return parseFloat(getComputedStyle(this.progressBarEl).width) * this.stepsCoefficient / this.stepsAmount; 
+        this.progressBarStep = parseFloat(getComputedStyle(this.progressBarEl).width) * this.stepsCoefficient / this.stepsAmount;
+        return this.progressBarStep; 
     }
     
-    countProgressBarSize(event: PointerEvent, scaleStartX, scaleStep, mousePosOnRunner): number {
-				const scaleValue: number = event.clientX - scaleStartX - mousePosOnRunner;
+    returnProgressBarSize(e: PointerEvent): number {
+        
         let size: number;
-        if (scaleValue >= 0) {
-            size = Math.round(scaleValue / scaleStep);
-				} else {
-            size = 0;
-				}
+        const scaleValue: number = e.clientX - this.progressBarEl.getBoundingClientRect().left;
+        
+        size = scaleValue >= 0 ? Math.round(scaleValue / this.progressBarStep) : 0;
+        size = size > this.stepsAmount ? this.max : size;
         this.progressBarEl.style.width = size + 'em';
         return size;
+        
     }
     
     setCurrent(current, start, end, step): void {
