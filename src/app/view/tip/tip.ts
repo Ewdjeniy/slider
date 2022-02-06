@@ -1,4 +1,4 @@
-import ObservableSubject from '../../observers.ts';
+import './tip.css';
 
 class Tip {   
     
@@ -6,7 +6,13 @@ class Tip {
     mediator: any;
     
     constructor(options) {
-
+        this.tipEl.className = "tip";
+        
+        this.setValue(options.current);
+    }
+    
+    setValue(value): void {
+        this.tipEl.innerHTML = value;       
     }
     
 };

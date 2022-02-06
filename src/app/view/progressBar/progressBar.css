@@ -1,12 +1,14 @@
-.yScale {
-    .progressBar {
-        padding: 0;
-        border: 0;
-        margin: 0;
-        width: 100%;
-        height: 0;
-        box-sizing: border-box;
-        background-color: red;
-        max-height: 100%;
-    }
+.progress-bar {
+    padding: 0;
+    border: 0;
+    margin: 0;
+    height: 100%;
+    box-sizing: border-box;
+    background: #fff;
+}
+
+.progress-bar-parent-clone {
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
 }

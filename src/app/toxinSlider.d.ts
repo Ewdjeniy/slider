@@ -41,7 +41,6 @@ interface SliderTip {
     tipEl: HTMLElement;
 //    render(el: HTMLElement): void;
     setValue(value: number): void;
-    showTip(barEl: HTMLElement, stepsAmount: number, start: number, end: number, step: number, decimalPlaces: number): number;
     mediator: any;
 }
 
@@ -64,7 +63,6 @@ interface SliderRunner {
 interface SliderScale {
     scaleEl: HTMLElement;
 //    render(sliderEl: HTMLElement): void;
-    returnScaleStart(): number;
     mediator: any;
 }
 
@@ -78,8 +76,7 @@ interface SliderScaleValues {
 interface SliderOutput {
     outputEl: HTMLInputElement;
     dispatchEvent(): void;
-    setValue(value: number | number[]): void;
-    countOutputValue(elBar: HTMLElement, stepsAmount: number, start: number, end: number, step: number, decimalPlaces: number, secondElBar?: HTMLElement | boolean, separator?: string): number | number[];
+    setValue(value: number, i: number): void;
     mediator: any;
 }
 

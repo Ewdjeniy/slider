@@ -1,4 +1,4 @@
-.x-scale {
+.scale {
     margin-top: 4em;
     width: 100%;
     height: 0.5em;
@@ -7,5 +7,5 @@
     display: flex;
     align-items: center;
     position: relative;
-    background: white;
+    background: #fff;
 }

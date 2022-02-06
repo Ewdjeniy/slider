@@ -1,9 +1,12 @@
-.x-scale-values {
+.scale-values {
     font-size: 1.5em;
     user-select: none;
     margin-top: 0.3em;
     cursor: pointer;
     position: relative;
+    box-sizing: border-box;
+    max-width: 100%;
+    margin-left: -0.6em;
     
     .scale-value {
         display: inline-block;
@@ -15,7 +18,7 @@
     }    
 }
 
-.x-sсale-values_number {
+.sсale-values_numbers {
     
     .scale-value {
         border-left: 0;
@@ -31,4 +34,10 @@
         right: 0 !important;
     }
     
+}
+
+.scale-values-parent-clone {
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
 }
