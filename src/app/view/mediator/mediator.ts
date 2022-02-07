@@ -15,14 +15,34 @@ class Mediator {
         this.subviews = subviews;
         subviews.output.mediator = subviews.output ? this : undefined;
         subviews.scale.mediator = subviews.scale ? this : undefined;
-        subviews.scaleValues.mediator = subviews.scale ? this : undefined;
+        subviews.scaleValues.mediator = subviews.scaleValues ? this : undefined;
         subviews.diapasones.forEach((diapason) => {diapason.mediator = this});
         subviews.tips.forEach((tip) => {tip.mediator = this});
         subviews.runners.forEach((runner) => {runner.mediator = this});
         subviews.progressBars.forEach((bar) => {bar.mediator = this});
         
-        subviews.progressBars[subviews.progressBars.length - 1].progressBarEl.style.background = 'linear-gradient(180deg, #6FCF97 0%, #66D2EA 100%)';
+        if (subviews.progressBars[subviews.progressBars.length - 1]) {
+            
+            subviews.progressBars[subviews.progressBars.length - 1].progressBarEl.style.background = 'linear-gradient(180deg, #6FCF97 0%, #66D2EA 100%)';
+            
+        }
+        
+        this.setSliderStepInPx();
+        
+        if (this.subviews.scaleValues) {
+            
+            this.subviews.scaleValues.moveScaleValues('left', this.subviews.runners[0].runnerEl.offsetWidth / 2);
+            
+        }
           
+    }
+    
+    setSliderStepInPx(): void {
+        const progressBarMaxSize = this.subviews.scale.scaleEl.clientWidth - this.subviews.runners[0].runnerEl.offsetWidth;
+        this.subviews.progressBars.forEach((bar) => {
+            bar.setStepInPx(progressBarMaxSize);
+        });
+        this.subviews.scaleValues.setStepInPx(this.subviews.progressBars[0].returnStepInPx());
     }
     
     returnNearestToEventRunnerIndex(pointerDownEvent: PointerEvent): number {
@@ -46,17 +66,35 @@ class Mediator {
         
     }
     
+    mediateValuePointerDown(pointerDown: PointerEvent, value: number): void {
+        this.setSliderStepInPx();
+        const i = this.returnNearestToEventRunnerIndex(pointerDown);
+        
+        this.subviews.progressBars[i].setValue(value);
+        
+        const sliderValue = this.subviews.progressBars[i].returnValue();
+        this.subviews.output.setValue(sliderValue, i);
+        this.subviews.tips[i].setValue(sliderValue);
+        
+    }
+    
     mediateScalePointerDown(pointerDown: PointerEvent): void {
         
-        pointerDown = this.subviews.runners[0].returnHalfRunnerSize(pointerDown);
+        this.setSliderStepInPx();
+        
         const i = this.returnNearestToEventRunnerIndex(pointerDown);
+        pointerDown = this.subviews.runners[0].returnHalfRunnerSize(pointerDown);
+        
+        this.subviews.progressBars[i].setValueOnEvent(pointerDown);
 
-        const sliderValue = this.subviews.progressBars[i].returnProgressBarSize(pointerDown);
+        const sliderValue = this.subviews.progressBars[i].returnValue();
         this.subviews.output.setValue(sliderValue, i);
         this.subviews.tips[i].setValue(sliderValue);
     }
     
     mediateDragging(pointerDown: PointerEvent): void {
+        
+        this.setSliderStepInPx();
         
         const that = this;
         let i = this.returnNearestToEventRunnerIndex(pointerDown);
@@ -75,14 +113,17 @@ class Mediator {
             
             pointerMoveEvent = that.subviews.runners[i].returnMousePosOnRunner(pointerMoveEvent);
             
-            const sliderValue = that.subviews.progressBars[i].returnProgressBarSize(pointerMoveEvent);
+            that.subviews.progressBars[i].setValueOnEvent(pointerMoveEvent);
+            
+            const sliderValue = that.subviews.progressBars[i].returnValue();
             that.subviews.output.setValue(sliderValue, i);
             that.subviews.tips[i].setValue(sliderValue);
             
-            if (that.subviews.progressBars[1] && that.subviews.progressBars[0].returnProgressBarValue() > that.subviews.progressBars[1].returnProgressBarValue()) {
+            if (that.subviews.progressBars[1] && that.subviews.progressBars[0].returnValue() > that.subviews.progressBars[1].returnValue()) {
                 
-                const firstProgressBarValue = that.subviews.progressBars[1].returnProgressBarSize(pointerMoveEvent);
-                that.subviews.progressBars[0].setCurrent(firstProgressBarValue);
+                that.subviews.progressBars[1].setValueOnEvent(pointerMoveEvent);
+                const firstProgressBarValue = that.subviews.progressBars[1].returnValue();
+                that.subviews.progressBars[0].setValue(firstProgressBarValue);
                 
                 that.subviews.tips.forEach((tip, j) => {
                     that.subviews.output.setValue(firstProgressBarValue, j);

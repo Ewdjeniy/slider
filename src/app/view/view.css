@@ -1,15 +1,8 @@
-.x-toxin-slider {
+.toxin-slider_x {
     width: 100%;
 }
 
-.x-range-toxin-slider {
-    
-}
-
-.y-toxin-slider {
-    height: 26.4em;
-}
-
-.y-range-toxin-slider {
-    height: 26.4em;
+.toxin-slider_y {
+    height: 100%;
+    margin-top: 40px;
 }

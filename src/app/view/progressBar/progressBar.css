@@ -6,9 +6,3 @@
     box-sizing: border-box;
     background: #fff;
 }
-
-.progress-bar-parent-clone {
-    height: 0;
-    overflow: hidden;
-    visibility: hidden;
-}

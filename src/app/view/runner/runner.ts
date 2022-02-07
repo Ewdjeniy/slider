@@ -9,7 +9,7 @@ class Runner {
     current: number;
     
     constructor(options) {
-        this.runnerEl.className = 'runner';
+        this.runnerEl.className = options.direction == 'x' ? 'runner runner_x' : 'runner runner_y';
         this.max = options.max;
         this.current = options.current;
         this.runnerEl.style.zIndex = (Math.abs(options.max) + 1000 - options.current).toString();

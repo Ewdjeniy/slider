@@ -46,10 +46,10 @@ interface SliderTip {
 
 interface SliderProgressBar {
     progressBarEl: HTMLElement;
-//    render(runnerEl: HTMLElement): void;
-    setFontSize(scaleStepVal: number): void;
-    setCurrent(current: number | number[], start: number, end: number, step: number, i?: number): void;
-    returnProgressBarSize(e: PointerEvent): number;
+    returnValue(): number;
+    setStepInPx(stepInPx): void;
+    setValueOnEvent(e: PointerEvent): void;
+    setValue(value): void;
     mediator: any;
 }
 
@@ -69,7 +69,7 @@ interface SliderScale {
 interface SliderScaleValues {
     scaleValuesEl: HTMLElement;
 //    render(scaleEl: HTMLElement, scaleValues: boolean): void;
-    setScaleValues(scaleValuesAmount: number, start: number, end: number, step: number, decimalPlaces: number, progressBarFontSize: number, runnerEl?: HTMLElement): void;
+    setValues(): void;
     mediator: any;
 }
 

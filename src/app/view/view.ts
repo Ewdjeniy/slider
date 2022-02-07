@@ -84,15 +84,15 @@ class ToxinSliderView implements SliderView {
         this.state.tips = [];
         this.state.progressBars = [];
         this.state.output = new Output({input: this.input, current: this.sliderSettings.current, separator: this.sliderSettings.separator});
-        this.state.scale = new Scale();
+        this.state.scale = new Scale({direction: this.sliderSettings.direction});
         this.state.scaleValues = new ScaleValues({scaleValues: this.sliderSettings.scaleValues, scaleValuesAmount : this.sliderSettings.scaleValuesAmount, min: this.sliderSettings.min, max: this.sliderSettings.max, step: this.sliderSettings.step});
         
         this.sliderSettings.current.forEach((current) => {
             
-            this.state.diapasones.push(new Diapason({max: this.sliderSettings.max, current: current}));
-            this.state.runners.push(new Runner({max: this.sliderSettings.max, current: current}));
-            this.state.tips.push(new Tip({current: current}));
-            this.state.progressBars.push(new ProgressBar({min: this.sliderSettings.min, max: this.sliderSettings.max, step: this.sliderSettings.step, current: current}));
+            this.state.diapasones.push(new Diapason({direction: this.sliderSettings.direction}));
+            this.state.runners.push(new Runner({max: this.sliderSettings.max, current: current, direction: this.sliderSettings.direction}));
+            this.state.tips.push(new Tip({current: current, direction: this.sliderSettings.direction}));
+            this.state.progressBars.push(new ProgressBar({direction: this.sliderSettings.direction, min: this.sliderSettings.min, max: this.sliderSettings.max, step: this.sliderSettings.step, current: current}));
             
         });
         
@@ -101,18 +101,36 @@ class ToxinSliderView implements SliderView {
     render(): void {
         
         this.sliderEl = document.createElement('div');
-        this.sliderEl.className = 'toxin-slider';
-        this.sliderEl.className = this.sliderSettings.extraClass === '' ? this.sliderEl.className : this.sliderEl.className + ' ' + this.sliderSettings.extraClass;
         
-        this.input.after(this.sliderEl);
-        this.sliderEl.append(this.state.scale.scaleEl);
-        this.state.scale.scaleEl.after(this.state.scaleValues.scaleValuesEl);
-        this.sliderSettings.current.forEach((current, i) => {
-            this.state.scale.scaleEl.append(this.state.diapasones[i].diapasonEl);
-            this.state.diapasones[i].diapasonEl.append(this.state.runners[i].runnerEl);
-            this.state.runners[i].runnerEl.before(this.state.progressBars[i].progressBarEl);
-            this.state.runners[i].runnerEl.append(this.state.tips[i].tipEl);   
-        });
+        switch (this.sliderSettings.direction) {
+            case 'x':
+                this.sliderEl.className = 'toxin-slider toxin-slider_x';
+                this.sliderEl.className = this.sliderSettings.extraClass === '' ? this.sliderEl.className : this.sliderEl.className + ' ' + this.sliderSettings.extraClass;
+                this.input.after(this.sliderEl);
+                this.sliderEl.append(this.state.scale.scaleEl);
+                this.state.scale.scaleEl.after(this.state.scaleValues.scaleValuesEl);
+                this.sliderSettings.current.forEach((current, i) => {
+                    this.state.scale.scaleEl.append(this.state.diapasones[i].diapasonEl);
+                    this.state.diapasones[i].diapasonEl.append(this.state.runners[i].runnerEl);
+                    this.state.runners[i].runnerEl.before(this.state.progressBars[i].progressBarEl);
+                    this.state.runners[i].runnerEl.append(this.state.tips[i].tipEl);   
+                });
+                break;
+                
+            case 'y':
+                this.sliderEl.className = 'toxin-slider toxin-slider_y';
+                this.sliderEl.className = this.sliderSettings.extraClass === '' ? this.sliderEl.className : this.sliderEl.className + ' ' + this.sliderSettings.extraClass;
+                this.input.after(this.sliderEl);
+                this.sliderEl.append(this.state.scale.scaleEl);
+                this.state.scale.scaleEl.before(this.state.scaleValues.scaleValuesEl);
+                this.sliderSettings.current.forEach((current, i) => {
+                    this.state.scale.scaleEl.append(this.state.diapasones[i].diapasonEl);
+                    this.state.diapasones[i].diapasonEl.append(this.state.runners[i].runnerEl);
+                    this.state.runners[i].runnerEl.after(this.state.progressBars[i].progressBarEl);
+                    this.state.runners[i].runnerEl.append(this.state.tips[i].tipEl);
+                });
+                break;
+        }
         
     }
     

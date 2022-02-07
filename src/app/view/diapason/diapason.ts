@@ -6,7 +6,7 @@ class Diapason {
     mediator: any;
     
     constructor(options) {
-        this.diapasonEl.className = 'diapason';
+        this.diapasonEl.className = options.direction == 'x' ? 'diapason diapason_x' : 'diapason diapason_y';
     }    
 };
 

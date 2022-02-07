@@ -2,14 +2,13 @@ import './progressBar.css';
 
 class ProgressBar {
     
-    mediator: any;
-    progressBarEl: HTMLElement = document.createElement('div');
     min: number;
     max: number;
     step: number;
     stepsAmount: number;
-    parentClone: HTMLElement = document.createElement('div');
-    maxSizeMeter: HTMLElement;
+    stepInPx: number = 1;
+    mediator: any;
+    progressBarEl: HTMLElement = document.createElement('div');
     
     constructor(options: Object) {
         
@@ -18,53 +17,41 @@ class ProgressBar {
         this.step = options.step;
         this.stepsAmount = Math.round((this.max - this.min) / this.step);
         
-        this.progressBarEl.className = 'progress-bar';
-        this.setCurrent(options.current);
-        
-        this.insertMaxSizeMeter = this.insertMaxSizeMeter.bind(this);
-        this.setFontSize = this.setFontSize.bind(this);     
+        this.progressBarEl.className = 'progress-bar'; 
         this.progressBarEl.style.zIndex = (Math.abs(this.max) + 1000 - options.current).toString();
         
-        document.addEventListener("DOMContentLoaded", this.insertMaxSizeMeter);
-        document.addEventListener("DOMContentLoaded", this.setFontSize);
+        this.setValue(options.current);
+        
     }
     
-    returnProgressBarValue(): number {
+    returnValue(): number {
         return parseInt(this.progressBarEl.style.width) * this.step;
     }
     
-    insertMaxSizeMeter(): void {
-        this.parentClone.className = 'progress-bar-parent-clone';
-        this.parentClone.innerHTML = this.progressBarEl.parentElement.outerHTML;
-        this.progressBarEl.parentElement.before(this.parentClone);
-        
-        this.maxSizeMeter = this.parentClone.getElementsByClassName('progress-bar')[0] as HTMLElement;
-        this.maxSizeMeter.style.width = '100vw';
+    returnStepInPx(): number {
+        return this.stepInPx;
     }
     
-    setFontSize(): void {
-        this.progressBarEl.style.fontSize = this.returnProgressBarStepInPx() + 'px';
+    
+    setStepInPx(maxSizeInPx): void {
+        this.stepInPx = maxSizeInPx / this.stepsAmount;
+        this.progressBarEl.style.fontSize = this.stepInPx + 'px';
     }
     
-    returnProgressBarStepInPx(): number {
-        return this.maxSizeMeter.clientWidth / this.stepsAmount; 
-    }
-    
-    returnProgressBarSize(e: PointerEvent): number {
+    setValueOnEvent(e: PointerEvent): void {
         
         let size: number;
         const scaleValue: number = e.clientX - this.progressBarEl.getBoundingClientRect().left;
         
-        size = scaleValue >= 0 ? Math.round(scaleValue / this.returnProgressBarStepInPx()) : 0;
+        size = scaleValue >= 0 ? Math.round(scaleValue / this.stepInPx) : 0;
         size = size > this.stepsAmount ? this.max / this.step : size;
         this.progressBarEl.style.width = size + 'em';
-        return size * this.step;
         
     }
     
-    setCurrent(current): void {
-        this.progressBarEl.style.width = Math.round((current - this.min) / this.step) + 'em';
-        if (current == this.max) {
+    setValue(value): void {
+        this.progressBarEl.style.width = Math.round((value - this.min) / this.step) + 'em';
+        if (value == this.max) {
             this.progressBarEl.style.width = (this.max - this.min) / this.step + 'em';
         }
     }

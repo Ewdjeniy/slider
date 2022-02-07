@@ -5,8 +5,8 @@ class Scale {
     scaleEl:  HTMLElement = document.createElement('div');
     mediator: any;
     
-    constructor() {
-        this.scaleEl.className = 'scale';
+    constructor(options) {
+        this.scaleEl.className = options.direction == 'x' ? 'scale scale_x' : 'scale scale_y';
         this.onScalePointerDown = this.onScalePointerDown.bind(this);
         this.scaleEl.onpointerdown = this.onScalePointerDown;
     }

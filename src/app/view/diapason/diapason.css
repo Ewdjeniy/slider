@@ -1,4 +1,4 @@
-.diapason {
+.diapason_x {
     display: flex;
     align-items: center;
     max-width: 100%;
@@ -6,6 +6,20 @@
     box-sizing: border-box;
     position: absolute;
     height: 100%;
+    background: #fff;
+    border-radius: 3em;
+}
+
+.diapason_y {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-height: 100%;
+    padding: 0;
+    box-sizing: border-box;
+    position: absolute;
+    width: 100%;
+    z-index: 100;
     background: #fff;
     border-radius: 3em;
 }

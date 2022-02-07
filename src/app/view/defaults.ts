@@ -4,9 +4,9 @@ export const defaultSliderSettingsView: SliderSettings = {
     max: 100,
     step: 1,
     current: [25],
-    scaleValues: true,
-    scaleValuesAmount: 5,
-    direction: 'x',
+    scaleValues: false,
+    scaleValuesAmount: 0,
+    direction: 'y',
     range: false,
     tip: false,
     separator: ' - '
