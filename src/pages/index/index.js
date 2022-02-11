@@ -6,6 +6,21 @@ const panels = document.getElementsByClassName('slider-with-panel');
 
 //synchronizePanelWithSlider(sliderInpt, el, min, max, step, scaleValues, scaleValuesAmount, direction, range, tip, separator, to, from);
 
+synchronizePanelWithSlider(panels[0], {
+    extraClass: '',
+    min: 0,
+    max: 100,
+    step: 1,
+    current: [50],
+    scaleValues: true,
+    scaleValuesAmount: 3,
+    direction: 'x',
+    range: false,
+    tip: true,
+    separator: ' - '
+});
+
+
 //synchronizePanelWithSlider(panels[0].getElementsByClassName('first-slider')[0], panels[0], 0, 100, 1, false, 3, 'x', false, true, ' - ', 50, 0);
 
 //synchronizePanelWithSlider(panels[1].getElementsByClassName('second-slider')[0], panels[1], -50, 50, 1, true, 3, 'x', true, false, ' - ', 25, 0);

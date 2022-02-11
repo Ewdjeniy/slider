@@ -19,7 +19,6 @@
     box-sizing: border-box;
     position: absolute;
     width: 100%;
-    z-index: 100;
     background: #fff;
     border-radius: 3em;
 }

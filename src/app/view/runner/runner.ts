@@ -7,11 +7,13 @@ class Runner {
     mousePosOnRunnerOnStartDragging: number = 0;
     max: number;
     current: number;
+    direction: string;
     
     constructor(options) {
         this.runnerEl.className = options.direction == 'x' ? 'runner runner_x' : 'runner runner_y';
         this.max = options.max;
         this.current = options.current;
+        this.direction = options.direction;
         this.runnerEl.style.zIndex = (Math.abs(options.max) + 1000 - options.current).toString();
         this.onRunnerPointerDown = this.onRunnerPointerDown.bind(this);
         this.runnerEl.onpointerdown = this.onRunnerPointerDown;
@@ -27,7 +29,9 @@ class Runner {
     
     onRunnerPointerDown(e: PointerEvent): boolean {
         
-        this.mousePosOnRunnerOnStartDragging = e.clientX - this.runnerEl.getBoundingClientRect().left;
+        this.mousePosOnRunnerOnStartDragging = this.direction == 'x' ? 
+            e.clientX - this.runnerEl.getBoundingClientRect().left :
+            this.runnerEl.getBoundingClientRect().bottom - e.clientY;
         
         if (this.mediator) {
             this.mediator.mediateDragging(e);
@@ -39,15 +43,16 @@ class Runner {
         
         const pointerDownEvent = new PointerEvent("pointerdown", {
             clientX: e.clientX - parseFloat(getComputedStyle(this.runnerEl).width) / 2,
+            clientY: e.clientY + parseFloat(getComputedStyle(this.runnerEl).height) / 2,
         });
         
         return pointerDownEvent;
     }
     
     returnMousePosOnRunner(e: PointerEvent): PointerEvent {
-        
         const pointerMoveEvent = new PointerEvent("pointermove", {
             clientX: e.clientX - this.mousePosOnRunnerOnStartDragging,
+            clientY: e.clientY + this.mousePosOnRunnerOnStartDragging,
         });
         
         return pointerMoveEvent;

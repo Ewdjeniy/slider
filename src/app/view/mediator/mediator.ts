@@ -5,14 +5,19 @@ import Diapason from '../diapason/diapason.ts';
 import Runner from '../runner/runner.ts';
 import Tip from '../tip/tip.ts';
 import ProgressBar from '../progressBar/progressBar.ts';
+import ObservableSubject from '../../observers.ts';
 
 class Mediator {
     
     private subviews: any;
+    direction: string;
+    subjectViewChangeCurrentLink: ObservableSubject;
     
-    constructor(subviews: ViewState) {
+    constructor(subviews: ViewState, subjectViewChangeCurrentLink: ObservableSubject) {
         
         this.subviews = subviews;
+        this.subjectViewChangeCurrentLink = subjectViewChangeCurrentLink;
+        this.direction = this.subviews.scale.scaleEl.clientWidth > this.subviews.scale.scaleEl.clientHeight ? 'x' : 'y';
         subviews.output.mediator = subviews.output ? this : undefined;
         subviews.scale.mediator = subviews.scale ? this : undefined;
         subviews.scaleValues.mediator = subviews.scaleValues ? this : undefined;
@@ -21,24 +26,33 @@ class Mediator {
         subviews.runners.forEach((runner) => {runner.mediator = this});
         subviews.progressBars.forEach((bar) => {bar.mediator = this});
         
+        if (subviews.progressBars[0]) {
+            
+            subviews.progressBars[0].setZindex('10000');
+            
+        }
+        
         if (subviews.progressBars[subviews.progressBars.length - 1]) {
             
-            subviews.progressBars[subviews.progressBars.length - 1].progressBarEl.style.background = 'linear-gradient(180deg, #6FCF97 0%, #66D2EA 100%)';
+            subviews.progressBars[subviews.progressBars.length - 1].setBackground('linear-gradient(180deg, #6FCF97 0%, #66D2EA 100%)');
             
         }
         
         this.setSliderStepInPx();
         
-        if (this.subviews.scaleValues) {
-            
+        if (this.subviews.scaleValues && this.direction == 'x') {
             this.subviews.scaleValues.moveScaleValues('left', this.subviews.runners[0].runnerEl.offsetWidth / 2);
-            
+        } else if (this.subviews.scaleValues && this.direction == 'y') {
+            this.subviews.scaleValues.moveScaleValues('bottom', this.subviews.runners[0].runnerEl.offsetWidth / 2);       
         }
           
     }
     
     setSliderStepInPx(): void {
-        const progressBarMaxSize = this.subviews.scale.scaleEl.clientWidth - this.subviews.runners[0].runnerEl.offsetWidth;
+        
+        const size = this.direction == 'x' ? 'width' : 'height';
+        
+        const progressBarMaxSize = parseFloat(getComputedStyle(this.subviews.scale.scaleEl)[size]) - parseFloat(getComputedStyle(this.subviews.runners[0].runnerEl)[size]);
         this.subviews.progressBars.forEach((bar) => {
             bar.setStepInPx(progressBarMaxSize);
         });
@@ -53,10 +67,24 @@ class Mediator {
         
         while (runnerIndex < this.subviews.runners.length) {
             
-            if (pointerDownEvent.clientX > this.subviews.runners[runnerIndex].runnerEl.getBoundingClientRect().right ||
-                pointerDownEvent.clientX - (this.subviews.runners[nearestRunnerIndex].runnerEl.getBoundingClientRect().left + parseFloat(getComputedStyle(this.subviews.runners[nearestRunnerIndex].runnerEl).width) / 2) > (this.subviews.runners[runnerIndex].runnerEl.getBoundingClientRect().left + parseFloat(getComputedStyle(this.subviews.runners[runnerIndex].runnerEl).width) / 2) - pointerDownEvent.clientX
-            ){
-                return runnerIndex;
+            switch (this.direction) {
+                case 'x':
+                    if (
+                        pointerDownEvent.clientX > this.subviews.runners[runnerIndex].runnerEl.getBoundingClientRect().right ||
+                        pointerDownEvent.clientX - (this.subviews.runners[nearestRunnerIndex].runnerEl.getBoundingClientRect().left + parseFloat(getComputedStyle(this.subviews.runners[nearestRunnerIndex].runnerEl).width) / 2) > (this.subviews.runners[runnerIndex].runnerEl.getBoundingClientRect().left + parseFloat(getComputedStyle(this.subviews.runners[runnerIndex].runnerEl).width) / 2) - pointerDownEvent.clientX
+                    ){
+                        return runnerIndex;
+                    }
+                    break;
+                    
+                case 'y':
+                    if (
+                        pointerDownEvent.clientY < this.subviews.runners[runnerIndex].runnerEl.getBoundingClientRect().top ||
+                        pointerDownEvent.clientY - (this.subviews.runners[nearestRunnerIndex].runnerEl.getBoundingClientRect().top + parseFloat(getComputedStyle(this.subviews.runners[nearestRunnerIndex].runnerEl).height) / 2) < (this.subviews.runners[runnerIndex].runnerEl.getBoundingClientRect().bottom + parseFloat(getComputedStyle(this.subviews.runners[runnerIndex].runnerEl).height) / 2) - pointerDownEvent.clientY
+                    ){
+                        return runnerIndex;
+                    }
+                    break;
             }
             
             runnerIndex++;
@@ -74,7 +102,10 @@ class Mediator {
         
         const sliderValue = this.subviews.progressBars[i].returnValue();
         this.subviews.output.setValue(sliderValue, i);
-        this.subviews.tips[i].setValue(sliderValue);
+        if (this.subviews.tips[i]) {
+            this.subviews.tips[i].setValue(sliderValue); 
+        }
+        this.subjectViewChangeCurrentLink.notifyObservers(this.subviews.output.returnValue());
         
     }
     
@@ -89,7 +120,10 @@ class Mediator {
 
         const sliderValue = this.subviews.progressBars[i].returnValue();
         this.subviews.output.setValue(sliderValue, i);
-        this.subviews.tips[i].setValue(sliderValue);
+        if (this.subviews.tips[i]) {
+            this.subviews.tips[i].setValue(sliderValue); 
+        }
+        this.subjectViewChangeCurrentLink.notifyObservers(this.subviews.output.returnValue());
     }
     
     mediateDragging(pointerDown: PointerEvent): void {
@@ -117,7 +151,9 @@ class Mediator {
             
             const sliderValue = that.subviews.progressBars[i].returnValue();
             that.subviews.output.setValue(sliderValue, i);
-            that.subviews.tips[i].setValue(sliderValue);
+            if (that.subviews.tips[i]) {
+                that.subviews.tips[i].setValue(sliderValue); 
+            }
             
             if (that.subviews.progressBars[1] && that.subviews.progressBars[0].returnValue() > that.subviews.progressBars[1].returnValue()) {
                 
@@ -131,11 +167,24 @@ class Mediator {
                 });
                 
             }
+            
+            that.subjectViewChangeCurrentLink.notifyObservers(that.subviews.output.returnValue());
                 
         }
         
         document.addEventListener('pointermove', updateSlider);
         document.addEventListener('pointerup', removeListenersFromDocument);
+    }
+    
+    mediateSettingValue(value: number[]) {
+        value.forEach((val, i) => {
+            this.subviews.progressBars[i].setValue(val);
+            const sliderValue = this.subviews.progressBars[i].returnValue();
+            this.subviews.output.setValue(sliderValue, i);
+            if (this.subviews.tips[i]) {
+                this.subviews.tips[i].setValue(sliderValue); 
+            }
+        });
     }
     
 };

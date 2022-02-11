@@ -1,7 +1,7 @@
 interface ToxinSliderOptions {
     extraClass?: string; 
-    start?: number;
-    end?: number;
+    min?: number;
+    max?: number;
     step?: number;
     current?: any;
     scaleValuesAmount?: number;
@@ -51,6 +51,9 @@ interface SliderProgressBar {
     setValueOnEvent(e: PointerEvent): void;
     setValue(value): void;
     mediator: any;
+    setZindex(value: string): void;
+    
+    setBackground(background: string): void;
 }
 
 interface SliderRunner {
@@ -105,7 +108,8 @@ interface SliderModel {
 interface SliderView {
     input: HTMLInputElement;
     subjectViewChangeCurrent: ObservableSubject;
-//    update(settings: Object): void;
+    update(settings: SliderSettings): void;
+    setValue(value: number[]): void;
 //    getCurrentValue(): number | number[];
 }
 

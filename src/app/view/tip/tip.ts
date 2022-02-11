@@ -6,7 +6,7 @@ class Tip {
     mediator: any;
     
     constructor(options) {
-        this.tipEl.className = "tip";
+        this.tipEl.className = options.direction == 'x' ? 'tip tip_x' : 'tip tip_y';
         
         this.setValue(options.current);
     }

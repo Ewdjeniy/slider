@@ -2,34 +2,12 @@ import './view.css';
 import { defaultSliderSettingsView } from './defaults.ts';
 import ObservableSubject from '../observers.ts';
 import Output from './output/output.ts';
-//import XRangeOutput from './output/xRangeOutput/xRangeOutput.ts';
-//import YOutput from './output/yOutput/yOutput.ts';
-//import YRangeOutput from './output/yRangeOutput/yRangeOutput.ts';
 import Scale from './scale/scale.ts';
-//import XRangeScale from './scale/xRangeScale/xRangeScale.ts';
-//import YScale from './scale/yScale/yScale.ts';
-//import YRangeScale from './scale/yRangeScale/yRangeScale.ts';
 import ScaleValues from './scaleValues/scaleValues.ts';
-//import XRangeScaleValues from './scaleValues/xRangeScaleValues/xRangeScaleValues.ts';
-//import YScaleValues from './scaleValues/yScaleValues/yScaleValues.ts';
-//import YRangeScaleValues from './scaleValues/yRangeScaleValues/yRangeScaleValues.ts';
 import Diapason from './diapason/diapason.ts';
-//import XRangeDiapason from './diapason/xRangeDiapason/xRangeDiapason.ts';
-//import YDiapason from './diapason/yDiapason/yDiapason.ts';
-//import YRangeDiapason from './diapason/yRangeDiapason/yRangeDiapason.ts';
 import Runner from './runner/runner.ts';
-//import XRangeRunner from './runner/xRangeRunner/xRangeRunner.ts';
-//import YRunner from './runner/yRunner/yRunner.ts';
-//import YRangeRunner from './runner/yRangeRunner/yRangeRunner.ts';
 import Tip from './tip/tip.ts';
-//import XRangeTip from './tip/xRangeTip/xRangeTip.ts';
-//import YTip from './tip/yTip/yTip.ts';
-//import YRangeTip from './tip/yRangeTip/yRangeTip.ts';
 import ProgressBar from './progressBar/progressBar.ts';
-//import XRangeProgressBar from './progressBar/xRangeProgressBar/xRangeProgressBar.ts';
-//import YProgressBar from './progressBar/yProgressBar/yProgressBar.ts';
-//import YRangeProgressBar from './progressBar/yRangeProgressBar/yRangeProgressBar.ts';
-
 import Mediator from './mediator/mediator.ts';
 
 
@@ -63,35 +41,56 @@ class ToxinSliderView implements SliderView {
         stepsCoefficient: 0,
         decimalPlaces: 0
     };
+    subviewsMediator: Object = null;
     
     constructor(input: HTMLInputElement) {
+        this.init(input);
+    }
+    
+    init(input: HTMLInputElement): void {
         
-        for (let key in defaultSliderSettingsView) {
-            this.sliderSettings[key] = defaultSliderSettingsView[key];
-        }
-        
+        this.setSettings(defaultSliderSettingsView);      
         this.input = input;
+    }
+    
+    update(settings: SliderSettings): void {
+        
+        this.sliderEl.remove();
+        this.setSettings(settings);
         this.setState();
         this.render();
-        new Mediator(this.state);
+        this.subviewsMediator = new Mediator(this.state, this.subjectViewChangeCurrent);
         
-    } 
+    }
+    
+    setSettings(settings: Object): void {
+        for (let key in settings) {
+            if(key in this.sliderSettings) {
+                this.sliderSettings[key] = settings[key];
+            }
+        }
+    }
+    
+    setValue(value: number[]): void {
+        this.subviewsMediator.mediateSettingValue(value);
+    }
     
     setState(): void {
-        
         this.state.diapasones = [];
         this.state.runners = [];
         this.state.tips = [];
         this.state.progressBars = [];
         this.state.output = new Output({input: this.input, current: this.sliderSettings.current, separator: this.sliderSettings.separator});
         this.state.scale = new Scale({direction: this.sliderSettings.direction});
-        this.state.scaleValues = new ScaleValues({scaleValues: this.sliderSettings.scaleValues, scaleValuesAmount : this.sliderSettings.scaleValuesAmount, min: this.sliderSettings.min, max: this.sliderSettings.max, step: this.sliderSettings.step});
+        this.state.scaleValues = new ScaleValues({direction: this.sliderSettings.direction, scaleValues: this.sliderSettings.scaleValues, scaleValuesAmount : this.sliderSettings.scaleValuesAmount, min: this.sliderSettings.min, max: this.sliderSettings.max, step: this.sliderSettings.step});
         
         this.sliderSettings.current.forEach((current) => {
             
             this.state.diapasones.push(new Diapason({direction: this.sliderSettings.direction}));
             this.state.runners.push(new Runner({max: this.sliderSettings.max, current: current, direction: this.sliderSettings.direction}));
-            this.state.tips.push(new Tip({current: current, direction: this.sliderSettings.direction}));
+            if (this.sliderSettings.tip) {
+                this.state.tips.push(new Tip({current: current, direction: this.sliderSettings.direction}));
+            }
             this.state.progressBars.push(new ProgressBar({direction: this.sliderSettings.direction, min: this.sliderSettings.min, max: this.sliderSettings.max, step: this.sliderSettings.step, current: current}));
             
         });
@@ -113,7 +112,10 @@ class ToxinSliderView implements SliderView {
                     this.state.scale.scaleEl.append(this.state.diapasones[i].diapasonEl);
                     this.state.diapasones[i].diapasonEl.append(this.state.runners[i].runnerEl);
                     this.state.runners[i].runnerEl.before(this.state.progressBars[i].progressBarEl);
-                    this.state.runners[i].runnerEl.append(this.state.tips[i].tipEl);   
+                    
+                    if (this.sliderSettings.tip) {
+                        this.state.runners[i].runnerEl.append(this.state.tips[i].tipEl); 
+                    }   
                 });
                 break;
                 
@@ -127,7 +129,9 @@ class ToxinSliderView implements SliderView {
                     this.state.scale.scaleEl.append(this.state.diapasones[i].diapasonEl);
                     this.state.diapasones[i].diapasonEl.append(this.state.runners[i].runnerEl);
                     this.state.runners[i].runnerEl.after(this.state.progressBars[i].progressBarEl);
-                    this.state.runners[i].runnerEl.append(this.state.tips[i].tipEl);
+                    if (this.sliderSettings.tip) {
+                        this.state.runners[i].runnerEl.append(this.state.tips[i].tipEl); 
+                    }
                 });
                 break;
         }

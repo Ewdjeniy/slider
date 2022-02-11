@@ -15,6 +15,10 @@ class Output {
         });
     }
     
+    returnValue(): number[] {
+        return this.current;
+    }
+    
     setValue(value: number, i: number): void {
         
         this.current[i] = value;
@@ -25,6 +29,7 @@ class Output {
             this.outputEl.value += this.separator + this.current[j];
             j++;
         }
+        this.dispatchEvent();
     }
     
     dispatchEvent(): void {

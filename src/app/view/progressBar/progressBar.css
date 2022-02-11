@@ -1,8 +1,17 @@
-.progress-bar {
+.progress-bar_x {
     padding: 0;
     border: 0;
     margin: 0;
     height: 100%;
+    box-sizing: border-box;
+    background: #fff;
+}
+
+.progress-bar_y {
+    padding: 0;
+    border: 0;
+    margin: 0;
+    width: 100%;
     box-sizing: border-box;
     background: #fff;
 }
