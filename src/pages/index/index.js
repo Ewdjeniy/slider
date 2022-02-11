@@ -4,27 +4,62 @@ import synchronizePanelWithSlider from '../../components/sliderWithPanel/sliderW
 
 const panels = document.getElementsByClassName('slider-with-panel');
 
-//synchronizePanelWithSlider(sliderInpt, el, min, max, step, scaleValues, scaleValuesAmount, direction, range, tip, separator, to, from);
-
 synchronizePanelWithSlider(panels[0], {
     extraClass: '',
     min: 0,
     max: 100,
     step: 1,
     current: [50],
-    scaleValues: true,
+    scaleValues: false,
     scaleValuesAmount: 3,
     direction: 'x',
     range: false,
     tip: true,
-    separator: ' - '
+    separator: ' - ',
+    decimalPlaces: 0
 });
 
+synchronizePanelWithSlider(panels[1], {
+    extraClass: '',
+    min: -50,
+    max: 50,
+    step: 1,
+    current: [0, 25],
+    scaleValues: true,
+    scaleValuesAmount: 3,
+    direction: 'x',
+    range: true,
+    tip: true,
+    separator: ' - ',
+    decimalPlaces: 0
+});
 
-//synchronizePanelWithSlider(panels[0].getElementsByClassName('first-slider')[0], panels[0], 0, 100, 1, false, 3, 'x', false, true, ' - ', 50, 0);
+synchronizePanelWithSlider(panels[2], {
+    extraClass: '',
+    min: 0,
+    max: 50000,
+    step: 100,
+    current: [1000],
+    scaleValues: false,
+    scaleValuesAmount: 3,
+    direction: 'y',
+    range: false,
+    tip: true,
+    separator: ' - ',
+    decimalPlaces: 0
+});
 
-//synchronizePanelWithSlider(panels[1].getElementsByClassName('second-slider')[0], panels[1], -50, 50, 1, true, 3, 'x', true, false, ' - ', 25, 0);
-//
-//synchronizePanelWithSlider(panels[2].getElementsByClassName('third-slider')[0], panels[2], 0, 100, 1, false, 3, 'y', false, true, ' - ', 100, 0);
-//
-//synchronizePanelWithSlider(panels[3].getElementsByClassName('fourth-slider')[0], panels[3], 0, 50, 0.1, true, 4, 'y', true, false, ' - ', 25, 0);
+synchronizePanelWithSlider(panels[3], {
+    extraClass: '',
+    min: 0,
+    max: 50,
+    step: 0.1,
+    current: [16.1, 36.9],
+    scaleValues: true,
+    scaleValuesAmount: 4,
+    direction: 'y',
+    range: true,
+    tip: false,
+    separator: ' - ',
+    decimalPlaces: 1
+});

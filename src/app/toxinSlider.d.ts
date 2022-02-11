@@ -10,6 +10,7 @@ interface ToxinSliderOptions {
     range?: boolean;
     tip?: boolean;
     separator?: string;
+    decimalPlaces?: number;
 }
 
 interface ToxinSliderGlobalOptions {
@@ -61,6 +62,7 @@ interface SliderRunner {
 //    render(diapasoneEl: HTMLElement): void;
     returnMousePosOnRunner(pointerDownEvent: PointerEvent): PointerEvent;
     mediator: any;
+    setZindex(value: string): void;
 }
 
 interface SliderScale {
@@ -95,6 +97,7 @@ interface SliderSettings {
     range: boolean;
     tip: boolean;
     separator: string;
+    decimalPlaces: number;
 }
      
 interface SliderModel {

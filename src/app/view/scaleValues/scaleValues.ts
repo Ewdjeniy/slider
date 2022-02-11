@@ -41,6 +41,7 @@ class ScaleValues {
         direction = direction[0].toUpperCase() + direction.slice(1);
         
         direction = 'margin' + direction;
+        
         this.scaleValuesEl.style[direction] = moveValue + 'px';
     }
     

@@ -19,6 +19,10 @@ class Runner {
         this.runnerEl.onpointerdown = this.onRunnerPointerDown;
     }
     
+    setZindex(value: string): void {
+        this.runnerEl.style.zIndex = value;
+    }
+    
     setCurrentZedIndex(): void {
        this.runnerEl.style.zIndex = (Math.abs(this.max) + 1000 - this.current).toString(); 
     }

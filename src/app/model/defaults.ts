@@ -9,5 +9,6 @@ export const defaultSliderSettingsModel: ToxinSliderOptions = {
     direction: 'x',
     range: false,
     tip: true,
-    separator: ' - '
+    separator: ' - ',
+    decimalPlaces: 2
 };

@@ -9,5 +9,6 @@ export const defaultSliderSettingsView: SliderSettings = {
     direction: 'x',
     range: true,
     tip: false,
-    separator: ' - '
+    separator: ' - ',
+    decimalPlaces: 2
 };

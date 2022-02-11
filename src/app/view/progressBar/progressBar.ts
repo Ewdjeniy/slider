@@ -6,6 +6,7 @@ class ProgressBar {
     max: number;
     step: number;
     direction: string;
+    decimalPlaces: number;
     stepsAmount: number;
     stepInPx: number = 1;
     mediator: any;
@@ -17,6 +18,7 @@ class ProgressBar {
         this.max = options.max;
         this.step = options.step;
         this.direction = options.direction;
+        this.decimalPlaces = options.decimalPlaces;
         this.stepsAmount = Math.round((this.max - this.min) / this.step);
         
         this.progressBarEl.className = options.direction == 'x' ? 'progress-bar progress-bar_x' : 'progress-bar progress-bar_y'; 
@@ -38,6 +40,7 @@ class ProgressBar {
         const sizeName = this.direction == 'x' ? 'width' : 'height';
         let value = this.min + parseInt(this.progressBarEl.style[sizeName]) * this.step;
         value = value >= this.max ? this.max : value;
+        value = +value.toFixed(this.decimalPlaces);
         
         return value;
     }
@@ -53,6 +56,8 @@ class ProgressBar {
     }
     
     setValueOnEvent(e: PointerEvent): void {
+        
+        e.preventDefault();
 
         const sizeName: string = this.direction == 'x' ? 'width' : 'height';
         let size: number;

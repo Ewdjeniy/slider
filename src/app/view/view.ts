@@ -27,7 +27,8 @@ class ToxinSliderView implements SliderView {
         direction: 'x',
         range: false,
         tip: false,
-        separator: '--'
+        separator: '--',
+        decimalPlaces: 100
     };
     state: ViewState = {
         output: null,
@@ -91,7 +92,7 @@ class ToxinSliderView implements SliderView {
             if (this.sliderSettings.tip) {
                 this.state.tips.push(new Tip({current: current, direction: this.sliderSettings.direction}));
             }
-            this.state.progressBars.push(new ProgressBar({direction: this.sliderSettings.direction, min: this.sliderSettings.min, max: this.sliderSettings.max, step: this.sliderSettings.step, current: current}));
+            this.state.progressBars.push(new ProgressBar({direction: this.sliderSettings.direction, min: this.sliderSettings.min, max: this.sliderSettings.max, step: this.sliderSettings.step, current: current, decimalPlaces: this.sliderSettings.decimalPlaces}));
             
         });
         

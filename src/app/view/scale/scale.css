@@ -20,4 +20,5 @@
     justify-content: flex-end;
     position: relative;
     background: #fff;
+    vertical-align: top;
 }

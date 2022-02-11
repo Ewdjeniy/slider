@@ -27,9 +27,11 @@ class Mediator {
         subviews.progressBars.forEach((bar) => {bar.mediator = this});
         
         if (subviews.progressBars[0]) {
-            
-            subviews.progressBars[0].setZindex('10000');
-            
+            subviews.progressBars[0].setZindex('100000'); 
+        }
+        
+        if (subviews.runners[0]) {
+            subviews.runners[0].setZindex('100000'); 
         }
         
         if (subviews.progressBars[subviews.progressBars.length - 1]) {
@@ -43,7 +45,7 @@ class Mediator {
         if (this.subviews.scaleValues && this.direction == 'x') {
             this.subviews.scaleValues.moveScaleValues('left', this.subviews.runners[0].runnerEl.offsetWidth / 2);
         } else if (this.subviews.scaleValues && this.direction == 'y') {
-            this.subviews.scaleValues.moveScaleValues('bottom', this.subviews.runners[0].runnerEl.offsetWidth / 2);       
+            this.subviews.scaleValues.moveScaleValues('top', (-1) * this.subviews.runners[0].runnerEl.offsetWidth / 2);       
         }
           
     }

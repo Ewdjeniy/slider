@@ -39,7 +39,8 @@ class ToxinSliderPresenter implements SliderPresenter {
             direction: modelOptions.direction,
             range: modelOptions.range,
             tip: modelOptions.tip,
-            separator: modelOptions.separator
+            separator: modelOptions.separator,
+            decimalPlaces: modelOptions.decimalPlaces,
         };
     }
     
