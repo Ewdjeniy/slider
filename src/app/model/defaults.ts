@@ -1,4 +1,4 @@
-export const defaultSliderSettingsModel: ToxinSliderOptions = {
+export const defaultSliderSettingsModel: ToxinSliderSettings = {
     extraClass: '',
     min: 0,
     max: 50,

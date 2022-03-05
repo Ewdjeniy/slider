@@ -5,19 +5,25 @@ import { defaultSliderSettingsModel } from './defaults.ts';
 
 class ToxinSliderModel implements SliderModel {
     
-    subjectModelUpdateState: ObservableSubject = new ObservableSubject();
-    subjectModelChangeCurrent: ObservableSubject = new ObservableSubject();
-    state: ToxinSliderOptions = {};
+    observableSubjects: Object = {
+        subjectModelUpdateState: new ObservableSubject(),
+        subjectModelChangeCurrent: new ObservableSubject()
+    };
+    state: ToxinSliderSettings = {};
     settingsValidator: any = new SettingsValidator();
     
-    constructor(options?: ToxinSliderOptions) {
-        this.init(options);
+    constructor(settings?: ToxinSliderSettings) {
+        this.init(settings);
+    }
+    
+    returnModelStateInstance(): ToxinSliderSettings {
+        return Object.assign({}, this.state);
     }
     
     public executeMethod(method: string, args: any): void {
         if (method === 'get') {
             this.get[args]();
-        } else if (this[method]) {
+        } else if (method == 'setState' || method == 'update' || method == 'setCurrent') {
             this[method](args);
         } else {
             $.error( 'Метод с именем ' +  method + ' не существует для jQuery.toxinSlider' );
@@ -30,31 +36,34 @@ class ToxinSliderModel implements SliderModel {
         }
     }
     
-    protected init(options?: ToxinSliderOptions): void {
-        for (let key in defaultSliderSettingsModel) {
-            this.state[key] = defaultSliderSettingsModel[key];
-        }
+    protected validateSettings(): void {
+        this.state = this.settingsValidator.returnValidatedSettings(Object.assign({}, this.state));
+    }
+    
+    protected init(settings?: ToxinSliderSettings): void {
+        
+        this.state = Object.assign({}, defaultSliderSettingsModel);
         
         for (let key in this.get) {
             this.get[key] = this.get[key].bind(this);
         }
-        this.setState(options);
-        this.settingsValidator.validateSettings(this.state);
+        this.setState(settings);
+        this.validateSettings();
     }
     
-    protected setState(options: ToxinSliderOptions): void {
-        this.state = $.extend( this.state, options );
-        this.settingsValidator.validateSettings(this.state);
+    protected setState(settings: ToxinSliderSettings): void {
+        this.state = $.extend( this.state, settings );
+        this.validateSettings();
     }
     
-    protected update(options: ToxinSliderOptions): void {
-        this.setState(options);
-        this.subjectModelUpdateState.notifyObservers();
+    protected update(settings: ToxinSliderSettings): void {
+        this.setState(settings);
+        this.observableSubjects.subjectModelUpdateState.notifyObservers(Object.assign({}, this.state));
     }
     
-    protected setCurrent(current: number[]): void {
-        this.state.current = current;
-        this.subjectModelChangeCurrent.notifyObservers();
+    protected setCurrent(value: number[]): void {
+        this.state.current = value;
+        this.observableSubjects.subjectModelChangeCurrent.notifyObservers(value);
     }
     
 }

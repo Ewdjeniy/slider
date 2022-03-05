@@ -1,20 +1,26 @@
 import './runner.css';
+import ObservableSubject from '../../observers.ts';
 
 class Runner {   
     
     runnerEl: HTMLElement = document.createElement('div');
-    mediator: any;
+    globalSubjects: Object = {};
     mousePosOnRunnerOnStartDragging: number = 0;
     max: number;
     current: number;
     direction: string;
+    stepInPx: number = 1;
+    zeroPoint: Object = {x: 0, y: 0};
     
-    constructor(options) {
-        this.runnerEl.className = options.direction == 'x' ? 'runner runner_x' : 'runner runner_y';
-        this.max = options.max;
-        this.current = options.current;
-        this.direction = options.direction;
-        this.runnerEl.style.zIndex = (Math.abs(options.max) + 1000 - options.current).toString();
+    constructor(settings, globalSubjects?: Object) {
+        
+        if (globalSubjects) {
+            this.globalSubjects = globalSubjects;
+        }
+        this.runnerEl.className = settings.direction == 'x' ? 'runner runner_x' : 'runner runner_y';
+        this.max = settings.max;
+        this.current = settings.current;
+        this.direction = settings.direction;
         this.onRunnerPointerDown = this.onRunnerPointerDown.bind(this);
         this.runnerEl.onpointerdown = this.onRunnerPointerDown;
     }
@@ -23,23 +29,12 @@ class Runner {
         this.runnerEl.style.zIndex = value;
     }
     
-    setCurrentZedIndex(): void {
-       this.runnerEl.style.zIndex = (Math.abs(this.max) + 1000 - this.current).toString(); 
-    }
-    
-    setHigerZedIndex(): void {
-        this.runnerEl.style.zIndex = (Math.abs(this.max) + 1000).toString(); 
-    }
-    
     onRunnerPointerDown(e: PointerEvent): boolean {
         
         this.mousePosOnRunnerOnStartDragging = this.direction == 'x' ? 
             e.clientX - this.runnerEl.getBoundingClientRect().left :
             this.runnerEl.getBoundingClientRect().bottom - e.clientY;
         
-        if (this.mediator) {
-            this.mediator.mediateDragging(e);
-        }
         return false;
     }
     

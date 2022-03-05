@@ -3,11 +3,11 @@ export const defaultSliderSettingsView: SliderSettings = {
     min: 0,
     max: 100,
     step: 1,
-    current: [0, 25],
+    current: [25],
     scaleValues: false,
     scaleValuesAmount: 5,
     direction: 'x',
-    range: true,
+    range: false,
     tip: false,
     separator: ' - ',
     decimalPlaces: 2

@@ -1,4 +1,4 @@
-interface ToxinSliderOptions {
+interface ToxinSliderSettings {
     extraClass?: string; 
     min?: number;
     max?: number;
@@ -13,15 +13,15 @@ interface ToxinSliderOptions {
     decimalPlaces?: number;
 }
 
-interface ToxinSliderGlobalOptions {
-    options?: ToxinSliderOptions;
+interface ToxinSliderGlobalSettings {
+    settings?: ToxinSliderSettings;
 }
 
 interface ToxinSliderFunction {
-    (options?: ToxinSliderOptions): JQuery;
+    (settings?: ToxinSliderSettings): JQuery;
 }
 
-interface ToxinSlider extends ToxinSliderGlobalOptions, ToxinSliderFunction {}
+interface ToxinSlider extends ToxinSliderGlobalSettings, ToxinSliderFunction {}
 
 interface JQuery {
     toxinSlider: ToxinSlider;
@@ -32,57 +32,48 @@ interface Object {
 }
      
 type voidFunction = (data?: any) => void;
-  
-
-interface SliderMediator {
-    
-}
 
 interface SliderTip {
     tipEl: HTMLElement;
-//    render(el: HTMLElement): void;
     setValue(value: number): void;
-    mediator: any;
+    globalSubjects: Object;
 }
 
 interface SliderProgressBar {
     progressBarEl: HTMLElement;
     returnValue(): number;
-    setStepInPx(stepInPx): void;
+    setFontSize(): void;
     setValueOnEvent(e: PointerEvent): void;
     setValue(value): void;
-    mediator: any;
+    globalSubjects: Object;
     setZindex(value: string): void;
-    
     setBackground(background: string): void;
 }
 
 interface SliderRunner {
     runnerEl: HTMLElement;
-//    render(diapasoneEl: HTMLElement): void;
     returnMousePosOnRunner(pointerDownEvent: PointerEvent): PointerEvent;
-    mediator: any;
+    globalSubjects: Object;
     setZindex(value: string): void;
 }
 
 interface SliderScale {
+    globalSubjects: Object;
     scaleEl: HTMLElement;
-//    render(sliderEl: HTMLElement): void;
-    mediator: any;
 }
 
 interface SliderScaleValues {
     scaleValuesEl: HTMLElement;
-//    render(scaleEl: HTMLElement, scaleValues: boolean): void;
     setValues(): void;
-    mediator: any;
+    globalSubjects: Object;
+    setStepInPx(stepInPx): void;
 }
 
 interface SliderOutput {
     outputEl: HTMLInputElement;
     dispatchEvent(): void;
     setValue(value: number, i: number): void;
-    mediator: any;
+    globalSubjects: Object;
 }
 
 interface SliderSettings {
@@ -102,18 +93,15 @@ interface SliderSettings {
      
 interface SliderModel {
     state: ToxinSliderOptions;
-    subjectModelUpdateState: ObservableSubject;
-    subjectModelChangeCurrent: ObservableSubject;
+    observableSubjects: Object;
     executeMethod(method: string, args: any): void;
     get: any;
 }
 
 interface SliderView {
-    input: HTMLInputElement;
-    subjectViewChangeCurrent: ObservableSubject;
-    update(settings: SliderSettings): void;
-    setValue(value: number[]): void;
-//    getCurrentValue(): number | number[];
+//    input: HTMLInputElement;
+//    globalSubjects: Object;
+//    update(settings: SliderSettings): void;
 }
 
 interface ViewState {
@@ -124,9 +112,6 @@ interface ViewState {
     runners: SliderRunner[];
     tips: SliderTip[];
     progressBars: SliderProgressBar[];
-    stepsAmount: number;
-    stepsCoefficient: number;
-    decimalPlaces: number;
 }
 
 interface SliderPresenter {

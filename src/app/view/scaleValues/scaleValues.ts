@@ -1,25 +1,31 @@
 import './scaleValues.css';
+import ObservableSubject from '../../observers.ts';
 
 class ScaleValues {
 
     scaleValuesEl:  HTMLElement = document.createElement('div');
     scaleValuesModTurner: string = 'lines';
     scaleValuesAmount: number;
-    mediator: any;
+    globalSubjects: Object = {};
     min: number;
     max: number;
     step: number;
     direction: string;
     stepInPx: number = 1;
+    zeroPoint: Object = {x: 0, y: 0};
     decimalPlaces: number;
     
-    constructor(options) {
-        this.scaleValuesModTurner = options.scaleValues ? 'number' : 'lines';
-        this.scaleValuesAmount = options.scaleValuesAmount;
-        this.min = options.min;
-        this.max = options.max;
-        this.step = options.step;
-        this.direction = options.direction;
+    constructor(settings, globalSubjects?: Object) {
+        
+        if (globalSubjects) {
+            this.globalSubjects = globalSubjects;
+        }
+        this.scaleValuesModTurner = settings.scaleValues ? 'number' : 'lines';
+        this.scaleValuesAmount = settings.scaleValuesAmount;
+        this.min = settings.min;
+        this.max = settings.max;
+        this.step = settings.step;
+        this.direction = settings.direction;
         this.decimalPlaces = this.step.toString().includes('.') ? this.step.toString().split('.')[1].length : 0;
         
         this.setScaleValuesMod();
@@ -30,10 +36,9 @@ class ScaleValues {
         
     }
     
-    onScaleValuesPointerDown(e: PointerEvent): void {
-        if (this.mediator) {
-            this.mediator.mediateScalePointerDown(e);
-        }
+    onScaleValuesPointerDown(e: PointerEvent): boolean {
+
+        return false;
     }
     
     moveScaleValues(direction, moveValue): void {
@@ -84,9 +89,6 @@ class ScaleValues {
             }
             
             scaleValues[i].onpointerdown = (e: PointerEvent) => {
-                if (that.mediator) {
-                    that.mediator.mediateValuePointerDown(e, +scaleValues[i].innerHTML);
-                }
                 e.stopPropagation();
             }
         }
