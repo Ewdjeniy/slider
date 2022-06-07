@@ -34,61 +34,61 @@ interface Object {
 type voidFunction = (data?: any) => void;
 
 interface SliderTip {
-    tipEl: HTMLElement;
-    setValue(value: number): void;
-    globalSubjects: Object;
+//    tipEl: HTMLElement;
+//    setValue(value: number): void;
+//    globalSubjects: Object;
 }
 
 interface SliderProgressBar {
-    progressBarEl: HTMLElement;
-    returnValue(): number;
-    setFontSize(): void;
-    setValueOnEvent(e: PointerEvent): void;
-    setValue(value): void;
-    globalSubjects: Object;
-    setZindex(value: string): void;
-    setBackground(background: string): void;
+//    progressBarEl: HTMLElement;
+//    returnValue(): number;
+//    setFontSize(): void;
+//    setValueOnEvent(e: PointerEvent): void;
+//    setValue(value): void;
+//    globalSubjects: Object;
+//    setZindex(value: string): void;
+//    setBackground(background: string): void;
 }
 
 interface SliderRunner {
-    runnerEl: HTMLElement;
-    returnMousePosOnRunner(pointerDownEvent: PointerEvent): PointerEvent;
-    globalSubjects: Object;
-    setZindex(value: string): void;
+//    runnerEl: HTMLElement;
+//    returnMousePosOnRunner(pointerDownEvent: PointerEvent): PointerEvent;
+//    globalSubjects: Object;
+//    setZindex(value: string): void;
 }
 
 interface SliderScale {
-    globalSubjects: Object;
-    scaleEl: HTMLElement;
+//    globalSubjects: Object;
+//    scaleEl: HTMLElement;
 }
 
 interface SliderScaleValues {
-    scaleValuesEl: HTMLElement;
-    setValues(): void;
-    globalSubjects: Object;
-    setStepInPx(stepInPx): void;
+//    scaleValuesEl: HTMLElement;
+//    setValues(): void;
+//    globalSubjects: Object;
+//    setStepInPx(stepInPx): void;
 }
 
 interface SliderOutput {
-    outputEl: HTMLInputElement;
-    dispatchEvent(): void;
-    setValue(value: number, i: number): void;
-    globalSubjects: Object;
+//    outputEl: HTMLInputElement;
+//    dispatchEvent(): void;
+//    setValue(value: number, i: number): void;
+//    globalSubjects: Object;
 }
 
 interface SliderSettings {
-    extraClass: string;
-    min: number;
-    max: number;
-    step: number;
-    current: any;
-    scaleValues: boolean;
-    scaleValuesAmount: number;
-    direction: string;
-    range: boolean;
-    tip: boolean;
-    separator: string;
-    decimalPlaces: number;
+//    extraClass: string;
+//    min: number;
+//    max: number;
+//    step: number;
+//    current: any;
+//    scaleValues: boolean;
+//    scaleValuesAmount: number;
+//    direction: string;
+//    range: boolean;
+//    tip: boolean;
+//    separator: string;
+//    decimalPlaces: number;
 }
      
 interface SliderModel {
@@ -105,13 +105,13 @@ interface SliderView {
 }
 
 interface ViewState {
-    output: SliderOutput;
-    scale: SliderScale;
-    scaleValues: SliderScaleValues;
-    diapasones: any[];
-    runners: SliderRunner[];
-    tips: SliderTip[];
-    progressBars: SliderProgressBar[];
+//    output: SliderOutput;
+//    scale: SliderScale;
+//    scaleValues: SliderScaleValues;
+//    diapasones: any[];
+//    runners: SliderRunner[];
+//    tips: SliderTip[];
+//    progressBars: SliderProgressBar[];
 }
 
 interface SliderPresenter {

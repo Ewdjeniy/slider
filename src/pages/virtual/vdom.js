@@ -1,13 +1,3 @@
-console.log('hi');
-
-
-
-
-
-
-
-
-
 //import './virtual.css';
 //
 //export const createVNode = (tagName, props = {}, ...children) => {

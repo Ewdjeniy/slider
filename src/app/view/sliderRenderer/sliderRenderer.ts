@@ -1,14 +1,23 @@
+import ObservableSubject from '../../observers.ts';
+
+const sliderDom: any = [];
+
 class SliderRenderer {
     
-    state: any = {};
+    constructor(props?: any) {
+        this.props = props;
+        this.recycleNode = this.recycleNode.bind(this);
+    }
     
     createVNode(tagName: any, props: any = {}, children?: any): any {
         
-        return {
-            tagName,
-            props,
-            children,
+        const vNode: any = {
+            tagName: tagName,
+            props: props,
+            children: children,
         };
+        
+        return vNode;
         
     }
 
@@ -30,11 +39,20 @@ class SliderRenderer {
         children.forEach(child => {
             node.appendChild(this.createDOMNode(child));
         });
-
+        
+        if (this.findNodeInVDome(node)) {
+            this.findNodeInVDome(node).vNode = vNode;
+        } else {
+            sliderDom.push({vNode: vNode, node: node});
+        }
+        
+        console.log(sliderDom);
+        
         return node;
     }
     
-    patchNode(node: any, vNode: any, nextVNode: any): any {    
+    patchNode(node: any, vNode: any, nextVNode: any): any {
+        
         // Удаляем ноду, если значение nextVNode не задано
         if (nextVNode === undefined) {
             node.remove();
@@ -69,10 +87,17 @@ class SliderRenderer {
         this.patchChildren(node, vNode.children, nextVNode.children);
 
         // Возвращаем обновленный DOM-элемент
+        
+        
+        if (this.findNodeInVDome(node)) {
+            this.findNodeInVDome(node).vNode = nextVNode;
+        }
+        
+        
         return node;
     }
     
-    patch(nextVNode: any, node: any): any {   
+    patch(nextVNode: any, node: any): any {
     
         // Получаем текущее виртуальное дерево из DOM-ноды
         const vNode = node.v || this.recycleNode(node);
@@ -82,7 +107,7 @@ class SliderRenderer {
 
         // Сохраняем виртуальное дерево в DOM-ноду
         node.v = nextVNode;
-
+        
         return node;
     }
     
@@ -121,16 +146,19 @@ class SliderRenderer {
     }
     
     patchChildren(parent: any, vChildren: any, nextVChildren: any): any {
-        parent.childNodes.forEach((childNode, i) => {
+        
+        parent.childNodes.forEach((childNode, i) => {            
             this.patchNode(childNode, vChildren[i], nextVChildren[i]);
         });
 
         nextVChildren.slice(vChildren.length).forEach(vChild => {
             parent.appendChild(this.createDOMNode(vChild));
         });
+        
     }
     
     recycleNode(node: any): any {
+        
         const TEXT_NODE_TYPE = 3;
 
         // Если текстовая нода - то возвращаем текст
@@ -152,12 +180,51 @@ class SliderRenderer {
         return this[event.type](event);
     }
     
-    setState(state: Object): void {
+    
+    
+    
+    
+    
+    findNodeInVDome(node: any): any {
+        for (let i = 0; i < sliderDom.length; i++) {
+            if (sliderDom[i].node == node) {
+                return sliderDom[i];
+            }
+        }
+        
+        return false;
+    }
+    
+    returnNode(): any {
+        
+        for (let i = 0; i < sliderDom.length; i++) {
+            if (JSON.stringify(sliderDom[i].vNode) == JSON.stringify(this.render())) {
+                return sliderDom[i].node;
+            } 
+        }
+        
+    }
+    
+    props: any = {}
+    
+    render(): any {
+        
+    }
+    
+    state:any = {}
+    
+    setState(state?: Object): void {
+        
+        const node = this.returnNode();
+        
         for (let key in state) {
             if(key in this.state) {
                 this.state[key] = state[key];
             }
         }
+        
+        this.patch(this.render(), node);
+        
     }
     
 };

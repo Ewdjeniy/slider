@@ -4,20 +4,20 @@ import synchronizePanelWithSlider from '../../components/sliderWithPanel/sliderW
 
 const panels = document.getElementsByClassName('slider-with-panel');
 
-//synchronizePanelWithSlider(panels[0], {
-//    extraClass: '',
-//    min: 0,
-//    max: 100,
-//    step: 1,
-//    current: [50],
-//    scaleValues: false,
-//    scaleValuesAmount: 3,
-//    direction: 'x',
-//    range: false,
-//    tip: true,
-//    separator: ' - ',
-//    decimalPlaces: 0
-//});
+synchronizePanelWithSlider(panels[0], {
+    extraClass: '',
+    min: 0,
+    max: 100,
+    step: 1,
+    current: [50],
+    scaleValues: false,
+    scaleValuesAmount: 3,
+    direction: 'x',
+    range: false,
+    tip: true,
+    separator: ' - ',
+    decimalPlaces: 0
+});
 
 //synchronizePanelWithSlider(panels[1], {
 //    extraClass: '',

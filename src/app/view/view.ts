@@ -16,40 +16,23 @@ import SliderRenderer from './sliderRenderer/sliderRenderer.ts';
 
 class ToxinSliderView extends SliderRenderer {
     
-    sliderEl: HTMLElement;
-    renderer: any = new SliderRenderer();
-    state: any = {
-        class: "toxin-slider",
-        extraClass: '',
-        min: 1,
-        max: 2,
-        step: 3,
-        current: 4,
-        scaleValues: true,
-        scaleValuesAmount: 5,
-        direction: "x",
-        range: false,
-        tip: false,
-        separator: "--",
-        decimalPlaces: 100
-    };
-    
     constructor(input: HTMLInputElement) {
         
         super();
-        this.init(input);
+        
+        const slider = document.createElement('div');
+        const that = this;
+        input.after(slider);
+        
+        this.patch(this.render(), slider);
         
     }
     
-    init(input: HTMLInputElement): void {
+    render() {
         
-        const root: HTMLElement = document.createElement('div');
-        root.className = 'root';
-        input.after(root);
-        
-    }
-    
-    render(): void {
+        return this.createVNode('div', {class: 'toxin-slider_x'}, [
+            new Scale().render()
+        ]);
         
     }
     
