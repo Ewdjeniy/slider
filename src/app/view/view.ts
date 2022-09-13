@@ -3,15 +3,15 @@ import { defaultSliderSettingsView } from './defaults.ts';
 import ObservableSubject from '../observers.ts';
 import Output from './output/output.ts';
 import Scale from './scale/scale.ts';
-import ScaleValues from './scaleValues/scaleValues.ts';
+
 import Diapason from './diapason/diapason.ts';
+import ProgressBar from './progressBar/progressBar.ts';
 import Runner from './runner/runner.ts';
 import Tip from './tip/tip.ts';
-import ProgressBar from './progressBar/progressBar.ts';
-import ProgressBarsOperator from './progressBarsOperator/progressBarsOperator.ts';
-import TipsOperator from './tipsOperator/tipsOperator.ts';
-import RunnersOperator from './runnersOperator/runnersOperator.ts';
+
+import ScaleValues from './scaleValues/scaleValues.ts';
 import SliderRenderer from './sliderRenderer/sliderRenderer.ts';
+import SliderDom from './sliderRenderer/sliderDom.ts';
 
 
 class ToxinSliderView extends SliderRenderer {
@@ -20,19 +20,44 @@ class ToxinSliderView extends SliderRenderer {
         
         super();
         
-        const slider = document.createElement('div');
-        const that = this;
-        input.after(slider);
+        this.state = Object.assign({}, defaultSliderSettingsView);
         
-        this.patch(this.render(), slider);
+        this.props.node = document.createElement('div');
+        
+        input.after(this.props.node);
+        
+        this.props.node = this.patch(this.render(), this.props.node);
+        this.props.dir = [];
         
     }
     
-    render() {
+    render(children?: any) {
         
-        return this.createVNode('div', {class: 'toxin-slider_x'}, [
-            new Scale().render()
-        ]);
+        children = children ? children : [];
+        
+        return this.createVNode('div', 
+            {
+                class: 'toxin-slider_x',
+            }, 
+            [
+                new Scale({
+                    node: this.props.node,
+                    dir: [0],
+                    min: this.state.min,
+                    max: this.state.max,
+                    step: this.state.step,
+                    current: this.state.current,
+                    scaleValues: this.state.scaleValues,
+                    scaleValuesAmount: this.state.scaleValuesAmount,
+                    direction: this.state.direction,
+                    range: this.state.range,
+                    tip: this.state.tip,
+                    separator: this.state.separator,
+                    decimalPlaces: this.state.decimalPlaces 
+                }).render(),
+            
+            ]
+        );
         
     }
     

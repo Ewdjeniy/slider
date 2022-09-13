@@ -9,8 +9,8 @@ synchronizePanelWithSlider(panels[0], {
     min: 0,
     max: 100,
     step: 1,
-    current: [50],
-    scaleValues: false,
+    current: [33],
+    scaleValues: true,
     scaleValuesAmount: 3,
     direction: 'x',
     range: false,
@@ -33,7 +33,7 @@ synchronizePanelWithSlider(panels[0], {
 //    separator: ' - ',
 //    decimalPlaces: 0
 //});
-//
+
 //synchronizePanelWithSlider(panels[2], {
 //    extraClass: '',
 //    min: 0,

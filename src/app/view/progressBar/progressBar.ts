@@ -1,6 +1,8 @@
 import './progressBar.css';
 import SliderRenderer from '../sliderRenderer/sliderRenderer.ts';
 
+
+
 class ProgressBar extends SliderRenderer {
     
     constructor(props?: any) {

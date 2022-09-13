@@ -11,12 +11,12 @@ class ToxinSliderPresenter implements SliderPresenter {
         this.view = view;
         const that = this;
      
-//        that.view.update(that.convertModelSettingsIntoViewSettings(that.model.returnModelStateInstance()));
+//        that.view.setState(that.convertModelSettingsIntoViewSettings(that.model.returnModelStateInstance()));
 //        
 //        this.model.observableSubjects.subjectModelUpdateState.addObserver(function(settings) {
-//            that.view.update(that.convertModelSettingsIntoViewSettings(settings));
+//            that.view.setState(that.convertModelSettingsIntoViewSettings(settings));
 //        });
-//        
+        
 //        this.model.observableSubjects.subjectModelChangeCurrent.addObserver(function(current) {
 //            that.view.setValue(current);
 //        });

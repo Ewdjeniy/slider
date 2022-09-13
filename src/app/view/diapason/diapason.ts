@@ -3,6 +3,7 @@ import SliderRenderer from '../sliderRenderer/sliderRenderer.ts';
 import Runner from '../runner/runner.ts';
 import ProgressBar from '../progressBar/progressBar.ts';
 
+
 class Diapason extends SliderRenderer {   
     
     constructor(props?: any) {;
@@ -11,8 +12,8 @@ class Diapason extends SliderRenderer {
         
         this.state = {
             runnerClass: 'runner_x',
-            progressBarWidth: this.props.current
-        }
+            sliderValue: this.props.current
+        };
         
     }
     
@@ -24,7 +25,7 @@ class Diapason extends SliderRenderer {
         }
         const unActivate = () => this.setState({runnerClass: 'runner_x'});
         const changeSize = (e: PointerEvent) => {
-            this.setState({progressBarWidth: e.clientX - this.props.returnScaleStart() - mouseCorrection});
+            this.setState({sliderValue: e.clientX - this.props.returnScaleStart() - mouseCorrection});
         };
         
         window.getSelection().removeAllRanges();
@@ -38,6 +39,7 @@ class Diapason extends SliderRenderer {
         return false;
     }
     
+    
     render(children?: any): void {
         
         children = children ? children : [];
@@ -47,11 +49,17 @@ class Diapason extends SliderRenderer {
             style: 'z-index: ' + this.props.zIndex + ';'
             }, [
             new ProgressBar({
-                style: 'width: ' + this.state.progressBarWidth + 'px; font-size: 10px;'
+                node: this.props.node,
+                dir: [0, 0, 0],
+                style: 'width: ' + this.state.sliderValue + 'px; font-size: 10px;'
             }).render(),
             new Runner({
+                node: this.props.node,
+                dir: [0, 0, 1],
                 class: this.state.runnerClass,
-                ondrag: this.handleDrag.bind(this)
+                ondrag: this.handleDrag.bind(this),
+                sliderValue: this.state.sliderValue,
+                tip: this.props.tip,
             }).render()
         ]);
 

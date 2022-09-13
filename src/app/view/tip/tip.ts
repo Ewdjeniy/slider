@@ -8,7 +8,7 @@ class Tip extends SliderRenderer {
         super(props);
         
         this.state = {
-            class: 'tip_x tip_hidden'
+            class: 'tip_x'
         };
     }
     
@@ -16,7 +16,9 @@ class Tip extends SliderRenderer {
         
         children = children ? children : [];
         
-        return this.createVNode('div', {class: this.state.class}, children);
+        return this.createVNode('div', {
+            class: this.state.class,
+        }, children);
 
     }
     

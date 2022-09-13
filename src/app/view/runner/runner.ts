@@ -2,24 +2,32 @@ import './runner.css';
 import SliderRenderer from '../sliderRenderer/sliderRenderer.ts';
 import Tip from '../tip/tip.ts';
 
+
 class Runner extends SliderRenderer {
+    
+    index: any = 0;
     
     constructor(props?: any) {
         
         super(props);
+        this.returnDragCorecction = this.returnDragCorecction.bind(this);
+        
+        this.state = {
+            class: 'runner_x',
+        }
         
     }
     
     returnDragCorecction(e: PointerEvent): any {
-        
-        console.log(this.returnNode());
         
         return e.clientX - this.returnNode().getBoundingClientRect().left;
         
     }
     
     handleDrag(e: PointerEvent) {
+        
         this.props.ondrag(this.returnDragCorecction(e));
+        
     }
     
     render(children?: any): void {
@@ -30,7 +38,10 @@ class Runner extends SliderRenderer {
             class: this.props.class,
             onpointerdown: this.handleDrag.bind(this)
         }, [
-            new Tip().render()
+            new Tip({
+                node: this.props.node,
+                dir: [0,0,1,0],
+            }).render(),
         ]);
 
     }
